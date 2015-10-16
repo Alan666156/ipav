@@ -1,0 +1,688 @@
+2015-10-15 18:16:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@4d06e195]
+2015-10-15 18:16:00,005 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 18:16:00,006 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 18:16:00,007 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 18:18:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@3877a685]
+2015-10-15 18:18:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 18:18:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 18:18:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 18:20:00,002 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@c28c75]
+2015-10-15 18:20:00,002 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 18:20:00,002 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 18:20:00,003 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 18:22:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@6da0e758]
+2015-10-15 18:22:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 18:22:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 18:22:00,004 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 18:24:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@4ec6be47]
+2015-10-15 18:24:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 18:24:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 18:24:00,004 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 18:26:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@1436cf0e]
+2015-10-15 18:26:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 18:26:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 18:26:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 18:28:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@5de4c159]
+2015-10-15 18:28:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 18:28:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 18:28:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 18:30:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@1e909]
+2015-10-15 18:30:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 18:30:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 18:30:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 18:32:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@1426241c]
+2015-10-15 18:32:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 18:32:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 18:32:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 18:34:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@259d7a00]
+2015-10-15 18:34:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 18:34:00,003 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 18:34:00,004 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 18:36:00,002 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@6127c65c]
+2015-10-15 18:36:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 18:36:00,003 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 18:36:00,004 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 18:38:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@116b3731]
+2015-10-15 18:38:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 18:38:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 18:38:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 18:40:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@238991e1]
+2015-10-15 18:40:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 18:40:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 18:40:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 18:42:00,005 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@484f98f2]
+2015-10-15 18:42:00,007 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 18:42:00,009 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 18:42:00,011 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 18:44:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@743749e8]
+2015-10-15 18:44:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 18:44:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 18:44:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 18:46:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@15039ea6]
+2015-10-15 18:46:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 18:46:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 18:46:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 18:48:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@646b387a]
+2015-10-15 18:48:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 18:48:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 18:48:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 18:50:00,001 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@2ee6b5d6]
+2015-10-15 18:50:00,002 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 18:50:00,002 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 18:50:00,002 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 18:52:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@505f45f1]
+2015-10-15 18:52:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 18:52:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 18:52:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 18:54:00,002 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@7d3d036b]
+2015-10-15 18:54:00,002 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 18:54:00,003 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 18:54:00,003 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 18:56:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@3081d743]
+2015-10-15 18:56:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 18:56:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 18:56:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 18:58:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@60f03a6d]
+2015-10-15 18:58:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 18:58:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 18:58:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 19:00:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@2d3634e3]
+2015-10-15 19:00:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 19:00:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 19:00:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 19:02:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@169ae6bb]
+2015-10-15 19:02:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 19:02:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 19:02:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 19:04:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@72d49876]
+2015-10-15 19:04:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 19:04:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 19:04:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 19:06:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@53d43fc6]
+2015-10-15 19:06:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 19:06:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 19:06:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 19:08:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@751f59de]
+2015-10-15 19:08:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 19:08:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 19:08:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 19:10:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@2fde62c1]
+2015-10-15 19:10:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 19:10:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 19:10:00,007 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 19:12:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@3cd6b6a0]
+2015-10-15 19:12:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 19:12:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 19:12:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 19:14:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@34552700]
+2015-10-15 19:14:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 19:14:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 19:14:00,007 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 19:16:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@5b31e5f8]
+2015-10-15 19:16:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 19:16:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 19:16:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 19:18:00,002 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@5498a644]
+2015-10-15 19:18:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 19:18:00,003 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 19:18:00,004 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 19:20:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@7cf5b93e]
+2015-10-15 19:20:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 19:20:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 19:20:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 19:22:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@1a87f610]
+2015-10-15 19:22:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 19:22:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 19:22:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 19:24:00,002 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@bf1060c]
+2015-10-15 19:24:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 19:24:00,003 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 19:24:00,004 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 19:26:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@a584e68]
+2015-10-15 19:26:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 19:26:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 19:26:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 19:28:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@75b039]
+2015-10-15 19:28:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 19:28:00,003 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 19:28:00,004 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 19:30:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@722ed776]
+2015-10-15 19:30:00,005 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 19:30:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 19:30:00,007 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 19:32:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@25d72cae]
+2015-10-15 19:32:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 19:32:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 19:32:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 19:34:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@68842c79]
+2015-10-15 19:34:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 19:34:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 19:34:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 19:36:00,002 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@12da4b19]
+2015-10-15 19:36:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 19:36:00,003 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 19:36:00,003 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 19:38:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@2134b86a]
+2015-10-15 19:38:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 19:38:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 19:38:00,004 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 19:40:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@47fba661]
+2015-10-15 19:40:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 19:40:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 19:40:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 19:42:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@1a517d02]
+2015-10-15 19:42:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 19:42:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 19:42:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 19:44:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@665f8c19]
+2015-10-15 19:44:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 19:44:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 19:44:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 19:46:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@72f31fa2]
+2015-10-15 19:46:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 19:46:00,003 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 19:46:00,004 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 19:48:00,002 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@65d8015a]
+2015-10-15 19:48:00,002 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 19:48:00,002 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 19:48:00,003 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 19:50:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@785066ce]
+2015-10-15 19:50:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 19:50:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 19:50:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 19:52:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@187c4d7]
+2015-10-15 19:52:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 19:52:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 19:52:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 19:54:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@7110a601]
+2015-10-15 19:54:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 19:54:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 19:54:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 19:56:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@1b263d21]
+2015-10-15 19:56:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 19:56:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 19:56:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 19:58:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@1717da80]
+2015-10-15 19:58:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 19:58:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 19:58:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 20:00:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@7ec22862]
+2015-10-15 20:00:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 20:00:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 20:00:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 20:02:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@24204328]
+2015-10-15 20:02:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 20:02:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 20:02:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 20:04:00,002 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@2d3d8533]
+2015-10-15 20:04:00,002 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 20:04:00,002 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 20:04:00,003 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 20:06:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@78975f30]
+2015-10-15 20:06:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 20:06:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 20:06:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 20:08:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@32d8cf89]
+2015-10-15 20:08:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 20:08:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 20:08:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 20:10:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@701e7888]
+2015-10-15 20:10:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 20:10:00,003 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 20:10:00,004 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 20:12:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@562ea5ae]
+2015-10-15 20:12:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 20:12:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 20:12:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 20:14:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@a7a6dac]
+2015-10-15 20:14:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 20:14:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 20:14:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 20:16:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@555d7e03]
+2015-10-15 20:16:00,005 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 20:16:00,006 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 20:16:00,007 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 20:18:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@291c0633]
+2015-10-15 20:18:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 20:18:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 20:18:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 20:20:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@3d5e9ac7]
+2015-10-15 20:20:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 20:20:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 20:20:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 20:22:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@74731357]
+2015-10-15 20:22:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 20:22:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 20:22:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 20:24:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@9e89aa2]
+2015-10-15 20:24:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 20:24:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 20:24:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 20:26:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@2b5e2c3a]
+2015-10-15 20:26:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 20:26:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 20:26:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 20:28:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@7e16dd86]
+2015-10-15 20:28:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 20:28:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 20:28:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 20:30:00,002 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@6f40edbb]
+2015-10-15 20:30:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 20:30:00,003 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 20:30:00,003 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 20:32:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@6e892f9d]
+2015-10-15 20:32:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 20:32:00,003 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 20:32:00,004 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 20:34:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@f9ad26f]
+2015-10-15 20:34:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 20:34:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 20:34:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 20:36:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@1e2ba0ae]
+2015-10-15 20:36:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 20:36:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 20:36:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 20:38:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@b98dcb3]
+2015-10-15 20:38:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 20:38:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 20:38:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 20:40:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@7e18e91b]
+2015-10-15 20:40:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 20:40:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 20:40:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 20:42:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@40354ec8]
+2015-10-15 20:42:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 20:42:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 20:42:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 20:44:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@557af5ba]
+2015-10-15 20:44:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 20:44:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 20:44:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 20:46:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@2a63d6ef]
+2015-10-15 20:46:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 20:46:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 20:46:00,004 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 20:48:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@59e98cde]
+2015-10-15 20:48:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 20:48:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 20:48:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 20:50:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@61c2d960]
+2015-10-15 20:50:00,005 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 20:50:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 20:50:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 20:52:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@7afd6ec7]
+2015-10-15 20:52:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 20:52:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 20:52:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 20:54:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@5dec07cc]
+2015-10-15 20:54:00,005 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 20:54:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 20:54:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 20:56:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@726278ad]
+2015-10-15 20:56:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 20:56:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 20:56:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 20:58:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@10cb43ae]
+2015-10-15 20:58:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 20:58:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 20:58:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 21:00:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@583068f9]
+2015-10-15 21:00:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 21:00:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 21:00:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 21:02:00,002 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@645b5c7f]
+2015-10-15 21:02:00,002 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 21:02:00,003 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 21:02:00,004 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 21:04:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@5917c544]
+2015-10-15 21:04:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 21:04:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 21:04:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 21:06:00,002 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@7ba7fdab]
+2015-10-15 21:06:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 21:06:00,003 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 21:06:00,004 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 21:08:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@6a572a50]
+2015-10-15 21:08:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 21:08:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 21:08:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 21:10:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@2349f19a]
+2015-10-15 21:10:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 21:10:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 21:10:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 21:12:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@12d7f4f2]
+2015-10-15 21:12:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 21:12:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 21:12:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 21:14:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@5919b0f9]
+2015-10-15 21:14:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 21:14:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 21:14:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 21:16:00,001 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@721eb0bd]
+2015-10-15 21:16:00,002 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 21:16:00,002 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 21:16:00,003 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 21:18:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@33e5d8d0]
+2015-10-15 21:18:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 21:18:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 21:18:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 21:20:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@266f9168]
+2015-10-15 21:20:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 21:20:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 21:20:00,004 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 21:22:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@59d69ffb]
+2015-10-15 21:22:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 21:22:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 21:22:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 21:24:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@3b767cb4]
+2015-10-15 21:24:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 21:24:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 21:24:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 21:26:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@3ffcf18]
+2015-10-15 21:26:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 21:26:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 21:26:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 21:28:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@71a466e0]
+2015-10-15 21:28:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 21:28:00,003 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 21:28:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 21:30:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@5b7fb110]
+2015-10-15 21:30:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 21:30:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 21:30:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 21:32:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@32f2c99c]
+2015-10-15 21:32:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 21:32:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 21:32:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 21:34:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@622c3070]
+2015-10-15 21:34:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 21:34:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 21:34:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 21:36:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@4be423f7]
+2015-10-15 21:36:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 21:36:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 21:36:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 21:38:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@7d44673e]
+2015-10-15 21:38:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 21:38:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 21:38:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 21:40:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@6c3d2056]
+2015-10-15 21:40:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 21:40:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 21:40:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 21:42:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@5f01aa21]
+2015-10-15 21:42:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 21:42:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 21:42:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 21:44:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@51c07776]
+2015-10-15 21:44:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 21:44:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 21:44:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 21:46:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@ac24b13]
+2015-10-15 21:46:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 21:46:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 21:46:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 21:48:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@3485e8c3]
+2015-10-15 21:48:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 21:48:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 21:48:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 21:50:00,002 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@64e6014f]
+2015-10-15 21:50:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 21:50:00,003 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 21:50:00,004 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 21:52:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@72c0033e]
+2015-10-15 21:52:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 21:52:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 21:52:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 21:54:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@1d597a48]
+2015-10-15 21:54:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 21:54:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 21:54:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 21:56:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@6425fd5b]
+2015-10-15 21:56:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 21:56:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 21:56:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 21:58:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@117d1979]
+2015-10-15 21:58:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 21:58:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 21:58:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 22:00:00,002 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@a173ddc]
+2015-10-15 22:00:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 22:00:00,003 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 22:00:00,004 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 22:02:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@32334bbe]
+2015-10-15 22:02:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 22:02:00,003 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 22:02:00,004 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 22:04:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@4e137]
+2015-10-15 22:04:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 22:04:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 22:04:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 22:06:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@76e3da7e]
+2015-10-15 22:06:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 22:06:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 22:06:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 22:08:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@6b0e341f]
+2015-10-15 22:08:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 22:08:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 22:08:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 22:10:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@a54e88c]
+2015-10-15 22:10:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 22:10:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 22:10:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 22:12:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@23da4bdf]
+2015-10-15 22:12:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 22:12:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 22:12:00,007 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 22:14:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@1a3ad854]
+2015-10-15 22:14:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 22:14:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 22:14:00,004 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 22:16:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@61e6d089]
+2015-10-15 22:16:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 22:16:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 22:16:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 22:18:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@7e8d50cd]
+2015-10-15 22:18:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 22:18:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 22:18:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 22:20:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@21b962c3]
+2015-10-15 22:20:00,005 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 22:20:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 22:20:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 22:22:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@62e39247]
+2015-10-15 22:22:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 22:22:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 22:22:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 22:24:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@53abd128]
+2015-10-15 22:24:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 22:24:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 22:24:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 22:26:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@7998812]
+2015-10-15 22:26:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 22:26:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 22:26:00,007 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 22:28:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@57e7a003]
+2015-10-15 22:28:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 22:28:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 22:28:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 22:30:00,002 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@1288f074]
+2015-10-15 22:30:00,002 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 22:30:00,003 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 22:30:00,004 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 22:32:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@6e859552]
+2015-10-15 22:32:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 22:32:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 22:32:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 22:34:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@29a39fe5]
+2015-10-15 22:34:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 22:34:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 22:34:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 22:36:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@3279f2b9]
+2015-10-15 22:36:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 22:36:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 22:36:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 22:38:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@3f5a8b9e]
+2015-10-15 22:38:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 22:38:00,003 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 22:38:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 22:40:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@3534d282]
+2015-10-15 22:40:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 22:40:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 22:40:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 22:42:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@3f399107]
+2015-10-15 22:42:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 22:42:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 22:42:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 22:44:00,002 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@227b3df5]
+2015-10-15 22:44:00,002 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 22:44:00,002 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 22:44:00,003 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 22:46:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@2a55d7ac]
+2015-10-15 22:46:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 22:46:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 22:46:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 22:48:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@140601f0]
+2015-10-15 22:48:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 22:48:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 22:48:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 22:50:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@7d4f39bc]
+2015-10-15 22:50:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 22:50:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 22:50:00,004 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 22:52:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@3b702644]
+2015-10-15 22:52:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 22:52:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 22:52:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 22:54:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@52cf8458]
+2015-10-15 22:54:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 22:54:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 22:54:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 22:56:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@350428f8]
+2015-10-15 22:56:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 22:56:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 22:56:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 22:58:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@178ef186]
+2015-10-15 22:58:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 22:58:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 22:58:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 23:00:00,002 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@77a5547c]
+2015-10-15 23:00:00,002 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 23:00:00,002 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 23:00:00,003 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 23:02:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@68362b9b]
+2015-10-15 23:02:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 23:02:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 23:02:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 23:04:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@1be77d4b]
+2015-10-15 23:04:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 23:04:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 23:04:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 23:06:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@1769e28c]
+2015-10-15 23:06:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 23:06:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 23:06:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 23:08:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@1a0c9fea]
+2015-10-15 23:08:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 23:08:00,003 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 23:08:00,004 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 23:10:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@773a5ae8]
+2015-10-15 23:10:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 23:10:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 23:10:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 23:12:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@728bbba8]
+2015-10-15 23:12:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 23:12:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 23:12:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 23:14:00,002 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@59fc5ea2]
+2015-10-15 23:14:00,002 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 23:14:00,003 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 23:14:00,004 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 23:16:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@393fe8e6]
+2015-10-15 23:16:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 23:16:00,003 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 23:16:00,004 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 23:18:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@502edb7b]
+2015-10-15 23:18:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 23:18:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 23:18:00,004 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 23:20:00,002 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@35f2c15a]
+2015-10-15 23:20:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 23:20:00,003 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 23:20:00,004 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 23:22:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@4a39b032]
+2015-10-15 23:22:00,005 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 23:22:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 23:22:00,007 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 23:24:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@4688d32d]
+2015-10-15 23:24:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 23:24:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 23:24:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 23:26:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@d390253]
+2015-10-15 23:26:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 23:26:00,003 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 23:26:00,004 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 23:28:00,002 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@55baca0]
+2015-10-15 23:28:00,002 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 23:28:00,003 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 23:28:00,004 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 23:30:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@7e7aeea6]
+2015-10-15 23:30:00,005 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 23:30:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 23:30:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 23:32:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@5ad977d6]
+2015-10-15 23:32:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 23:32:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 23:32:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 23:34:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@74da4ae0]
+2015-10-15 23:34:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 23:34:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 23:34:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 23:36:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@9234157]
+2015-10-15 23:36:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 23:36:00,003 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 23:36:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 23:38:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@37395588]
+2015-10-15 23:38:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 23:38:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 23:38:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 23:40:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@64e82209]
+2015-10-15 23:40:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 23:40:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 23:40:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 23:42:00,002 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@60a46fd4]
+2015-10-15 23:42:00,002 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 23:42:00,002 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 23:42:00,003 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 23:44:00,002 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@6bd30afa]
+2015-10-15 23:44:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 23:44:00,003 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 23:44:00,004 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 23:46:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@25b167e7]
+2015-10-15 23:46:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 23:46:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 23:46:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 23:48:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@40beb5f0]
+2015-10-15 23:48:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 23:48:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 23:48:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 23:50:00,003 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@db9b2e7]
+2015-10-15 23:50:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 23:50:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 23:50:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 23:52:00,002 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@53d7d5c4]
+2015-10-15 23:52:00,003 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 23:52:00,003 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 23:52:00,004 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 23:54:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@519b9d4f]
+2015-10-15 23:54:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 23:54:00,005 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 23:54:00,006 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 23:56:00,004 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@2b4094e9]
+2015-10-15 23:56:00,004 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 23:56:00,004 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 23:56:00,005 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0
+2015-10-15 23:58:00,002 DEBUG VoteMapper.voteStatusTask - ooo Using Connection [com.mchange.v2.c3p0.impl.NewProxyConnection@4c31318f]
+2015-10-15 23:58:00,002 DEBUG VoteMapper.voteStatusTask - ==>  Preparing: update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) where start_time<=now() and status<3 and status>0 
+2015-10-15 23:58:00,003 DEBUG VoteMapper.voteStatusTask - ==> Parameters: 
+2015-10-15 23:58:00,003 DEBUG VoteMapper.voteStatusTask - <==    Updates: 0

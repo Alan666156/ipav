@@ -1,0 +1,881 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+	"-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipav.system.dao.VoteMapper" >
+	<insert id="insertVote" parameterType="java.util.Map">
+		<selectKey keyProperty="id" order="AFTER" resultType="int">
+			select last_insert_id()
+		</selectKey>
+		insert into ipav_vote (company_id,title,remark,initiator,start_time,end_time,type,min_num,criteria,is_anonymous,result_type,ext,status) 
+		values (#{companyId},#{title},#{remark},#{initiator},
+		<if test="startTime!=null">
+			<choose>
+				<when test="startTime==''">now(),</when>
+				<otherwise>#{startTime},</otherwise>
+			</choose>
+		</if>
+		#{endTime},#{type},#{minNum},#{criteria},#{isAnonymout},#{resultType},#{ext},#{status})
+	</insert>
+	
+	<select id="getEarliestVotes" resultType="java.util.Map">
+		select ipav_vote.id,date_format(ipav_vote.start_time,'%Y-%m-%d %H:%m:%s') ) as start_time 
+		from ipav_vote 
+		where ipav_vote.status=1 
+		and company_id=#{companyId}
+		and date_format(ipav_vote.start_time,'%Y-%m-%d %H:%m:%s')=(
+			select date_format(min(ipav_vote.start_time),'%Y-%m-%d %H:%m:%s') 
+			from ipav_vote 
+			where ipav_vote.status=1
+		)
+	</select>
+	
+	<select id="getLatestVotes" resultType="java.util.Map">
+		select ipav_vote.id,date_format(ipav_vote.end_time,'%Y-%m-%d %H:%m:%s') as end_time 
+		from ipav_vote 
+		where ipav_vote.status=2 
+		and company_id=#{companyId}
+		and date_format(ipav_vote.end_time,'%Y-%m-%d %H:%m:%s')=(
+			select date_format(min(ipav_vote.end_time),'%Y-%m-%d %H:%m:%s') 
+			from ipav_vote 
+			where ipav_vote.status=2
+		)
+	</select>
+	
+	<update id="updateVoteDel" parameterType="java.util.Map">
+		update ipav_vote set status=#{status},update_time=now() where id in 
+		<foreach item="idItem" collection="ids" open="(" separator="," close=")">
+			#{idItem}
+		</foreach> 
+		and ipav_vote.initiator=#{userId} 
+		and not exists (
+			select 1 from ipav_vote_item 
+			straight_join ipav_vote_record on ipav_vote_item.id=ipav_vote_record.item_id 
+			where ipav_vote_item.vote_id=ipav_vote.id 
+			and ipav_vote_record.status=1
+		) 
+	</update>
+	
+	<update id="updateVoteStatus" parameterType="java.util.Map">
+		update ipav_vote set status=#{status} where id in 
+		<foreach item="idItem" collection="list" open="(" separator="," close=")">
+			#{idItem}
+		</foreach> 
+	</update>
+	
+	<update id="updateVoteInfo" parameterType="java.util.Map">
+		update ipav_vote set 
+		<if test="title!=null">
+			title=#{title},
+		</if>
+		<if test="remark!=null">
+			remark=#{remark},
+		</if>
+		<if test="initiator!=null">
+			initiator=#{initiator},
+		</if>
+		<if test="startTime!=null">
+			start_time=#{startTime},
+		</if>
+		<if test="endTime!=null">
+			end_time=#{endTime},
+		</if>
+		<if test="type!=null">
+			type=#{type},
+		</if>
+		<if test="minNum!=null">
+			min_num=#{minNum},
+		</if>
+		<if test="criteria!=null">
+			criteria=#{criteria},
+		</if>
+		<if test="isAnonymout!=null">
+			is_anonymous=#{isAnonymout},
+		</if>
+		<if test="resultType!=null">
+			result_type=#{resultType},
+		</if>
+		<if test="ext!=null">
+			ext=#{ext},
+		</if>
+		<if test="status!=null">
+			status=#{status},
+		</if>
+		update_time=now() 
+		where id=#{id}
+	</update>
+	
+	<delete id="deleteVoteAndOtherInfos" parameterType="int">
+		delete ipav_vote,ipav_vote_item,ipav_vote_author from ipav_vote,ipav_vote_item,ipav_vote_author
+		where ipav_vote.id=ipav_vote_item.vote_id 
+		and ipav_vote.id=ipav_vote_author.vote_id 
+		and ipav_vote.id=#{id}
+	</delete>
+	
+	<select id="getModifyAuthor" parameterType="java.util.Map" resultType="java.util.Map">
+		select 1 as tmp from ipav_vote where ipav_vote.id=#{id} and ipav_vote.initiator=#{userId}
+		and not exists(
+			select 1 from ipav_vote_record straight_join ipav_vote_item on ipav_vote_record.item_id=ipav_vote_item.id 
+			where ipav_vote.id=ipav_vote_item.vote_id
+		)
+	</select>
+	
+	<select id="getVoteInfoCounts" parameterType="java.util.Map" resultType="java.util.Map">
+		select count(1) as counts from(
+		select ipav_vote.id  
+		from ipav_vote left join ipav_user on ipav_vote.initiator=ipav_user.userid 
+		left join ipav_vote_item on ipav_vote.id=ipav_vote_item.vote_id 
+		left join ipav_vote_record on ipav_vote_item.id=ipav_vote_record.item_id 
+		where (ipav_vote_record.id is null or ipav_vote_record.status=1) 
+		and company_id=#{companyId} 
+				<if test="id!=null">
+					and ipav_vote.id=#{id} 
+				</if>
+				<if test="minDate!=null">
+					<![CDATA[and date_format(ipav_vote.start_time,'%Y-%m-%d')>=date_format(#{minDate},'%Y-%m-%d') ]]>
+				</if>
+				<if test="maxDate!=null">
+					<![CDATA[and date_format(ipav_vote.start_time,'%Y-%m-%d')<=date_format(#{maxDate},'%Y-%m-%d') ]]>
+				</if>
+				<if test="status!=null">
+					<choose>
+						<when test="status>0">
+							and ipav_vote.status=#{status} 
+						</when>
+						<otherwise>
+							and ipav_vote.status>0
+						</otherwise>
+					</choose>
+				</if>
+				<if test="title!=null">
+					and ipav_vote.title like "%"#{title}"%" 
+				</if>
+				<if test="myVoteStatus!=null">
+					<choose>
+						<when test="myVoteStatus==1">
+							and ipav_vote.initiator=#{userId} 
+						</when>
+						<when test="myVoteStatus==2">
+							and (exists(
+								select 1 from ipav_vote_record as tmp1,ipav_vote_item as tmp2
+								where tmp1.user_id=#{userId}
+								and tmp1.status=1
+								and tmp1.item_id=tmp2.id 
+								and tmp2.vote_id=ipav_vote.id 
+							) or ipav_vote.status=3)
+						</when>
+						<when test="myVoteStatus==3">
+							and not exists(
+								<!-- select 1 from ipav_vote_record where ipav_vote_record.item_id=ipav_vote_item.id and ipav_vote_record.user_id=#{userId} and ipav_vote_record.status=1  -->
+								select 1 from ipav_vote_record as tmp1,ipav_vote_item as tmp2
+								where tmp1.user_id=#{userId}
+								and tmp1.status=1
+								and tmp1.item_id=tmp2.id 
+								and tmp2.vote_id=ipav_vote.id
+							) 
+							and ipav_vote.status=2 
+							and exists(
+								select 1 from ipav_vote_author where ipav_vote_author.vote_id=ipav_vote.id and ipav_vote_author.user_id=#{userId} 
+							)
+						</when>
+						<when test="myVoteStatus==4">
+							and exists(
+								select 1 from ipav_vote_author where ipav_vote_author.vote_id=ipav_vote.id and ipav_vote_author.user_id=#{userId} 
+							)
+						</when>
+					</choose>
+				</if>
+			group by ipav_vote.id 
+		) tmp
+	</select>
+	
+	<select id="getVoteInfoList" parameterType="java.util.Map" resultType="java.util.Map">
+		select tmp.* from(
+		select ipav_vote.id,ipav_vote.title,ipav_vote.remark,date_format(ipav_vote.end_time,'%Y-%m-%d %H') as end_time,ipav_vote.result_type,
+		ipav_vote.initiator,ipav_user.username,ipav_user.picpath,date_format(ipav_vote.start_time,'%Y-%m-%d %H') as start_time,ipav_vote.type,ipav_vote.status,
+		date_format(ipav_vote.update_time,'%Y-%m-%d %H') as update_time,ipav_vote.criteria,ipav_vote.min_num,ipav_vote.ext,ipav_vote.is_anonymous,
+		(case when (ipav_vote_record.user_id=#{userId} and ipav_vote_record.status=1) then 1 else 0 end) as has_casted 
+		from ipav_vote left join ipav_user on ipav_vote.initiator=ipav_user.userid 
+		left join ipav_vote_item on ipav_vote.id=ipav_vote_item.vote_id 
+		left join ipav_vote_record on ipav_vote_item.id=ipav_vote_record.item_id 
+		where 1=1 
+				<if test="companyId!=null">
+					and company_id=#{companyId}
+				</if>
+				<if test="id!=null">
+					and ipav_vote.id=#{id} 
+				</if>
+				<if test="minDate!=null">
+					<![CDATA[and date_format(ipav_vote.start_time,'%Y-%m-%d')>=date_format(#{minDate},'%Y-%m-%d') ]]>
+				</if>
+				<if test="maxDate!=null">
+					<![CDATA[and date_format(ipav_vote.start_time,'%Y-%m-%d')<=date_format(#{maxDate},'%Y-%m-%d') ]]>
+				</if>
+				<if test="status!=null">
+					<choose>
+						<when test="status>0">
+							and ipav_vote.status=#{status} 
+						</when>
+						<otherwise>
+							and ipav_vote.status>0
+						</otherwise>
+					</choose>
+				</if>
+				<if test="title!=null">
+					and ipav_vote.title like "%"#{title}"%" 
+				</if>
+				<if test="myVoteStatus!=null">
+					<choose>
+						<when test="myVoteStatus==1">
+							and ipav_vote.initiator=#{userId} 
+						</when>
+						<when test="myVoteStatus==2">
+							and (exists(
+								select 1 from ipav_vote_record as tmp1,ipav_vote_item as tmp2
+								where tmp1.user_id=#{userId}
+								and tmp1.status=1
+								and tmp1.item_id=tmp2.id 
+								and tmp2.vote_id=ipav_vote.id 
+							) or ipav_vote.status=3)
+						</when>
+						<when test="myVoteStatus==3">
+							and not exists(
+								<!-- select 1 from ipav_vote_record where ipav_vote_record.item_id=ipav_vote_item.id and ipav_vote_record.user_id=#{userId} and ipav_vote_record.status=1  -->
+								select 1 from ipav_vote_record as tmp1,ipav_vote_item as tmp2
+								where tmp1.user_id=#{userId}
+								and tmp1.status=1
+								and tmp1.item_id=tmp2.id 
+								and tmp2.vote_id=ipav_vote.id
+							) 
+							and ipav_vote.status=2 
+							and exists(
+								select 1 from ipav_vote_author where ipav_vote_author.vote_id=ipav_vote.id and ipav_vote_author.user_id=#{userId} 
+							)
+						</when>
+						<when test="myVoteStatus==4">
+							and exists(
+								select 1 from ipav_vote_author where ipav_vote_author.vote_id=ipav_vote.id and ipav_vote_author.user_id=#{userId} 
+							)
+						</when>
+					</choose>
+				</if>
+		order by ipav_vote.id asc,has_casted desc 
+		) tmp group by tmp.id 
+		<if test="page!=null">
+			limit ${page},${pageSize}
+		</if>
+	</select>
+	
+	<select id="getVoteStatistic" parameterType="java.util.Map" resultType="java.util.Map">
+		select date_format(tmp1.start_time,'%y年%m月%d日 %H:%m') as start_time,tmp1.title,tmp1.item_name,tmp1.score,
+		(case when tmp1.status=3 then tmp1.seq else '' end) as seq,
+		<![CDATA[(case when tmp1.status=3 then (case when tmp1.num<0 then '否' else '是' end) else '' end) is_chosen,]]>
+		(case when (tmp3.finished is null or tmp1.is_anonymous=1) then '' else tmp3.finished end) as finished,
+		tmp2.counts,tmp4.counts as unfinished_counts,
+		(case when (tmp4.unfinished is null or tmp1.is_anonymous=1) then '' else tmp4.unfinished end) as unfinished 
+		from (
+			select * from (
+			select tmp_vote.vote_id,tmp_vote.item_id,tmp_vote.start_time,tmp_vote.title,tmp_vote.item_name,tmp_vote.score,tmp_vote.criteria,
+			tmp_vote.initiator,tmp_vote.is_anonymous,
+			case when @vote != tmp_vote.vote_id then @tmp_num:=tmp_vote.criteria end,
+			case when @vote!=tmp_vote.vote_id then @seq:=0 end,
+			case when @vote!=tmp_vote.vote_id then @vote:=tmp_vote.vote_id end,
+			(case when (@vote = tmp_vote.vote_id and @tmp_num > 0) then @tmp_num:=@tmp_num - 1 
+				  when (@vote = tmp_vote.vote_id and (@oldscore = tmp_vote.score and @tmp_num = 0)) then 0
+       			  else @tmp_num := -1 end
+       		) as num,
+			case when @oldscore!=tmp_vote.score then @oldscore:=tmp_vote.score end,
+			case when @vote=tmp_vote.vote_id then (case when @oldscore=tmp_vote.score then @seq else @seq:=@seq+@shifting end) end as seq,
+			<![CDATA[case when @vote=tmp_vote.vote_id then (case when @oldscore<>tmp_vote.score then @oldscore:=tmp_vote.score end) end,]]>
+			case when @vote=tmp_vote.vote_id then (case when @oldscore=tmp_vote.score then @shifting:=1 else @shifting:=0 end) end,
+			tmp_vote.status 
+			from (
+				select ipav_vote.id as vote_id,ipav_vote_item.id as item_id,ipav_vote.start_time,ipav_vote.title,
+				(case when ipav_vote.type=3 then ipav_user.username else ipav_vote_item.item_name end) as item_name,
+				ipav_vote.initiator,
+				ipav_vote.is_anonymous,
+				sum(case when ipav_vote_record.score is null then 0 else ipav_vote_record.score end) score,ipav_vote.criteria,ipav_vote.status 
+				from ipav_vote 
+				straight_join ipav_vote_item on ipav_vote.id=ipav_vote_item.vote_id 
+				left join ipav_vote_record on ipav_vote_item.id=ipav_vote_record.item_id 
+				left join ipav_user on ipav_vote_item.item_name=ipav_user.userid
+				where (ipav_vote_record.id is null or ipav_vote_record.status=1) 
+				and ipav_vote.id in 
+				<foreach item="item" index="index" collection="voteIds" 
+                         open="(" separator="," close=")">
+                        #{item}
+         		</foreach> 
+				and company_id=#{companyId} 
+						<if test="minDate!=null">
+							<![CDATA[and date_format(ipav_vote.start_time,'%Y-%m-%d')>=date_format(#{minDate},'%Y-%m-%d') ]]>
+						</if>
+						<if test="maxDate!=null">
+							<![CDATA[and date_format(ipav_vote.start_time,'%Y-%m-%d')<=date_format(#{maxDate},'%Y-%m-%d') ]]>
+						</if>
+						<if test="status!=null">
+							<choose>
+								<when test="status==-1">
+									and (ipav_vote.status=2 or ipav_vote.status=3)
+								</when>
+								<otherwise>
+									and ipav_vote.status=#{status} 
+								</otherwise>
+							</choose>
+						</if>
+						<if test="myVoteStatus!=null">
+							<choose>
+								<when test="myVoteStatus==1">
+									and ipav_vote.initiator=#{userId} 
+								</when>
+								<when test="myVoteStatus==2">
+									and (exists(
+										select 1 from ipav_vote_record as tmp1,ipav_vote_item as tmp2
+										where tmp1.user_id=#{userId}
+										and tmp1.status=1
+										and tmp1.item_id=tmp2.id 
+										and tmp2.vote_id=ipav_vote.id 
+									) or ipav_vote.status=3)
+								</when>
+								<when test="myVoteStatus==3">
+									and not exists(
+										select 1 from ipav_vote_record where ipav_vote_record.item_id=ipav_vote_item.id and ipav_vote_record.user_id=#{userId} and ipav_vote_record.status=1 
+									) 
+									and ipav_vote.status=2 
+									and exists(
+										select 1 from ipav_vote_author where ipav_vote_author.vote_id=ipav_vote.id and ipav_vote_author.user_id=#{userId} 
+									)
+								</when>
+							</choose>
+						</if>	
+						<if test="title!=null">
+							and ipav_vote.title like "%"#{title}"%" 
+						</if>		
+						<if test="statisticType!=null">
+							and exists(
+								select 1 from ipav_vote_record where ipav_vote_record.item_id=ipav_vote_item.id and ipav_vote_record.status=1
+							)
+						</if>			
+				group by ipav_vote_item.id 
+				order by vote_id,score desc
+			)tmp_vote,(select @vote:=0,@oldscore:=0,@seq:=0,@tmp_num:=0) as seq_tb 
+			) tmp 
+			<if test="statisticType!=null">
+				<![CDATA[where tmp.status=3 and tmp.num>=0]]>
+			</if>
+		) tmp1
+		straight_join (
+			select ipav_vote_author.vote_id,count(1) as counts from ipav_vote_author,ipav_vote 
+			where ipav_vote_author.vote_id=ipav_vote.id 
+			and ipav_vote.id in 
+				<foreach item="item" index="index" collection="voteIds" 
+                         open="(" separator="," close=")">
+                        #{item}
+         		</foreach> 
+			and company_id=#{companyId} 
+			<trim>
+				<if test="minDate!=null">
+					<![CDATA[and date_format(ipav_vote.start_time,'%Y-%m-%d')>=date_format(#{minDate},'%Y-%m-%d') ]]>
+				</if>
+				<if test="maxDate!=null">
+						<![CDATA[and date_format(ipav_vote.start_time,'%Y-%m-%d')<=date_format(#{maxDate},'%Y-%m-%d') ]]>
+				</if>
+				<if test="status!=null">
+					<choose>
+						<when test="status==-1">
+							and (ipav_vote.status=2 or ipav_vote.status=3)
+						</when>
+						<otherwise>
+							and ipav_vote.status=#{status} 
+						</otherwise>
+					</choose>
+				</if>
+				<if test="myVoteStatus!=null">
+					<choose>
+						<when test="myVoteStatus==1">
+							and ipav_vote.initiator=#{userId} 
+						</when>
+						<when test="myVoteStatus==2">
+							and (exists(
+								select 1 from ipav_vote_record as tmp1,ipav_vote_item as tmp2
+								where tmp1.user_id=#{userId}
+								and tmp1.status=1
+								and tmp1.item_id=tmp2.id 
+								and tmp2.vote_id=ipav_vote.id 
+							) or ipav_vote.status=3)
+						</when>
+						<when test="myVoteStatus==3">
+							and not exists(
+								select 1 from ipav_vote_record where ipav_vote_record.item_id=ipav_vote_item.id and ipav_vote_record.user_id=#{userId} and ipav_vote_record.status=1 
+							) 
+							and ipav_vote.status=2 
+							and exists(
+								select 1 from ipav_vote_author where ipav_vote_author.vote_id=ipav_vote.id and ipav_vote_author.user_id=#{userId} 
+							)
+						</when>
+					</choose>
+				</if>	
+				<if test="title!=null">
+					and ipav_vote.title like "%"#{title}"%" 
+				</if>			
+			</trim>
+			group by ipav_vote_author.vote_id
+		) tmp2 on tmp1.vote_id=tmp2.vote_id
+		straight_join (
+			select tmp.id,group_concat(tmp.finished) as finished
+			from (
+				select ipav_vote_author.vote_id,ipav_vote_item.id,
+				(case when ipav_vote_author.user_id=ipav_vote_record.user_id then ipav_user.username else null end) as finished
+				from ipav_vote 
+				straight_join ipav_vote_author on ipav_vote.id=ipav_vote_author.vote_id
+				straight_join ipav_user on ipav_vote_author.user_id=ipav_user.userid 
+				straight_join ipav_vote_item on ipav_vote_author.vote_id=ipav_vote_item.vote_id
+				left join ipav_vote_record on ipav_vote_item.id=ipav_vote_record.item_id 
+				where (ipav_vote_author.author=1 or ipav_vote_author.author=3) 
+				and (ipav_vote_record.id is null or ipav_vote_record.status=1)
+				and ipav_vote.id in 
+				<foreach item="item" index="index" collection="voteIds" 
+                         open="(" separator="," close=")">
+                        #{item}
+         		</foreach> 
+				and company_id=#{companyId}
+				<if test="minDate!=null">
+					<![CDATA[and date_format(ipav_vote.start_time,'%Y-%m-%d')>=date_format(#{minDate},'%Y-%m-%d') ]]>
+				</if>
+				<if test="maxDate!=null">
+					<![CDATA[and date_format(ipav_vote.start_time,'%Y-%m-%d')<=date_format(#{maxDate},'%Y-%m-%d') ]]>
+				</if>
+				<if test="status!=null">
+					<choose>
+						<when test="status==-1">
+							and (ipav_vote.status=2 or ipav_vote.status=3)
+						</when>
+						<otherwise>
+							and ipav_vote.status=#{status} 
+						</otherwise>
+					</choose>
+				</if>
+				<if test="myVoteStatus!=null">
+					<choose>
+						<when test="myVoteStatus==1">
+							and ipav_vote.initiator=#{userId} 
+						</when>
+						<when test="myVoteStatus==2">
+							and (exists(
+								select 1 from ipav_vote_record as tmp1,ipav_vote_item as tmp2
+								where tmp1.user_id=#{userId}
+								and tmp1.status=1
+								and tmp1.item_id=tmp2.id 
+								and tmp2.vote_id=ipav_vote.id 
+							) or ipav_vote.status=3)
+						</when>
+						<when test="myVoteStatus==3">
+							and not exists(
+								select 1 from ipav_vote_record where ipav_vote_record.item_id=ipav_vote_item.id and ipav_vote_record.user_id=#{userId} and ipav_vote_record.status=1 
+							) 
+							and ipav_vote.status=2 
+							and exists(
+								select 1 from ipav_vote_author where ipav_vote_author.vote_id=ipav_vote.id and ipav_vote_author.user_id=#{userId} 
+							)
+						</when>
+					</choose>
+				</if>		
+				<if test="title!=null">
+					and ipav_vote.title like "%"#{title}"%" 
+				</if>
+				group by ipav_vote_author.vote_id,ipav_vote_item.id,finished
+			) tmp 
+			group by tmp.id
+		) tmp3 on tmp1.item_id=tmp3.id 
+		straight_join (
+			select tmp.vote_id,group_concat(tmp.unfinished) as unfinished,count(1) as counts
+			from (
+				select ipav_vote_item.vote_id,ipav_vote_author.user_id,ipav_user.username as unfinished
+				from ipav_vote 
+				straight_join ipav_vote_author on ipav_vote.id=ipav_vote_author.vote_id
+				straight_join ipav_user on ipav_vote_author.user_id=ipav_user.userid 
+				straight_join ipav_vote_item on ipav_vote_author.vote_id=ipav_vote_item.vote_id
+				where (ipav_vote_author.author=1 or ipav_vote_author.author=3) 
+				and not exists(
+					select 1 from ipav_vote_record,ipav_vote_item as tmp_item 
+					where ipav_vote_record.item_id=tmp_item.id 
+					and ipav_vote_author.user_id=ipav_vote_record.user_id 
+					and tmp_item.vote_id=ipav_vote_item.vote_id
+				)
+				and ipav_vote.id in 
+				<foreach item="item" index="index" collection="voteIds" 
+                         open="(" separator="," close=")">
+                        #{item}
+         		</foreach> 
+				and company_id=#{companyId}
+				<if test="minDate!=null">
+					<![CDATA[and date_format(ipav_vote.start_time,'%Y-%m-%d')>=date_format(#{minDate},'%Y-%m-%d') ]]>
+				</if>
+				<if test="maxDate!=null">
+					<![CDATA[and date_format(ipav_vote.start_time,'%Y-%m-%d')<=date_format(#{maxDate},'%Y-%m-%d') ]]>
+				</if>
+				<if test="status!=null">
+					<choose>
+						<when test="status==-1">
+							and (ipav_vote.status=2 or ipav_vote.status=3)
+						</when>
+						<otherwise>
+							and ipav_vote.status=#{status} 
+						</otherwise>
+					</choose>
+				</if>
+				<if test="myVoteStatus!=null">
+					<choose>
+						<when test="myVoteStatus==1">
+							and ipav_vote.initiator=#{userId} 
+						</when>
+						<when test="myVoteStatus==2">
+							and (exists(
+								select 1 from ipav_vote_record as tmp1,ipav_vote_item as tmp2
+								where tmp1.user_id=#{userId}
+								and tmp1.status=1
+								and tmp1.item_id=tmp2.id 
+								and tmp2.vote_id=ipav_vote.id 
+							) or ipav_vote.status=3)
+						</when>
+						<when test="myVoteStatus==3">
+							and not exists(
+								select 1 from ipav_vote_record where ipav_vote_record.item_id=ipav_vote_item.id and ipav_vote_record.user_id=#{userId} and ipav_vote_record.status=1 
+							) 
+							and ipav_vote.status=2 
+							and exists(
+								select 1 from ipav_vote_author where ipav_vote_author.vote_id=ipav_vote.id and ipav_vote_author.user_id=#{userId} 
+							)
+						</when>
+					</choose>
+				</if>		
+				<if test="title!=null">
+					and ipav_vote.title like "%"#{title}"%" 
+				</if>
+				group by ipav_vote_author.vote_id,ipav_vote_author.user_id
+			) tmp 
+			group by tmp.vote_id
+		) tmp4 on tmp1.vote_id=tmp4.vote_id 
+		where exists(
+			select 1 from ipav_vote_author 
+			where ipav_vote_author.user_id=#{userId} 
+			and ipav_vote_author.author>=2 
+			and ipav_vote_author.vote_id=tmp1.vote_id
+		) or tmp1.initiator=#{userId} 
+		order by start_time desc,tmp2.vote_id asc,tmp1.score desc 
+		<if test="page!=null">
+			limit ${page},${pageSize}
+		</if>
+	</select>
+	
+	
+	<select id="getVoteStatisticCounts" parameterType="java.util.Map" resultType="java.util.Map">
+		select count(1) as counts
+		from (
+			select * from (
+			select tmp_vote.vote_id,tmp_vote.item_id,tmp_vote.start_time,tmp_vote.title,tmp_vote.item_name,tmp_vote.score,tmp_vote.criteria,
+			tmp_vote.initiator,
+			case when @vote != tmp_vote.vote_id then @tmp_num:=tmp_vote.criteria end,
+			case when @vote!=tmp_vote.vote_id then @seq:=0 end,
+			case when @vote!=tmp_vote.vote_id then @vote:=tmp_vote.vote_id end,
+			(case when (@vote = tmp_vote.vote_id and @tmp_num > 0) then @tmp_num:=@tmp_num - 1 
+				  when (@vote = tmp_vote.vote_id and (@oldscore = tmp_vote.score and @tmp_num = 0)) then 0
+       			  else @tmp_num := -1 end
+       		) as num,
+			case when @oldscore!=tmp_vote.score then @oldscore:=tmp_vote.score end,
+			case when @vote=tmp_vote.vote_id then (case when @oldscore=tmp_vote.score then @seq else @seq:=@seq+@shifting end) end as seq,
+			<![CDATA[case when @vote=tmp_vote.vote_id then (case when @oldscore<>tmp_vote.score then @oldscore:=tmp_vote.score end) end,]]>
+			case when @vote=tmp_vote.vote_id then (case when @oldscore=tmp_vote.score then @shifting:=1 else @shifting:=0 end) end,
+			tmp_vote.status 
+			from (
+				select ipav_vote.id as vote_id,ipav_vote_item.id as item_id,ipav_vote.start_time,ipav_vote.title,ipav_vote_item.item_name,
+				ipav_vote.initiator,
+				sum(case when ipav_vote_record.score is null then 0 else ipav_vote_record.score end) score,ipav_vote.criteria,ipav_vote.status  
+				from ipav_vote 
+				straight_join ipav_vote_item on ipav_vote.id=ipav_vote_item.vote_id 
+				left join ipav_vote_record on ipav_vote_item.id=ipav_vote_record.item_id 
+				where (ipav_vote_record.id is null or ipav_vote_record.status=1) 
+				and company_id=#{companyId} 
+				and ipav_vote.id in 
+				<foreach item="item" index="index" collection="voteIds" 
+                         open="(" separator="," close=")">
+                        #{item}
+         		</foreach> 
+						<if test="minDate!=null">
+							<![CDATA[and date_format(ipav_vote.start_time,'%Y-%m-%d')>=date_format(#{minDate},'%Y-%m-%d') ]]>
+						</if>
+						<if test="maxDate!=null">
+							<![CDATA[and date_format(ipav_vote.start_time,'%Y-%m-%d')<=date_format(#{maxDate},'%Y-%m-%d') ]]>
+						</if>
+						<if test="status!=null">
+							<choose>
+								<when test="status==-1">
+									and (ipav_vote.status=2 or ipav_vote.status=3)
+								</when>
+								<otherwise>
+									and ipav_vote.status=#{status} 
+								</otherwise>
+							</choose>
+						</if>
+						<if test="myVoteStatus!=null">
+							<choose>
+								<when test="myVoteStatus==1">
+									and ipav_vote.initiator=#{userId} 
+								</when>
+								<when test="myVoteStatus==2">
+									and (exists(
+										select 1 from ipav_vote_record as tmp1,ipav_vote_item as tmp2
+										where tmp1.user_id=#{userId}
+										and tmp1.status=1
+										and tmp1.item_id=tmp2.id 
+										and tmp2.vote_id=ipav_vote.id 
+									) or ipav_vote.status=3)
+								</when>
+								<when test="myVoteStatus==3">
+									and not exists(
+										select 1 from ipav_vote_record where ipav_vote_record.item_id=ipav_vote_item.id and ipav_vote_record.user_id=#{userId} and ipav_vote_record.status=1 
+									) 
+									and ipav_vote.status=2 
+									and exists(
+										select 1 from ipav_vote_author where ipav_vote_author.vote_id=ipav_vote.id and ipav_vote_author.user_id=#{userId} 
+									)
+								</when>
+							</choose>
+						</if>	
+						<if test="title!=null">
+							and ipav_vote.title like "%"#{title}"%" 
+						</if>	
+				group by ipav_vote_item.id 
+				order by vote_id,score desc
+			)tmp_vote,(select @vote:=0,@oldscore:=0,@seq:=0, @tmp_num:=0) as seq_tb 
+			) tmp 
+			<if test="statisticType!=null">
+				<![CDATA[where tmp.status=3 and tmp.num>=0]]>
+			</if>
+		) tmp1
+		straight_join (
+			select ipav_vote_author.vote_id,count(1) as counts from ipav_vote_author,ipav_vote 
+			where ipav_vote_author.vote_id=ipav_vote.id 
+			and ipav_vote.id in 
+				<foreach item="item" index="index" collection="voteIds" 
+                         open="(" separator="," close=")">
+                        #{item}
+         		</foreach> 
+			and company_id=#{companyId}
+			<trim>
+				<if test="minDate!=null">
+					<![CDATA[and date_format(ipav_vote.start_time,'%Y-%m-%d')>=date_format(#{minDate},'%Y-%m-%d') ]]>
+				</if>
+				<if test="maxDate!=null">
+						<![CDATA[and date_format(ipav_vote.start_time,'%Y-%m-%d')<=date_format(#{maxDate},'%Y-%m-%d') ]]>
+				</if>
+				<if test="status!=null">
+					<choose>
+						<when test="status==-1">
+							and (ipav_vote.status=2 or ipav_vote.status=3)
+						</when>
+						<otherwise>
+							and ipav_vote.status=#{status} 
+						</otherwise>
+					</choose>
+				</if>
+				<if test="myVoteStatus!=null">
+					<choose>
+						<when test="myVoteStatus==1">
+							and ipav_vote.initiator=#{userId} 
+						</when>
+						<when test="myVoteStatus==2">
+							and (exists(
+								select 1 from ipav_vote_record as tmp1,ipav_vote_item as tmp2
+								where tmp1.user_id=#{userId}
+								and tmp1.status=1
+								and tmp1.item_id=tmp2.id 
+								and tmp2.vote_id=ipav_vote.id 
+							) or ipav_vote.status=3)
+						</when>
+						<when test="myVoteStatus==3">
+							and not exists(
+								select 1 from ipav_vote_record where ipav_vote_record.item_id=ipav_vote_item.id and ipav_vote_record.user_id=#{userId} and ipav_vote_record.status=1
+							) 
+							and ipav_vote.status=2 
+							and exists(
+								select 1 from ipav_vote_author where ipav_vote_author.vote_id=ipav_vote.id and ipav_vote_author.user_id=#{userId} 
+							)
+						</when>
+					</choose>
+				</if>	
+				<if test="title!=null">
+					and ipav_vote.title like "%"#{title}"%" 
+				</if>			
+			</trim>
+			group by ipav_vote_author.vote_id
+		) tmp2 on tmp1.vote_id=tmp2.vote_id
+		straight_join (
+			select tmp.id,group_concat(tmp.finished) as finished
+			from (
+				select ipav_vote_author.vote_id,ipav_vote_item.id,
+				(case when ipav_vote_author.user_id=ipav_vote_record.user_id then ipav_user.username else null end) as finished
+				from ipav_vote 
+				straight_join ipav_vote_author on ipav_vote.id=ipav_vote_author.vote_id
+				straight_join ipav_user on ipav_vote_author.user_id=ipav_user.userid 
+				straight_join ipav_vote_item on ipav_vote_author.vote_id=ipav_vote_item.vote_id
+				left join ipav_vote_record on ipav_vote_item.id=ipav_vote_record.item_id 
+				where (ipav_vote_author.author=1 or ipav_vote_author.author=3) 
+				and (ipav_vote_record.id is null or ipav_vote_record.status=1)
+				and ipav_vote.id in 
+				<foreach item="item" index="index" collection="voteIds" 
+                         open="(" separator="," close=")">
+                        #{item}
+         		</foreach> 
+				and company_id=#{companyId}
+				<if test="minDate!=null">
+					<![CDATA[and date_format(ipav_vote.start_time,'%Y-%m-%d')>=date_format(#{minDate},'%Y-%m-%d') ]]>
+				</if>
+				<if test="maxDate!=null">
+					<![CDATA[and date_format(ipav_vote.start_time,'%Y-%m-%d')<=date_format(#{maxDate},'%Y-%m-%d') ]]>
+				</if>
+				<if test="status!=null">
+					<choose>
+						<when test="status==-1">
+							and (ipav_vote.status=2 or ipav_vote.status=3)
+						</when>
+						<otherwise>
+							and ipav_vote.status=#{status} 
+						</otherwise>
+					</choose>
+				</if>
+				<if test="myVoteStatus!=null">
+					<choose>
+						<when test="myVoteStatus==1">
+							and ipav_vote.initiator=#{userId} 
+						</when>
+						<when test="myVoteStatus==2">
+							and (exists(
+								select 1 from ipav_vote_record as tmp1,ipav_vote_item as tmp2
+								where tmp1.user_id=#{userId}
+								and tmp1.status=1
+								and tmp1.item_id=tmp2.id 
+								and tmp2.vote_id=ipav_vote.id 
+							) or ipav_vote.status=3)
+						</when>
+						<when test="myVoteStatus==3">
+							and not exists(
+								select 1 from ipav_vote_record where ipav_vote_record.item_id=ipav_vote_item.id and ipav_vote_record.user_id=#{userId} and ipav_vote_record.status=1 
+							) 
+							and ipav_vote.status=2 
+							and exists(
+								select 1 from ipav_vote_author where ipav_vote_author.vote_id=ipav_vote.id and ipav_vote_author.user_id=#{userId} 
+							)
+						</when>
+					</choose>
+				</if>		
+				<if test="title!=null">
+					and ipav_vote.title like "%"#{title}"%" 
+				</if>
+				group by ipav_vote_author.vote_id,ipav_vote_item.id,finished
+			) tmp 
+			group by tmp.id
+		) tmp3 on tmp1.item_id=tmp3.id 
+		straight_join (
+			select tmp.vote_id,group_concat(tmp.unfinished) as unfinished
+			from (
+				select ipav_vote_item.vote_id,ipav_vote_author.user_id,ipav_user.username as unfinished
+				from ipav_vote 
+				straight_join ipav_vote_author on ipav_vote.id=ipav_vote_author.vote_id
+				straight_join ipav_user on ipav_vote_author.user_id=ipav_user.userid 
+				straight_join ipav_vote_item on ipav_vote_author.vote_id=ipav_vote_item.vote_id
+				
+				where (ipav_vote_author.author=1 or ipav_vote_author.author=3) 
+				and not exists(
+					select 1 from ipav_vote_record,ipav_vote_item as tmp_item 
+					where ipav_vote_record.item_id=tmp_item.id 
+					and ipav_vote_author.user_id=ipav_vote_record.user_id 
+					and tmp_item.vote_id=ipav_vote_item.vote_id
+				)
+				and ipav_vote.id in 
+				<foreach item="item" index="index" collection="voteIds" 
+                         open="(" separator="," close=")">
+                        #{item}
+         		</foreach> 
+				and company_id=#{companyId}
+				<if test="minDate!=null">
+					<![CDATA[and date_format(ipav_vote.start_time,'%Y-%m-%d')>=date_format(#{minDate},'%Y-%m-%d') ]]>
+				</if>
+				<if test="maxDate!=null">
+					<![CDATA[and date_format(ipav_vote.start_time,'%Y-%m-%d')<=date_format(#{maxDate},'%Y-%m-%d') ]]>
+				</if>
+				<if test="status!=null">
+					<choose>
+						<when test="status==-1">
+							and (ipav_vote.status=2 or ipav_vote.status=3)
+						</when>
+						<otherwise>
+							and ipav_vote.status=#{status} 
+						</otherwise>
+					</choose>
+				</if>
+				<if test="myVoteStatus!=null">
+					<choose>
+						<when test="myVoteStatus==1">
+							and ipav_vote.initiator=#{userId} 
+						</when>
+						<when test="myVoteStatus==2">
+							and (exists(
+								select 1 from ipav_vote_record as tmp1,ipav_vote_item as tmp2
+								where tmp1.user_id=#{userId}
+								and tmp1.status=1
+								and tmp1.item_id=tmp2.id 
+								and tmp2.vote_id=ipav_vote.id 
+							) or ipav_vote.status=3)
+						</when>
+						<when test="myVoteStatus==3">
+							and not exists(
+								select 1 from ipav_vote_record where ipav_vote_record.item_id=ipav_vote_item.id and ipav_vote_record.user_id=#{userId} and ipav_vote_record.status=1 
+							) 
+							and ipav_vote.status=2 
+							and exists(
+								select 1 from ipav_vote_author where ipav_vote_author.vote_id=ipav_vote.id and ipav_vote_author.user_id=#{userId} 
+							)
+						</when>
+					</choose>
+				</if>		
+				<if test="title!=null">
+					and ipav_vote.title like "%"#{title}"%" 
+				</if>
+				group by ipav_vote_author.vote_id,ipav_vote_author.user_id
+			) tmp 
+			group by tmp.vote_id
+		) tmp4 on tmp1.vote_id=tmp4.vote_id 
+		where exists(
+			select 1 from ipav_vote_author 
+			where ipav_vote_author.user_id=#{userId} 
+			and ipav_vote_author.author>=2 
+			and ipav_vote_author.vote_id=tmp1.vote_id
+		) or tmp1.initiator=#{userId} 
+		
+		<!-- order by start_time desc,tmp2.vote_id asc,tmp1.score desc -->
+	</select>
+	
+	<update id="voteStatusTask">
+		<![CDATA[update ipav_vote set status=(case when start_time<=now() and end_time>now() then 2 else 3 end) 
+		where start_time<=now() 
+		and status<3 
+		and status>0 ]]>
+	</update>
+	
+	<select id="getUnCompletedVote" parameterType="java.util.Map" resultType="java.util.Map">
+		select ipav_vote.id,ipav_vote.title,ipav_vote.type,date_format( ipav_vote.start_time,'%Y-%m-%d %T') as start_time
+		from ipav_vote_author,ipav_vote 
+		where ipav_vote_author.vote_id=ipav_vote.id 
+		and ipav_vote.status=2 
+		and ipav_vote_author.user_id=#{userid} 
+		and not exists(
+			select 1 from ipav_vote_record,ipav_vote_item 
+			where ipav_vote_record.item_id=ipav_vote_item.id 
+			and ipav_vote_item.vote_id=ipav_vote.id 
+			and ipav_vote_record.user_id=#{userid} 
+		) order by start_time desc
+	</select>
+	<select id="queryVote" parameterType="map" resultType="map">
+		select *   from ipav_vote   where  id=#{id}		 
+	</select>
+</mapper>

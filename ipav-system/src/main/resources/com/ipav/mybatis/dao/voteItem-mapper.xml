@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+	"-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipav.system.dao.VoteItemMapper" >
+	<insert id="insertVoteItem" parameterType="java.util.Map">
+		<selectKey keyProperty="id" order="AFTER" resultType="int">
+			select last_insert_id()
+		</selectKey>
+		insert into ipav_vote_item (vote_id,item_name,pic,update_user) 
+		values (#{voteId},#{itemName},#{pic},#{updateUser})
+	</insert>
+	
+	<insert id="insertBatch" parameterType="java.util.Map">
+		insert into ipav_vote_item (vote_id,item_name,pic,update_user) values 
+		<foreach collection="list" item="item" index="index" separator="," >
+			(#{voteId},#{item.itemName},#{item.pic},#{updateUser})
+		</foreach>
+	</insert>
+	
+	<update id="updateVoteItem" parameterType="java.util.Map">
+		update ipav_vote_item set 
+		<if test="itemName!=null">
+			item_name=#{itemName},
+		</if>
+		<if test="pic!=null">
+			pic=#{pic},
+		</if>
+		update_time=now(),
+		update_user=#{updateUser} 
+		where id=#{id}
+	</update>
+	
+	<select id="getVoteItemsByVoteId" parameterType="int" resultType="java.util.Map">
+		select ipav_vote_item.id,ipav_vote_item.item_name,ipav_vote_item.pic from ipav_vote_item where ipav_vote_item.vote_id=#{voteId}
+	</select>
+	
+	<!-- <select id="getVoteItemsResultByVoteId" parameterType="int" resultType="java.util.Map">
+		select ipav_vote_item.id,ipav_vote_item.item_name,ipav_vote_item.pic,count(1) as counts 
+		from ipav_vote_item 
+		left join ipav_vote_record on ipav_vote_item.id=ipav_vote_record.item_id 
+		where ipav_vote_item.vote_id=#{voteId} 
+		group by ipav_vote_item.id
+	</select> -->
+	
+	<select id="getVoteColleagueItemsByVoteId" parameterType="int" resultType="java.util.Map">
+		select 
+		ipav_vote_item.id,ipav_user.username as item_name,ipav_user.picpath as pic,ipav_user.userid,
+                ipav_duty.duty_name as duty,(case when  ipav_org.orgno='0' then  ""  else  ipav_org.orgname end) as orgname
+		from ipav_vote_item 
+		straight_join ipav_user on ipav_vote_item.item_name=ipav_user.userid 
+		left join ipav_user_duty  	
+                           left join  ipav_org on ipav_org.orgid=ipav_user_duty.org_id
+			   left join  ipav_duty on ipav_duty.id=ipav_user_duty.duty_id 
+                         
+              on ipav_user_duty.user_id=ipav_user.userid and ipav_user_duty.`type`=0
+		where ipav_vote_item.vote_id=#{voteId}
+	</select>
+	
+	<select id="getVoteColleagueItemsResultByVoteId" parameterType="int" resultType="java.util.Map">
+		<!-- select tmp.item_name,tmp.score,(case when tmp.pic is null then '' else tmp.pic end) as pic,
+		(case when tmp.status=3 then tmp.seq else '' end) as seq,
+		(case when tmp.status=3 then (case when tmp.seq>tmp.criteria then '否' else '是' end) else '' end) is_chosen,
+		tmp.score,tmp.avgScore,tmp.orgname,tmp.duty 
+		from (
+			select tmp_vote_item.id as item_id,tmp_vote_item.item_name,tmp_vote_item.pic,tmp_vote_item.score,tmp_vote_item.avgScore,tmp_vote_item.criteria,
+			tmp_vote_item.orgname,tmp_vote_item.duty,
+			case when @vote!=tmp_vote_item.vote_id then @seq:=1 end,
+			case when @vote!=tmp_vote_item.vote_id then @vote:=tmp_vote_item.vote_id end,
+			case when @oldscore!=tmp_vote_item.score then @oldscore!=tmp_vote_item.score end,
+			case when @vote=tmp_vote_item.vote_id then (case when @oldscore=tmp_vote_item.score then @seq else @seq:=@seq+1 end) end as seq,tmp_vote_item.status 
+			from (
+				select ipav_vote.id as vote_id,ipav_vote_item.id,ipav_user.username as item_name,ipav_user.picpath as pic,
+				sum(case when ipav_vote_record.score is null then 0 else ipav_vote_record.score end) score,
+				avg(case when ipav_vote_record.score is null then 0 else ipav_vote_record.score end) avgScore,
+				ipav_org.orgname,(case when ipav_user.duty is null then '' else ipav_duty.duty_name end) as duty,
+				ipav_vote.criteria,ipav_vote.status 
+				from ipav_vote 
+				straight_join ipav_vote_item on ipav_vote.id=ipav_vote_item.vote_id 
+				straight_join ipav_user on ipav_vote_item.item_name=ipav_user.userid 
+				straight_join ipav_org on ipav_user.orgid=ipav_org.orgid 
+				left join ipav_duty on ipav_user.duty=ipav_duty.id 
+				left join ipav_vote_record on ipav_vote_item.id=ipav_vote_record.item_id 
+				where ipav_vote_item.vote_id=#{voteId}
+				group by ipav_vote_item.id 
+				order by vote_id,score
+			)tmp_vote_item,(select @vote:=0,@oldscore:=0,@seq:=1) as seq_tb 
+		) tmp -->
+		
+		select tmp.item_name,tmp.score,(case when tmp.pic is null then '' else tmp.pic end) as pic,
+		(case when tmp.status=3 then tmp.seq else '' end) as seq,
+		<![CDATA[(case when tmp.status=3 then (case when tmp.num<0 then '否' else '是' end) else '' end) is_chosen,]]>
+		tmp.score,tmp.avgScore,tmp.orgname,tmp.duty 
+		from (
+			select tmp_vote_item.id as item_id,tmp_vote_item.item_name,tmp_vote_item.pic,tmp_vote_item.score,tmp_vote_item.avgScore,tmp_vote_item.criteria,
+			tmp_vote_item.orgname,tmp_vote_item.duty,
+			case when @vote != tmp_vote_item.vote_id then @tmp_num:=tmp_vote_item.criteria end,
+			case when @vote!=tmp_vote_item.vote_id then @seq:=1 end,
+			case when @vote!=tmp_vote_item.vote_id then @vote:=tmp_vote_item.vote_id end,
+			(case when (@vote = tmp_vote_item.vote_id and @tmp_num > 0) then @tmp_num:=@tmp_num - 1 
+				  when (@vote = tmp_vote_item.vote_id and (@oldscore = tmp_vote_item.score and @tmp_num = 0)) then 0
+       			  else @tmp_num := -1 end
+       		) as num,
+			case when @oldscore!=tmp_vote_item.score then @oldscore:=tmp_vote_item.score end,
+			case when @vote=tmp_vote_item.vote_id then (case when @oldscore=tmp_vote_item.score then @seq else @seq:=@seq+@shifting end) end as seq,
+			<![CDATA[case when @vote=tmp_vote_item.vote_id then (case when @oldscore<>tmp_vote_item.score then @oldscore:=tmp_vote_item.score end) end,]]>
+			case when @vote=tmp_vote_item.vote_id then (case when @oldscore=tmp_vote_item.score then @shifting:=1 else @shifting:=0 end) end,
+			tmp_vote_item.status 
+			from (
+				select ipav_vote.id as vote_id,ipav_vote_item.id,ipav_user.username as item_name,ipav_user.picpath as pic,
+				sum(case when ipav_vote_record.score is null then 0 else ipav_vote_record.score end) score,
+				avg(case when ipav_vote_record.score is null then 0 else ipav_vote_record.score end) avgScore,
+				ipav_org.orgname,(case when ipav_user.duty is null then '' else ipav_duty.duty_name end) as duty,
+				ipav_vote.criteria,ipav_vote.status 
+				from ipav_vote 
+				straight_join ipav_vote_item on ipav_vote.id=ipav_vote_item.vote_id 
+				straight_join ipav_user on ipav_vote_item.item_name=ipav_user.userid 
+				left join ipav_user_duty on ipav_user.userid=ipav_user_duty.user_id 
+				left join ipav_org on ipav_user_duty.org_id=ipav_org.orgid 
+				left join ipav_duty on ipav_user_duty.duty_id=ipav_duty.id 
+				left join ipav_vote_record on ipav_vote_item.id=ipav_vote_record.item_id 
+				where ipav_vote_item.vote_id=#{voteId}
+				group by ipav_vote_item.id 
+				order by vote_id,score desc
+			)tmp_vote_item,(select @vote:=0,@shifting:=0,@oldscore:=(
+				select max(tmp.score) from (
+				select sum(case when ipav_vote_record.score is null or ipav_vote_record.status=0 then 0 else ipav_vote_record.score end) as score
+				from ipav_vote 
+				straight_join ipav_vote_item on ipav_vote.id=ipav_vote_item.vote_id 
+				straight_join ipav_vote_record on ipav_vote_record.item_id=ipav_vote_item.id 
+				where ipav_vote.id=#{voteId}
+				group by ipav_vote_record.item_id
+				) tmp
+			),@seq:=1,@tmp_num:=0) as seq_tb 
+		) tmp 
+		order by tmp.score desc
+	</select>
+	
+	<select id="getVoteItemResultByVoteId" parameterType="int" resultType="java.util.Map">
+		<!-- select tmp.item_name,tmp.score,(case when tmp.pic is null then '' else tmp.pic end) as pic,
+		(case when tmp.status=3 then tmp.seq else '' end) as seq,
+		(case when tmp.status=3 then (case when tmp.seq>tmp.criteria then '否' else '是' end) else '' end) is_chosen,
+		tmp.score,tmp.avgScore 
+		from (
+			select tmp_vote_item.item_id,tmp_vote_item.item_name,tmp_vote_item.pic,tmp_vote_item.score,tmp_vote_item.avgScore,tmp_vote_item.criteria,
+			case when @vote!=tmp_vote_item.vote_id then @seq:=1 end,
+			case when @vote!=tmp_vote_item.vote_id then @vote:=tmp_vote_item.vote_id end,
+			case when @oldscore!=tmp_vote_item.score then @oldscore!=tmp_vote_item.score end,
+			case when @vote=tmp_vote_item.vote_id then (case when @oldscore=tmp_vote_item.score then @seq else @seq:=@seq+1 end) end as seq,tmp_vote_item.status 
+			from (
+				select ipav_vote.id as vote_id,ipav_vote_item.id as item_id,ipav_vote_item.item_name,ipav_vote_item.pic,
+				sum(case when ipav_vote_record.score is null or ipav_vote_record.status=0 then 0 else ipav_vote_record.score end) score,
+				avg(case when ipav_vote_record.score is null or ipav_vote_record.status=0 then 0 else ipav_vote_record.score end) avgScore,
+				ipav_vote.criteria,ipav_vote.status 
+				from ipav_vote 
+				straight_join ipav_vote_item on ipav_vote.id=ipav_vote_item.vote_id 
+				left join ipav_vote_record on ipav_vote_item.id=ipav_vote_record.item_id 
+				where ipav_vote.id=#{voteId} 
+				group by ipav_vote_item.id 
+				order by vote_id,score
+			)tmp_vote_item,(select @vote:=0,@oldscore:=0,@seq:=1) as seq_tb 
+		) tmp -->
+		
+		select tmp.item_name,tmp.score,(case when tmp.pic is null then '' else tmp.pic end) as pic,
+		(case when tmp.status=3 then tmp.seq else '' end) as seq,
+		<![CDATA[(case when tmp.status=3 then (case when tmp.num<0 then '否' else '是' end) else '' end) is_chosen,]]>
+		tmp.score,tmp.avgScore 
+		from (
+			select tmp_vote_item.item_id,tmp_vote_item.item_name,tmp_vote_item.pic,tmp_vote_item.score,tmp_vote_item.avgScore,tmp_vote_item.criteria,
+			case when @vote != tmp_vote_item.vote_id then @tmp_num:=tmp_vote_item.criteria end,
+			case when @vote!=tmp_vote_item.vote_id then @seq:=1 end,
+			case when @vote!=tmp_vote_item.vote_id then @vote:=tmp_vote_item.vote_id end,
+			(case when (@vote = tmp_vote_item.vote_id and @tmp_num > 0) then @tmp_num:=@tmp_num - 1 
+				  when (@vote = tmp_vote_item.vote_id and (@oldscore = tmp_vote_item.score and @tmp_num = 0)) then 0
+       			  else @tmp_num := -1 end
+       		) as num,
+			case when @vote=tmp_vote_item.vote_id then (case when @oldscore=tmp_vote_item.score then @seq else @seq:=@seq+@shifting end) end as seq,
+			<![CDATA[case when @vote=tmp_vote_item.vote_id then (case when @oldscore<>tmp_vote_item.score then @oldscore:=tmp_vote_item.score end) end,]]>
+			case when @vote=tmp_vote_item.vote_id then (case when @oldscore=tmp_vote_item.score then @shifting:=1 else @shifting:=0 end) end,
+			tmp_vote_item.status 
+			from (
+				select ipav_vote.id as vote_id,ipav_vote_item.id as item_id,ipav_vote_item.item_name,ipav_vote_item.pic,
+				sum(case when ipav_vote_record.score is null or ipav_vote_record.status=0 then 0 else ipav_vote_record.score end) score,
+				avg(case when ipav_vote_record.score is null or ipav_vote_record.status=0 then 0 else ipav_vote_record.score end) avgScore,
+				ipav_vote.criteria,ipav_vote.status 
+				from ipav_vote 
+				straight_join ipav_vote_item on ipav_vote.id=ipav_vote_item.vote_id 
+				left join ipav_vote_record on ipav_vote_item.id=ipav_vote_record.item_id 
+				where ipav_vote.id=#{voteId} 
+				group by ipav_vote_item.id 
+				order by vote_id asc ,score desc
+			)tmp_vote_item,(select @vote:=0,@shifting:=0,@oldscore:=(
+				select max(tmp.score) from (
+				select sum(case when ipav_vote_record.score is null or ipav_vote_record.status=0 then 0 else ipav_vote_record.score end) as score
+				from ipav_vote 
+				straight_join ipav_vote_item on ipav_vote.id=ipav_vote_item.vote_id 
+				straight_join ipav_vote_record on ipav_vote_record.item_id=ipav_vote_item.id 
+				where ipav_vote.id=#{voteId} 
+				group by ipav_vote_record.item_id
+				) tmp
+			),@seq:=1,@tmp_num:=0) as seq_tb 
+		) tmp 
+		order by tmp.score desc
+	</select>
+</mapper>

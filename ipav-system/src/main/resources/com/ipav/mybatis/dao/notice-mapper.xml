@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+	"-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipav.system.dao.NoticeMapper">
+	<!--获取默认公告编号  -->
+	<select id="selectNoticeNo" parameterType="java.util.Map" resultType="java.util.Map">	
+      select * from 
+      (select ifnull((select Abbreviation from  ipav_company 
+              where CompanyID = (select companyid from ipav_user where userid=#{userid})) ,'')as 'companyname')as a,
+      (select ifnull((select typename from ipav_notice_type 
+      		  where 
+      		  <choose>
+      		  	 <when test="typeid!=null">
+      		  	 	 id=#{typeid}
+      		  	 </when>
+      		  	 <otherwise>
+      		  	 	 isdefault=1 and exists( select 1 from ipav_user where ipav_user.companyid=(select companyid from ipav_user where userid=#{userid}) and ipav_user.userid= ipav_notice_type.userid)
+      		  	 </otherwise>
+      		  </choose>
+        ),'')as typename from dual )  as b,
+        (select          
+        	<choose>
+      		  	 <when test="nid!=null">
+      		  	 	nostr,noindex
+      		  	 </when>
+      		  	 <otherwise>
+      		  	 	date_format(now(),'【%Y】第{0}号') as 'nostr',ifnull(max(noindex),'')  as 'noindex'
+      		  	 </otherwise>
+      		  </choose>
+        from ipav_notice
+        <where>
+        	<if test="nid!=null">id=#{nid}</if>
+        	<choose>
+      		  	 <when test="typeid!=null">
+      		  	 	and typeid=#{typeid}
+      		  	 </when>
+      		  	 <otherwise>
+      		  	 	and exists( select 1 from ipav_notice_type where  isdefault=1 and typeid=ipav_notice_type.id)
+      		  	 </otherwise>
+      		</choose>
+        </where> 
+         )as c
+       
+	</select>
+	<!-- 根据公告类型查询公告中最大编号 -->
+	<select id="queryNoticeMaxIndex" parameterType="java.util.Map" resultType="java.lang.String">
+		select max(noindex) from ipav_notice 
+		<where>
+			<if test="typeid!=null">typeid=#{typeid}</if>
+		</where>
+	</select>
+	<!--添加公告  -->
+	<insert id="insertNotice" parameterType="com.ipav.system.entity.IpavnoticeEntity">
+		<selectKey resultType="java.lang.Long" keyProperty="id">select	last_insert_id() as id</selectKey>
+		insert into
+		ipav_notice(nostr,noindex,userid,issuedid,orgid,typeid,title,content,contentText,oldfilename,
+		newfilename,filepath,createdate,iscomment,istop,istime,remindtype,istrue,isdelete) 
+		values(#{nostr},#{noindex},#{userid},#{issuedid},#{orgid},#{typeid},#{title},#{content},
+		#{contentText},#{oldfilename},#{newfilename},#{filepath},#{createdate},#{iscomment},
+		#{istop},#{istime},#{remindtype},#{istrue},0)		
+	</insert>
+	<!-- 添加公告接收人 -->
+	<insert id="insertNoticeSended" parameterType="java.util.Map">
+		insert into	ipav_notice_sended(userid,noticeid,isread,isdelete)
+		values(#{userid},#{noticeid},#{isread},0)		
+	</insert>
+	<!-- 查询公告中接收人数量 -->
+	<select id="querySendedCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select count(*) from ipav_notice_sended 
+		<where> 
+			<if test="noticeid!=null">and noticeid=#{noticeid}</if> 
+			<if test="userid!=null">and userid=#{userid}</if> 
+			<if test="isdelete!=null">and isdelete=#{isdelete}</if> 
+			<if test="isread!=null">and isread=#{isread}</if>
+		</where>		
+	</select>
+	<!--查询用户是否浏览过公告  -->
+<!-- 	<select id="queryIsReade" parameterType="java.util.Map" resultType="java.lang.Integer"> -->
+<!-- 		select isread from ipav_notice_sended where noticeid=#{noticeid} and userid=#{userid} and isdelete=0  -->
+<!-- 	</select> -->
+	<!-- 查询公告已读人数 -->
+<!-- 	<select id="queryReadecnt" parameterType="java.lang.Long" resultType="java.lang.Integer"> -->
+<!-- 		select count(*) from ipav_notice_sended where noticeid=#{noticeid} and isread=1 and isdelete=0  -->
+<!-- 	</select> -->
+	<!-- 查询公告所有接收人集合 -->
+	<select id="queryNoticeSended" parameterType="java.util.Map" resultType="com.ipav.system.entity.IpavnoticeSendedEntity">
+		select * from ipav_notice_sended 
+		where noticeid=#{noticeid}  and isdelete=0 <if test="isread!=null">and isread=#{isread}</if>
+		<if test="beginRow!=null and pageSize!=null">limit ${beginRow},${pageSize}</if>
+	</select>
+	<!-- 更新公告接收人 -->
+	<update id="updateNoticeSended" parameterType="java.util.Map">
+		update ipav_notice_sended set 
+		<trim suffixOverrides=",">
+			<if test="isdelete!=null">isdelete=#{isdelete},</if>
+			<if test="isread!=null">isread=#{isread},</if>
+		</trim>
+		where noticeid=#{noticeid}
+		<if test="userid!=null">and userid=#{userid}</if>
+		<if test="isdelete==null">and isdelete=0</if> 
+	</update>
+	<!-- 查询公告集合 -->
+	<select id="queryNoticeList" parameterType="java.util.Map" resultType="com.ipav.system.entity.IpavnoticeEntity">
+		select n.id as 'id',n.userid as 'userid',n.issuedid as 'issuedid',n.orgid as 'orgid',n.typeid as 'typeid',
+		n.title as 'title',n.content as 'content',n.contentText as 'contentText',oldfilename as 'oldfilename',newfilename as 'newfilename',
+		filepath as 'filepath',	date_format(n.createdate,'%Y-%m-%d %T') as 'createdate',
+		n.iscomment as 'iscomment',n.istop as 'istop',n.istime as 'istime',n.remindtype as 'remindtype',n.istrue as 'istrue',s.isread
+		from (select * from ipav_notice as a where a.isdelete=0 and (a.userid=#{userid} or exists(
+				select 1 from ipav_notice_sended as b where b.userid=#{userid} and b.isdelete=0 and b.noticeid=a.id and a.istrue=1))
+		     )as n join ipav_notice_sended as s on n.id=s.noticeid
+		where s.userid=#{userid} and s.isdelete=0 
+		<if test="dateBegin!=null and dateEnd!=null">and date_format(n.createdate,'%Y-%m-%d') between #{dateBegin} and #{dateEnd}</if> 
+		<if test="typeid!=null">and n.typeid=#{typeid}</if> 
+		<if test="istrue!=null">and n.userid=#{userid} and n.istrue=#{istrue}</if>
+		<if test="sendeduserid!=null">and n.userid!=#{sendeduserid}</if>
+		<if test="searchstr!=null">and(n.title like "%"#{searchstr}"%" or n.contentText like "%"#{searchstr}"%")</if>
+		order by n.istop desc,s.isread,n.createdate desc 
+		<if test="beginRow!=null and pageSize!=null">limit ${beginRow},${pageSize}</if>
+	</select>
+	<!-- 查询公告列表集合长度 -->
+	<select id="queryListCnt" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select count(1) from (select * from ipav_notice as a where a.isdelete=0 and (a.userid=#{userid} or exists(
+		  select 1 from ipav_notice_sended as b where b.userid=#{userid} and b.isdelete=0 and b.noticeid=a.id and a.istrue=1))
+		  )as n join ipav_notice_sended as s on n.id=s.noticeid
+		where s.userid=#{userid} and s.isdelete=0 
+		<if test="dateBegin!=null and dateEnd!=null">and date_format(n.createdate,'%Y-%m-%d') between #{dateBegin} and #{dateEnd}</if> 
+		<if test="typeid!=null">and n.typeid=#{typeid}</if> 
+		<if test="istrue!=null">and n.userid=#{userid} and n.istrue=#{istrue}</if>
+		<if test="sendeduserid!=null">and n.userid!=#{sendeduserid}</if>
+		<if test="searchstr!=null">and(n.title like "%"#{searchstr}"%" or n.contentText like "%"#{searchstr}"%")</if>
+		order by n.istop desc,s.isread,n.createdate desc 
+	</select>
+	<!--根据ID查询公告 -->
+	<select id="queryNoticeByParm" parameterType="java.util.Map" resultType="com.ipav.system.entity.IpavnoticeEntity">
+		select id as 'id',userid as 'userid',issuedid as 'issuedid',orgid as 'orgid',typeid as 'typeid',title as 'title',
+		content as 'content', contentText as 'contentText',oldfilename as 'oldfilename',newfilename as 'newfilename',filepath as 'filepath',
+		date_format(createdate,'%Y-%m-%d %T') as 'createdate',iscomment as 'iscomment',istop as 'istop',istime as 'istime',
+		remindtype as 'remindtype',istrue as 'istrue'  from ipav_notice 
+		where  isdelete=0 
+		<if test="noticeid!=null"> and id=#{noticeid}</if>
+		<if test="filename!=null"> and newfilename=#{filename}</if>
+	</select>
+	<!-- 查询公告附件原真实路径 -->
+	<select id="queryFilePath" parameterType="java.lang.Long" resultType="java.lang.String">
+		select filepath from ipav_notice where id=#{nid} and isdelete=0
+	</select>
+	<!-- 更新公告信息 -->
+	<update id="updateNotice" parameterType="com.ipav.system.entity.IpavnoticeEntity">
+		update ipav_notice set nostr=#{nostr},noindex=#{noindex},userid=#{userid},issuedid=#{issuedid},orgid=#{orgid},typeid=#{typeid},
+		title=#{title},content=#{content},contentText=#{contentText},
+		<if test="oldfilename!=null">oldfilename=#{oldfilename},</if>
+		<if test="newfilename!=null">newfilename=#{newfilename},</if>
+		<if test="filepath!=null">filepath=#{filepath},</if>
+		<if test="createdate!=null">createdate=#{createdate},</if>
+		iscomment=#{iscomment},istop=#{istop},istime=#{istime},remindtype=#{remindtype},istrue=#{istrue}  
+		where id=#{id}
+	</update>
+	<!--更新公告状态  -->
+	<update id="updateNoticeState" parameterType="java.util.Map">
+		update ipav_notice set
+		<trim suffixOverrides=",">
+			<!-- 修改公告发布状态 -->
+			<if test="istrue!=null">istrue=#{istrue},</if>
+			<!-- 更新公告发不时间 -->
+			<if test="createdate!=null">createdate=#{createdate},</if>
+			<!-- 从业务逻辑上删除公告 -->
+			<if test="isdelete!=null"> isdelete = #{isdelete},</if>
+		</trim>
+		where id=#{id}
+	</update>
+
+	<!-- 查询公告类型名称是否使用 -->
+	<select id="queryTypeNameCnt" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select count(*) from ipav_notice_type where isdelete=0 and typename=#{typename}
+		and exists( select 1 from ipav_user where ipav_user.companyid=#{companyid} and ipav_user.userid= ipav_notice_type.userid)
+	</select>
+	<!-- 添加公告类型 -->
+	<insert id="insertNoticeType" parameterType="com.ipav.system.entity.IpavnoticeTypeEntity">
+	    <selectKey resultType="java.lang.Long" keyProperty="id">select	last_insert_id() as id</selectKey>
+		insert into ipav_notice_type
+		(typename,description,userid,createdate,typeindex,isdefault,istrue,isdelete)
+		values(#{typename},#{description},#{userid},#{createdate},#{typeindex},0,0,0)
+	</insert>
+	<!-- 查询公告类型中排序索引的最大值 -->
+	<select id="queryMaxIndex" resultType="java.lang.Integer">
+		select max(typeindex) from ipav_notice_type
+	</select>
+	<!-- 查询公告类型数量 -->
+	<select id="queryTypeCnt" parameterType="java.util.Map" resultType="java.lang.Integer">
+	    select count(*)	from ipav_notice_type	
+	    where isdelete=0  
+	    and exists( select 1 from ipav_user where ipav_user.companyid=#{companyid} and ipav_user.userid= ipav_notice_type.userid)
+	    <if test="istrue!=null"> and istrue=#{istrue}</if>	
+	</select>
+	<!-- 查询所有公告类型 -->
+	<select id="queryNoticeTypes" parameterType="java.util.Map" resultType="com.ipav.system.entity.IpavnoticeTypeEntity">
+		select id as 'id',typename as 'typename', description as 'description', userid as 'userid',
+		date_format(createdate,'%Y年%m月%d日') as 'createdate',typeindex as 'typeindex',	isdefault as 'isdefault',istrue as 'istrue' 
+		from ipav_notice_type  	where isdelete=0  and exists( select 1 from ipav_user where ipav_user.companyid=#{companyid} and ipav_user.userid= ipav_notice_type.userid) 
+		<if test="istrue!=null"> and istrue=#{istrue}</if>	
+		order by typeindex 
+		<if test="beginRow!=null and pageSize!=null">limit ${beginRow},${pageSize}</if>
+	</select>
+	<!-- 更新公告类型信息 -->
+	<update id="updateNoticeType" parameterType="com.ipav.system.entity.IpavnoticeTypeEntity">
+		update ipav_notice_type set	typename=#{typename},description=#{description} where id=#{id}		
+	</update>
+	<!-- 修改默认公告类型 -->
+	<update id="updateDefaultType" parameterType="java.util.Map">
+		update ipav_notice_type set isdefault=0 
+		where isdefault=1 	
+		and exists( select 1 from ipav_user where ipav_user.companyid=#{companyid} and ipav_user.userid= ipav_notice_type.userid)
+	</update>
+	<!-- 更新公告类型状态 -->
+	<update id="updateNoticetypeState" parameterType="java.util.Map">
+		update ipav_notice_type set 
+		<trim suffixOverrides=",">
+			<!-- 更新排序编号 -->
+			<if test="typeindex!=null"> typeindex=#{typeindex},</if>
+			<!-- 更新启用状态 -->
+			<if test="istrue!=null"> istrue=#{istrue},</if>
+			<!-- 更新默认类型 -->
+			<if test="isdefault!=null"> isdefault=#{isdefault},</if>
+			<!-- 删除公告类型 -->
+			<if test="isdelete!=null">isdelete = #{isdelete},</if>
+		</trim>
+		where id=#{id}
+	</update>
+</mapper>

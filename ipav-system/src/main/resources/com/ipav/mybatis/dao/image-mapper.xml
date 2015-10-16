@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+	"-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipav.system.dao.ImageMapper" >
+	
+	<resultMap id="imageResultMap" type="com.ipav.system.entity.IpavimageEntity">
+		 <result column="imageid" property="imageid" jdbcType="BIGINT" />
+		 <result column="companyid" property="companyid" jdbcType="BIGINT" />
+		 <result column="userid" property="userid" jdbcType="VARCHAR" />
+		 <result column="menuid" property="menuid" jdbcType="BIGINT" />
+		 <result column="bustype" property="bustype" jdbcType="VARCHAR" />
+		 <result column="sorcepath" property="sorcepath" jdbcType="VARCHAR" />
+		 <result column="subpath" property="subpath" jdbcType="VARCHAR" />
+		 <result column="creatdate" property="creatdate" jdbcType="VARCHAR" />
+		 <result column="creater" property="creater" jdbcType="VARCHAR" />  
+	</resultMap>
+	
+	<!-- Type_alias别名获取其Type_ID -->
+	<select id="getImageList" parameterType="map" resultMap="imageResultMap">
+		select * from IPAV_IMAGE 
+	</select>
+	
+	<select id="getImageListCount" parameterType="com.ipav.system.entity.IpavimageEntity" resultType="INTEGER">
+		select count(1) from IPAV_IMAGE 
+		<where>
+			<if test="imageid != null"> and imageid = #{imageid}</if>
+			<if test="companyid != null"> and companyid = #{companyid}</if>
+			<if test="menuid != null"> and menuid = #{menuid}</if>
+			<if test="userid != null"> and userid = #{userid}</if>
+			<if test="bustype != null"> and  bustype= #{bustype}</if>
+		</where>
+	</select>
+	
+	<select id="getimageBykey" parameterType="com.ipav.system.entity.IpavimageEntity" resultMap="imageResultMap">
+		select * from IPAV_IMAGE 
+		<where>
+			<if test="imageid != null"> and imageid = #{imageid}</if>
+			<if test="companyid != null"> and companyid = #{companyid}</if>
+			<if test="menuid != null"> and menuid = #{menuid}</if>
+			<if test="userid != null"> and userid = #{userid}</if>
+			<if test="bustype != null"> and  bustype= #{bustype}</if>
+		</where>
+	</select>
+	
+	<insert id="addCompanyImage" parameterType="com.ipav.system.entity.IpavimageEntity">
+		insert into IPAV_IMAGE (companyid,sorcepath,subpath,bustype,creatdate,creater)
+		values (#{companyid},#{sorcepath},#{subpath},#{bustype},#{creatdate},#{creater})
+	</insert>
+	
+	<update id="updateCompanyImage" parameterType="com.ipav.system.entity.IpavimageEntity">
+		update IPAV_IMAGE set sorcepath = #{sorcepath},subpath=#{subpath} where companyid = #{companyid} and bustype = #{bustype}
+	</update>
+	
+</mapper>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+	"-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipav.system.dao.DutyMapper" >
+	
+	<!-- Type_alias别名获取其Type_ID -->
+	<!-- <select id="dutyList" parameterType="map" resultType="map">
+		select * from ipav_duty where (delflg != "Y" or delflg is null)
+		<if test="companyid != null and companyid !=''">
+			and companyid = #{companyid}
+		</if>
+		<if test="valflg != null and valflg !=''">
+			and valflg = #{valflg}
+		</if>
+	</select>
+	
+	<insert id="dutyAdd" parameterType="com.ipav.system.entity.IpavdutyEntity">
+		insert into ipav_duty (dutyname,companyid,remark,valflg,createdate,creater)
+		values (#{dutyname},#{companyid},#{remark},#{valflg},#{createdate},#{creater})
+	</insert>
+	
+	<update id="dutyUpdate" parameterType="com.ipav.system.entity.IpavdutyEntity">
+		update ipav_duty set dutyname =#{dutyname} 
+		 	where dutyid = #{dutyid}
+	</update>
+	
+ 	<update id="dutyDelete" parameterType="String">
+		update ipav_duty set delflg ="Y"
+		 	where dutyid = #{dutyid}
+	</update>
+	<update id="dutyValset" parameterType="map">
+		update ipav_duty set valflg =#{valflg}
+		 	where dutyid = #{dutyid}
+	</update> -->
+ 
+ <!--*************************************************WYL*************************************************-->
+ 	<select id="queryDutyList" parameterType="java.util.Map" resultType="java.util.Map">
+		select ipav_duty.id,ipav_duty.duty_name,ipav_duty.remark,ipav_duty.status,date_format(ipav_duty.update_time,'%Y-%m-%d') as update_time,ipav_user.username from ipav_duty left join ipav_user on ipav_duty.update_user=ipav_user.userid 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="id != null">
+					and ipav_duty.id = #{id}
+				</if>
+				<if test="companyid != null and companyid !=''">
+					and ipav_duty.company_id = #{companyid}
+				</if>
+				<if test="status != null">
+					<choose>
+						<when test="status==-1">
+							and (ipav_duty.status=0 or ipav_duty.status =1)
+						</when>
+						<otherwise>
+							and ipav_duty.status = #{status}
+						</otherwise>
+					</choose>
+				</if>
+			</trim>
+		</where>
+		<if test="page!=null">
+			limit ${page},${pageSize}
+		</if>
+	</select>
+	
+	<select id="queryDutyCounts" parameterType="java.util.Map" resultType="int">
+		select count(1) from ipav_duty 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="id != null">
+					and ipav_duty.id = #{id}
+				</if>
+				<if test="companyid != null and companyid !=''">
+					and company_id = #{companyid}
+				</if>
+				<if test="status != null">
+					<choose>
+						<when test="status==-1">
+							and (status=0 or status =1)
+						</when>
+						<otherwise>
+							and status = #{status}
+						</otherwise>
+					</choose>
+				</if>
+			</trim>
+		</where>
+	</select>
+ 
+	<!-- <insert id="insertDuty" parameterType="java.util.Map">
+		insert into ipav_duty (duty_name,company_id,remark,update_user) values 
+		<foreach collection="list" item="item" index="index" separator=",">
+			(#{item.dutyname},#{companyid},#{item.remark},#{updateUser})
+		</foreach>
+	</insert> -->
+	
+	<insert id="insertDuty" parameterType="java.util.Map">
+		insert into ipav_duty (duty_name,company_id,remark,update_user) 
+		select tmp.* from (
+			<foreach collection="list" item="item" index="index" separator="union ">
+				select #{item.dutyname} as duty_name,#{companyid} as company_id,#{item.remark} as remark,#{updateUser} as update_user from dual 
+			</foreach>
+		) tmp where not exists (
+			select 1 from ipav_duty where ipav_duty.company_id=#{companyid} and (ipav_duty.status=0 or ipav_duty.status=1) and ipav_duty.duty_name=tmp.duty_name
+		)
+	</insert>
+	
+	<select id="getExistDutyName" parameterType="java.util.Map" resultType="java.util.Map">
+		select id,duty_name from ipav_duty where (status=0 or status=1) and company_id=#{companyId} and duty_name in 
+		<foreach collection="list" item="itemName" index="index" open="(" separator="," close=")">
+			#{itemName}
+		</foreach>
+	</select>
+	
+	<update id="updateStatus" parameterType="java.util.Map">
+		update ipav_duty set status=#{status},update_user=#{updateUser},update_time=now() 
+		where id in 
+		<foreach collection="ids" item="itemId" index="index" open="(" separator="," close=")">
+			#{itemId}
+		</foreach>
+	</update>
+	
+	<update id="updateDuty" parameterType="java.util.Map">
+		update ipav_duty set update_user=#{updateUser},update_time=now(),duty_name=#{dutyname},remark=#{remark} where id=#{id}
+	</update>
+</mapper>

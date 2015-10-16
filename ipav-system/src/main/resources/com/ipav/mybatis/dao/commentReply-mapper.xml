@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+	"-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipav.system.dao.CommentReplyMapper">
+	<!-- comments resultmap -->
+	<resultMap id="commentResultMap" type="com.ipav.system.entity.IpavcommentEntity">
+		<id column="cid" property="commentid" />
+		<result column="actionid" property="actionid" />
+		<result column="commuserid" property="commuserid" />
+		<result column="commusername" property="commusername" />
+		<result column="commtype" property="commtype" />
+		<result column="commcontent" property="commcontent" />
+		<result column="commdate" property="commdate" />
+		<result column="isdelete" property="isdelete" />
+		<collection property="replys" resultMap="replyResultMap" />
+	</resultMap>
+
+	<!-- replys resultmap -->
+	<resultMap id="replyResultMap" type="com.ipav.system.entity.IpavreplyEntity">
+		<id column="rid" property="replyid" />
+		<result column="commentid" property="commentid" />
+		<result column="replyuserid" property="replyuserid" />
+		<result column="replyusername" property="replyusername" />
+		<result column="bereplyid" property="bereplyid" />
+		<result column="bereplyusername" property="bereplyname" />
+		<result column="replycontent" property="replycontent" />
+		<result column="replydate" property="replydate" />
+	</resultMap>
+	<!-- 插入评论 -->
+	<insert id="insertComment" parameterType="com.ipav.system.entity.IpavcommentEntity">
+<!-- 		<selectKey>	select last_insert_id() </selectKey> -->
+		insert into	ipav_comment(actiontype,actionid,commuserid,commtype,commcontent,commdate,isdelete)
+		values(#{actiontype},#{actionid},#{commuserid},#{commtype},#{commcontent},#{commdate},#{isdelete})
+	</insert>
+	
+	<!--根据评论用户ID查询用户是否对说说点赞  -->
+	<select id="queryLikeCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select count(1) from ipav_comment where actiontype=#{actiontype}  and actionid=#{actionid}  and commuserid=#{commuserid} and commtype=#{commtype} 
+		<if test="isdelete!=null">and isdelete=#{isdelete}</if>
+	</select>
+	
+	<!-- 取消赞,更新赞状态 -->
+	<update id="updateLike" parameterType="com.ipav.system.entity.IpavcommentEntity">
+		update ipav_comment set isdelete=#{isdelete},commdate=#{commdate} where actiontype=#{actiontype} and actionid=#{actionid} and commuserid=#{commuserid} and commtype=#{commtype}
+	</update>
+	<!-- 插入回复 -->
+	<insert id="insertReply" parameterType="com.ipav.system.entity.IpavreplyEntity">
+		<selectKey>	select	last_insert_id() </selectKey>
+		insert into
+		ipav_reply(commentid,replyuserid,bereplyid,replycontent,replydate,isdelete)
+		values(#{commentid},#{replyuserid},#{bereplyid},#{replycontent},#{replydate},0)
+	</insert>
+	
+	<!--  查询赞或者评论的条数 -->
+	<select id="queryCommentCount" parameterType="map" resultType="INTEGER">
+	select COUNT(*) from ipav_comment 
+	where isdelete=0 and commtype=#{commtype} 
+	and actionid=#{actionid}  and actiontype=#{actiontype}
+	</select>
+	
+	<!-- 根据评论id得到他的回复条数-->
+	<select id="queryReplyCount" parameterType="Long" resultType="INTEGER">
+	SELECT  COUNT(*) from ipav_reply where ipav_reply.commentid=#{commentid}
+	</select>
+	
+	<!-- 查询用户评论的id -->
+	<select id="queryActionIdList" parameterType="com.ipav.system.entity.IpavreplyEntity" 
+								   resultType="String">
+	SELECT actionid from ipav_comment 
+	where actiontype=#{actiontype} and (commtype=0 or commtype=1)  
+		and isdelete=0 and commuserid=#{commuserid}
+	</select>	
+	<!-- 查询赞的人id -->
+   <select id="queryUserListByActionId" parameterType="map" resultType="String">
+  SELECT  distinct  ipav_comment.commuserid from ipav_comment 
+  where actiontype=#{actiontype}  and isdelete=0 and   actionid=#{actionid} and commtype=#{commtype}  
+  <if test="pageNo!=null and pageSize!=null">
+    LIMIT ${pageNo}, ${pageSize}
+  </if>
+  </select>
+   
+	<!-- 根据活动id查询评论 -->
+   <select id="queryCommentByAid" parameterType="map" resultMap="commentResultMap">
+   SELECT  c.commentid AS cid,c.actiontype,c.actionid,
+		   c.commuserid,c.commtype,c.commcontent,
+		   c.commdate,u.username as commusername,r.replyid AS rid,
+		   r.commentid,r.replyuserid,r.bereplyid,
+		   r.replycontent,r.isdelete,r.replydate
+  FROM     ipav_comment AS c
+	 LEFT JOIN ipav_reply AS r ON r.commentid = c.commentid AND r.isdelete=0 
+    INNER JOIN ipav_user AS u ON u.userid = c.commuserid  
+	WHERE c.actionid=#{actionid} and actiontype=#{actiontype} and c.isdelete=0 and commtype=#{commtype}
+	 <if test="pageNo != null   and pageSize != null ">
+	  LIMIT #{pageNo},#{pageSize}
+	 </if>
+   </select>
+	<!-- 根据评论id查询评论 -->
+   <select id="queryCommentByCommentid" parameterType="map" resultMap="commentResultMap">
+  	SELECT 
+		r.replyid as rid,r.replyuserid,r.bereplyid,r.replycontent,r.commentid,
+		r.replydate,c.commentid as cid,c.actiontype,c.actionid,
+		c.commuserid,c.commtype,c.commcontent,c.commdate
+		FROM
+		ipav_comment AS c
+		LEFT JOIN ipav_reply AS r ON r.commentid = c.commentid
+	where c.commentid=#{commentid}  and c.isdelete=0 
+	 <if test="pageNo != null   and pageSize != null ">
+	  LIMIT #{pageNo},#{pageSize}
+	 </if>
+		</select>  
+   
+   
+</mapper>

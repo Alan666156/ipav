@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+	"-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipav.system.dao.MenuMapper" >
+	
+	<resultMap id="menuResultMap" type="com.ipav.system.entity.IpavmenuEntity">
+		 <result column="menuid" property="menuid" jdbcType="VARCHAR" />
+		 <result column="menuname" property="menuname" jdbcType="VARCHAR" />
+		 <result column="pathstr" property="pathstr" jdbcType="VARCHAR" />
+		 <result column="levl" property="levl" jdbcType="INTEGER" />
+		 <result column="parentid" property="parentid" jdbcType="VARCHAR" />
+		 <result column="rootid" property="rootid" jdbcType="VARCHAR" />
+		 <result column="valflg" property="valflg" jdbcType="VARCHAR" />
+		 <result column="createdate" property="createdate" jdbcType="VARCHAR" />
+		 <result column="creater" property="creater" jdbcType="VARCHAR" />  
+		 <result column="imgsrc" property="imgsrc" jdbcType="VARCHAR" />  
+		 <result column="delflg" property="delflg" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!-- Type_alias别名获取其Type_ID -->
+	<select id="getMenuList" parameterType="map" resultMap="menuResultMap">
+		select * from ipav_menu where <![CDATA[ menuid <> "0" and (delflg is null or delflg !="Y")]]>
+			<if test="levl != null and levl != ''">
+				<choose>
+					<when test="levl == 0">and levl = 0</when>
+					<otherwise> and levl > 0 </otherwise>
+				</choose>
+			</if>
+			<if test="parentid != null and parentid !=''">
+				and find_in_set(parentid,getMenuChildLst(#{parentid}))
+			</if>
+			<if test="valflg != null and valflg !=''">
+				and valflg=#{valflg}
+			</if>
+			<if test="beginRow!=null and pageSize!=null">limit ${beginRow},${pageSize}</if>
+	</select>
+	
+	<select id="getTopMenuList" parameterType="map" resultType="map">
+		   select distinct  m.*  from ipav_menu m join ipav_rolemenu rm
+			on m.menuid = rm.menuid  join ipav_userrole u
+			on rm.roleno = u.roleno where u.userid = #{userid} and m.valflg != "0"  and (m.delflg is null or m.delflg !="Y")
+			<if test="parentid != null and parentid !=''">
+				and m.parentid =#{parentid}
+			</if>
+	</select>
+	
+	<select id="getMenuExcistList" parameterType="map" resultType="map">
+		select o.menuid,o.menuname from ipav_menu o 
+		where o.valflg != "0" and (o.delflg is null or o.delflg !="Y")  
+		<if test="menuid != null and menuid !=''">
+			and o.menuid not in	(select m.menuid from ipav_menu m where find_in_set(m.parentid,getMenuChildLst(#{menuid})))
+			and <![CDATA[ o.menuid <>]]>  #{menuid} and <![CDATA[ o.menuid <> "0"]]>
+		</if>
+	</select>
+	
+	<select id="getMenuById" parameterType="String" resultMap="menuResultMap">
+		select * from ipav_menu where menuid = #{menuid}
+	</select>
+	
+	<select id="getMenuTrees" parameterType="map" resultType="map">
+			select  o.menuid AS id,o.parentid AS Pid,o.menuname AS name,
+		 	case (select  count(1)  from ipav_menu  where   parentid = o.menuid ) 
+			when "0" then  "false" else "true" end AS open
+			from ipav_menu o where  o.valflg ="1" <![CDATA[ and (o.delflg is null or o.delflg !="Y")]]>
+			<if test="username != 'ipavadmin'">
+				and not   find_in_set(o.menuid,getMenuChildLst('123'))
+				and not   find_in_set(o.menuid,getMenuChildLst('124'))
+				and not   find_in_set(o.menuid,getMenuChildLst('125'))
+			</if>
+	</select>
+	
+	<select id="getMenuTreeByRole" parameterType="map" resultType="map">
+		select  o.menuid AS id,o.parentid AS Pid,o.menuname AS name,
+		 	case (select  count(1)  from ipav_menu  where   parentid = o.menuid ) 
+			when "0" then  "false" else "true" end AS open,
+                       case when  r.roleno is not null then "true" else "false" end  AS havflg
+ 			from ipav_menu o 
+			 join ipav_rolemenu r on o.menuid = r.menuid and r.roleno = #{roleno}
+				where  o.valflg ="1" <![CDATA[ and (o.delflg is null or o.delflg !="Y")]]>
+			<if test="username != 'ipavadmin'">
+				and not   find_in_set(o.menuid,getMenuChildLst('123'))
+				and not   find_in_set(o.menuid,getMenuChildLst('124'))
+				and not   find_in_set(o.menuid,getMenuChildLst('125'))
+			</if>		
+			
+	</select>
+	
+	<select id="getMenuTreeByRoleForUpdate" parameterType="map" resultType="map">
+		select  o.menuid AS id,o.parentid AS Pid,o.menuname AS name,
+		 	case (select  count(1)  from ipav_menu  where   parentid = o.menuid ) 
+			when "0" then  "false" else "true" end AS open,
+                       case when  r.roleno is not null then "true" else "false" end  AS havflg
+ 			from ipav_menu o 
+			 left join ipav_rolemenu r on o.menuid = r.menuid and r.roleno = #{roleno}
+				where  o.valflg ="1" <![CDATA[ and (o.delflg is null or o.delflg !="Y")]]>
+			<if test="username != 'ipavadmin'">
+				and not   find_in_set(o.menuid,getMenuChildLst('123'))
+				and not   find_in_set(o.menuid,getMenuChildLst('124'))
+				and not   find_in_set(o.menuid,getMenuChildLst('125'))
+			</if>		
+	</select>
+	
+	<insert id="addMenu" parameterType="com.ipav.system.entity.IpavmenuEntity">
+		insert into ipav_menu (menuname,pathstr,levl,parentid,rootid,valflg,createdate,creater,imgsrc)
+		values (#{menuname},#{pathstr},#{levl},#{parentid},#{rootid},#{valflg},#{createdate},#{creater},#{imgsrc})
+	</insert>
+	
+	<update id="updateMenu" parameterType="com.ipav.system.entity.IpavmenuEntity">
+		update ipav_menu set menuname =#{menuname},pathstr=#{pathstr},levl=#{levl},parentid=#{parentid},
+			rootid =#{rootid},imgsrc=#{imgsrc}
+		 	where menuid = #{menuid}
+	</update>
+	
+	<update id="updateMenuValflg" parameterType="map">
+		update ipav_menu set  valflg=#{valflg}
+		 	where menuid = #{menuid}
+	</update>
+	
+	<update id="delMenu" parameterType="String">
+		update ipav_menu set  delflg="Y"
+		 	where menuid = #{menuid}
+	</update>
+	
+	<select id="checkValflg" parameterType="String" resultType="INTEGER">
+		select count(1) from ipav_menu where parentid = #{menuid} and valflg ="1"  and (delflg is null or delflg !="Y")
+	</select>
+	
+	<!-- 获取用户所有可用模块(子模块)menu列表(GaoYang) -->
+	<select id="getMenulistByUser" parameterType="java.util.Map" resultType="java.lang.String">
+		select distinct r.menuid  
+		from ipav_rolemenu as r join  ipav_userrole as u on r.roleno=u.roleno  
+		where u.userid=#{userid} and 
+		exists(select 1 from ipav_menu  as m  
+		where m.parentid=#{parentid} and m.valflg != "0"  and (m.delflg is null or m.delflg !="Y") and m.menuid=r.menuid)
+	</select>
+	<!-- 获取应用级别模块的长度(GaoYang) -->
+	<select id="getMenuSize" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select count(*) from ipav_menu 	where (delflg is null or delflg !="Y")
+		<if test="levl!=null and levl!='' ">and levl=#{levl}</if>
+		<if test="valflg!=null and valflg!='' ">and valflg=#{valflg}</if>
+	</select>
+</mapper>

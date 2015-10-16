@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+	"-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipav.system.dao.ActionFileMapper" >
+	
+<!-- 	<resultMap id="actionfileResultMap" type="com.ipav.system.entity.IpavactionfileEntity"> -->
+<!-- 		 <result column="fileid" property="fileid" /> -->
+<!-- 		 <result column="actionid" property="actionid"  /> -->
+<!-- 		 <result column="filename" property="filename" /> -->
+<!-- 		 <result column="filepath" property="filepath"   /> -->
+<!-- 		 <result column="createdate" property="createdate"  /> -->
+<!-- 	</resultMap> -->
+			
+	<select id="queryActionfileList" parameterType="map" resultType="String">
+		select filename from IPAV_ACTION_FILE where actionid=#{actionid} and actiontype=#{actiontype}
+	</select>
+	<select id="queryActionfileUrlList" parameterType="map" resultType="String">
+		select IPAV_ACTION_FILE.filepath from IPAV_ACTION_FILE where actionid=#{actionid} and actiontype=#{actiontype}
+	</select>
+	
+	<select id="queryActionfileByName" parameterType="String" resultType="com.ipav.system.entity.IpavActionFileEntity">
+		select * from IPAV_ACTION_FILE where filename=#{filename}
+	</select>
+	
+	<select id="queryActionfileByPath" parameterType="String" resultType="com.ipav.system.entity.IpavActionFileEntity">
+		select * from IPAV_ACTION_FILE where filepath=#{filepath}
+	</select>
+	
+	<insert id="insertActionfile" parameterType="com.ipav.system.entity.IpavActionFileEntity">
+		insert into IPAV_ACTION_FILE(actionid,actiontype,filename,filepath,createdate) values(#{actionid},#{actiontype},#{filename},#{filepath},#{createdate})
+	</insert>
+	
+<!-- 	<update id="updateFilePath" parameterType="map" > -->
+<!-- 	  update ipav_action_file  set filepath=#{filepath} and createdate =#{createdate} -->
+<!-- 	    <where>  -->
+<!-- 		      <if test="fileid!=null"> -->
+<!-- 		       and fileid=#{fileid} -->
+<!-- 		       </if>   -->
+<!-- 		      <if test="actionid!=null"> -->
+<!-- 		       and actionid=#{actionid} -->
+<!-- 		       </if>   -->
+<!-- 		      <if test="actiontype!=null"> -->
+<!-- 		       and actiontype=#{actiontype} -->
+<!-- 		       </if>    -->
+<!-- 		      <if test="filename=!null"> -->
+<!-- 		       and filename=#{filename} -->
+<!-- 		       </if>   -->
+<!-- 	    </where> -->
+<!-- 	</update> -->
+	<update id="updateFilePath" parameterType="map" >
+	  update ipav_action_file  set 
+	  <trim suffixOverrides=",">
+			<if test="filename!=null">filename =#{filename},</if>
+			<if test="filepath!=null">filepath=#{filepath},</if>
+			<if test="createdate!=null">createdate =#{createdate},</if>
+		</trim>
+		where  fileid=#{fileid}
+	</update>
+	
+	<select id="queryActionfileByAction" parameterType="map" resultType="com.ipav.system.entity.IpavActionFileEntity">
+		SELECT * FROM ipav_action_file where actionid=#{actionid} and actiontype =#{actiontype}
+	</select>
+	
+<!-- 	<update id="updateCompanyfile" parameterType="com.ipav.system.entity.IpavfileEntity"> -->
+<!-- 		update IPAV_file set sorcepath = #{sorcepath},subpath=#{subpath} where companyid = #{companyid} and bustype = #{bustype} -->
+<!-- 	</update> -->
+	
+</mapper>

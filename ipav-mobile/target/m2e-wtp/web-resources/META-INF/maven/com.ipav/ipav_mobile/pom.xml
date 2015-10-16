@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.ipav</groupId>
+    <artifactId>ipav</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>ipav_mobile</artifactId>
+  <packaging>war</packaging>
+  
+  <dependencies>
+		<dependency>
+			<groupId>com.ipav</groupId>
+			<artifactId>ipav-infoshare</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.ipav</groupId>
+			<artifactId>ipav-system</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+		
+		<!-- server lib -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jsp-api</artifactId>
+		</dependency>
+		
+			<!-- add 2014.11.11 by zhuyx -->
+			<dependency>
+				<groupId>javax.servlet.jsp.jstl</groupId>
+				<artifactId>jstl-api</artifactId>
+				<version>1.2</version>
+				<exclusions>
+				<exclusion>
+				<groupId>javax.servlet</groupId>
+				<artifactId>servlet-api</artifactId>
+				</exclusion>
+				<exclusion>
+				<groupId>javax.servlet.jsp</groupId>
+				<artifactId>jsp-api</artifactId>
+				</exclusion>
+				</exclusions>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.glassfish.web</groupId>
+				<artifactId>jstl-impl</artifactId>
+				<version>1.2</version>
+				<exclusions><exclusion>
+				<groupId>javax.servlet</groupId>
+				<artifactId>servlet-api</artifactId></exclusion>
+				<exclusion>
+				<groupId>javax.servlet.jsp</groupId>
+				<artifactId>jsp-api</artifactId>
+				</exclusion>
+				<exclusion>
+				<groupId>javax.servlet.jsp.jstl</groupId>
+				<artifactId>jstl-api</artifactId>
+				</exclusion></exclusions>
+			</dependency>
+			<!-- end  -->
+			
+			<!-- 测试用例需要包 -->
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpclient</artifactId>
+				<version>4.3.6</version>
+			</dependency>
+	</dependencies>
+	
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+			<resource>
+				<directory>src/main/webapp</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>**/*.*</include>
+				</includes>
+				<targetPath>${project.build.directory}/webapp</targetPath>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat6-maven-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<path>/</path>
+					<port>8090</port>
+					<warSourceDirectory>${project.build.directory}/webapp</warSourceDirectory>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

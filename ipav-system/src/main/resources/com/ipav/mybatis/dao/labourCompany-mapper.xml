@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+	"-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.ipav.system.dao.LabourCompanyMapper" >
+	<insert id="addLabourCompany" parameterType="java.util.Map">
+		insert into ipav_labour_belong (company_id,belong_name,remark,update_user) 
+		values (#{companyId},#{belongName},#{remark},#{updateUser})
+	</insert>	
+	
+	<update id="updateLabourCompany" parameterType="java.util.Map">
+		update ipav_labour_belong set belong_name=#{belongName},remark=#{remark},update_user=#{updateUser},update_time=now() where id=#{id}
+	</update>
+	
+	<select id="queryLabourCompanyInfos" parameterType="java.util.Map" resultType="java.util.Map">
+		select id,belong_name,remark from ipav_labour_belong where status=1 and company_id=#{companyId}
+		<if test="id !=null ">
+		 and id =#{id}
+		</if>
+		<if test="page!=null">
+			limit ${page},${pageSize}
+		</if>
+	</select>
+	
+	<select id="queryLabourCompanyInfosCount" parameterType="java.util.Map" resultType="int">
+		select count(1) from ipav_labour_belong where status=1 and company_id=#{companyId}
+		<if test="belong_name !=null ">
+		 and belong_name=#{belong_name}
+		</if>
+		<if test="id !=null and tip==null" >
+		  and id !=#{id}
+		</if>
+		<if test="id !=null and tip!=null" >
+		  and id =#{id}
+		</if>
+	</select>
+	
+	<update id="updateDelStatus" parameterType="java.util.Map">
+		update ipav_labour_belong set status=0,update_user=#{updateUser},update_time=now() where id in (
+		<foreach collection="ids" item="itemId" separator=",">
+			#{itemId}
+		</foreach>
+		)
+	</update>
+	
+	 
+</mapper>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+	"-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipav.system.dao.UnradyMsgMapper" >
+    
+    <insert id="insertReadyMsg" parameterType="com.ipav.system.entity.IpavUnreadymsgEntity">
+      insert into ipav_unreadymsg(userid,actionid,type) VALUE(#{userid},#{actionid},#{type});
+    </insert>
+			
+	<update id="updateActionid" parameterType="com.ipav.system.entity.IpavUnreadymsgEntity">
+	     update ipav_unreadymsg set actionid=#{actionid} where userid=#{userid} and type=#{type}
+	</update> 
+	
+	<select id="queryThisExist" parameterType="com.ipav.system.entity.IpavUnreadymsgEntity" resultType="INTEGER">
+	     SELECT COUNT(1) from ipav_unreadymsg where userid=#{userid} and  type=#{type}
+	</select>
+	
+	<select id="queryUnreadyMsg"  parameterType="com.ipav.system.entity.IpavUnreadymsgEntity" resultType="com.ipav.system.entity.IpavUnreadymsgEntity">
+	       SELECT * from ipav_unreadymsg where userid=#{userid} and  type=#{type}
+	</select>
+	
+	<select id="sayAllUnreadyMaxSid" parameterType="map" resultType="INTEGER">
+	       SELECT		   
+		        s.sayid 
+			FROM	ipav_say AS s   
+			INNER JOIN ipav_user AS i ON s.sayuserid = i.userid  
+			and  (s.sayuserid in(select u.userid from ipav_user as u where u.companyid=#{companyid} and permission=1) 
+		    	or (#{userid} in(select ipav_say_user.userid from ipav_say_user where  ipav_say_user.sayid = s.sayid)  	 and permission=2) 
+		    	or (permission = 2 and s.sayuserid=#{userid})
+		    	or s.permission = 3 and s.sayuserid=#{userid}) 
+		    	  <![CDATA[ where s.sayid > #{actionid} ]]>
+		    	
+	  ORDER BY saydate DESC     LIMIT 0,1
+	</select>
+	
+	<select id="sayMyUnreadyNewDate" parameterType="java.lang.String" resultType="java.lang.String">
+  	 select max(saydate) as newsaydate from (
+	  	(SELECT
+			date_format(c.commdate,'%Y-%m-%d %T')   AS saydate
+			FROM ipav_say  
+			INNER JOIN ipav_comment as c ON c.actionid=ipav_say.sayid  and c.actiontype=1
+			and ipav_say.sayuserid=#{userid} and c.commuserid!=#{userid} )                         
+			UNION
+		(SELECT date_format(r.replydate,'%Y-%m-%d %T')  as saydate
+			FROM ipav_say  as s
+			INNER JOIN (ipav_comment as c  INNER JOIN ipav_reply as r 
+			on c.commentid =r.commentid ) 
+			ON c.actionid=s.sayid  and c.actiontype=1   
+			and (r.bereplyid =#{userid} and r.replyuserid !=#{userid})) 
+			         
+    ) tmp         
+	
+	</select>
+</mapper>

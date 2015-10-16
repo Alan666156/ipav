@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+	"-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipav.system.dao.VoteAuthorMapper" >
+	<insert id="insertVoteAuthor" parameterType="java.util.Map">
+		<selectKey keyProperty="id" order="AFTER" resultType="long">
+			select last_insert_id()
+		</selectKey>
+		insert into ipav_vote_author (user_id,vote_id,author,update_user) 
+		values (#{userId},#{voteId},#{author},#{updateUser})
+	</insert>
+	
+	<insert id="insertBatch" parameterType="java.util.Map">
+		insert into ipav_vote_author (user_id,vote_id,author,update_user) values 
+		<foreach collection="list" item="item" index="index" separator="," >
+			(#{item.userId},#{voteId},#{item.author},#{updateUser})
+		</foreach>
+	</insert>
+	
+	<update id="updateVoteAuthorDel" parameterType="java.util.Map">
+		update ipav_vote_author set status=#{status},update_user=#{updateUser},update_time=now() where id in 
+		<foreach item="idItem" collection="ids" open="(" separator="," close=")">
+			#{idItem}
+		</foreach>
+	</update>
+	
+	<update id="updateVoteAuthorDelByVote" parameterType="java.util.Map">
+		update ipav_vote_author set status=#{status},update_user=#{updateUser},update_time=now() where vote_id in 
+		<foreach item="idItem" collection="ids" open="(" separator="," close=")">
+			#{idItem}
+		</foreach>
+	</update>
+	
+	<select id="getVoteAuthorOfVote" parameterType="java.util.Map" resultType="java.util.Map">
+		select ipav_vote_author.user_id,ipav_vote_author.author,ipav_user.username,ipav_vote.status,ipav_vote.result_type,ipav_vote.initiator  
+		from ipav_vote_author,ipav_user,ipav_vote where ipav_vote_author.user_id=ipav_user.userid 
+		and ipav_user.valflg=1 and ipav_vote.id=ipav_vote_author.vote_id and ipav_vote_author.vote_id=#{voteId} 
+		<if test="userId!=null">
+			and ipav_vote_author.user_id=#{userId}
+		</if>
+	</select>
+	
+	<select id="getJoinCounts" parameterType="int" resultType="java.util.Map">
+		select count(1) as counts from ipav_vote_author 
+		where (ipav_vote_author.author=1 or ipav_vote_author.author=3) 
+		and ipav_vote_author.vote_id=#{voteId}
+	</select>
+</mapper>

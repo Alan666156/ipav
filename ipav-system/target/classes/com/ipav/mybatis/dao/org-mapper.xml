@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+	"-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipav.system.dao.OrgMapper" >
+	
+	<resultMap id="orgResultMap" type="com.ipav.system.entity.IpavorgEntity">
+		 <result column="orgid" property="orgid" jdbcType="VARCHAR" />
+		 <result column="companyid" property="companyid" jdbcType="VARCHAR" />
+		 <result column="orgno" property="orgno" jdbcType="VARCHAR" />
+		 <result column="orgname" property="orgname" jdbcType="VARCHAR" />
+		 <result column="orgfullname" property="orgfullname" jdbcType="VARCHAR" />
+		 <result column="levl" property="levl" jdbcType="INTEGER" />
+		 <result column="parentno" property="parentno" jdbcType="VARCHAR" />
+		 <result column="rootno" property="rootno" jdbcType="VARCHAR" />
+		 <result column="valflg" property="valflg" jdbcType="VARCHAR" />
+		 <result column="createdate" property="createdate" jdbcType="VARCHAR" />
+		 <result column="creater" property="creater" jdbcType="VARCHAR" />  
+		 <result column="remark" property="remark" jdbcType="VARCHAR" /> 
+		 <result column="orgchef" property="orgchef" jdbcType="VARCHAR" /> 
+		 <result column="orgchefName" property="orgchefName" jdbcType="VARCHAR" /> 
+		 <result column="seqno" property="seqno" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!-- Type_alias别名获取其Type_ID -->
+	<select id="getOrgList" parameterType="map" resultMap="orgResultMap">
+		select IPAV_ORG.*,ipav_user.username as orgchefName from IPAV_ORG LEFT JOIN ipav_user on ipav_user.userid= IPAV_ORG.orgchef
+		<where>
+			<if test="orgno !=null and orgno !=''">
+				 and find_in_set(parentno,getOrgChildLst(#{orgno}))   
+			</if>
+			<if test="companyid != null and companyid != ''"> and IPAV_ORG.companyid = #{companyid}
+				and<![CDATA[ IPAV_ORG.orgno  <>  "0"]]>
+			</if>
+			<if test="parentno != null and parentno != ''"> 
+			and find_in_set(IPAV_ORG.parentno,getOrgChildLst(#{parentno}))
+			</if>
+			<if test="valflg != null and valflg != ''"> and IPAV_ORG.valflg = #{valflg}</if>
+		</where>
+		order by IPAV_ORG.seqno
+	</select>
+	
+	<select id="getOrgExsitTreeList"  parameterType="map" resultType="java.util.Map">
+		   select o.orgid as id,
+				o.orgno as no,
+				o.orgname as name,
+				o.orgfullname as fullname,
+				o.parentno as pno,
+				1 as type 
+		   from IPAV_ORG o where o.valflg = "1"
+			<if test="companyid != null and companyid != ''"> 
+				 and o.companyid = #{companyid}
+			</if>
+			<if test="orgno !=null and orgno !=''">
+			 	and o.orgid not in (select m.orgid from IPAV_ORG m where  find_in_set(m.parentno,getOrgChildLst(#{orgno}))) 
+				and <![CDATA[ o.orgno <>]]>  #{orgno} 
+			</if>
+		 	order by o.parentno
+	</select>
+	
+	
+	<select id="getOrgTreeList" parameterType="String" resultType="map">
+		select ob.orgno,ob.parentno,ob.orgname,ob.orgfullname,
+		case   when  ob.num is  null then "0"  else ob.num end num
+		from (
+		select  o.orgno,o.parentno,o.orgname,o.orgfullname,
+			(select max(c.orgno)  from ipav_org c  where   c.parentno = o.orgno  ) AS num
+					from ipav_org o  where o.companyid =  #{companyid} and valflg ="1" ) as ob	
+	</select>
+	
+	<select id="getOrgTrees" parameterType="String" resultType="map">
+			select o.orgid,o.orgno AS id,o.parentno AS Pid,o.orgname AS name,
+		 	case (select  count(1)  from ipav_org  where   parentno = o.orgno ) 
+			when "0" then  "false" else "true" end AS open
+			from ipav_org o where  o.companyid = #{companyid} and valflg ="1"
+			order by o.seqno
+	</select>
+	
+	<select id="queryOrgById" parameterType="String" resultMap="orgResultMap">
+		select * from IPAV_ORG where orgid = #{orgid}
+	</select>
+	
+	<insert id="addOrg" parameterType="com.ipav.system.entity.IpavorgEntity">
+		insert into IPAV_ORG (orgno,companyid,orgname ,orgfullname,parentno,rootno,valflg,remark,createdate,creater,orgchef,seqno)
+		values (#{orgno},#{companyid},#{orgname},#{orgfullname},#{parentno},#{rootno},
+		#{valflg},#{remark},#{createdate},#{creater},#{orgchef},#{seqno})
+		<selectKey  resultType="lONG"  order="AFTER" keyProperty="orgid">
+			SELECT LAST_INSERT_ID() AS　ID
+		</selectKey>
+	</insert>
+	
+	<update id="modifyOrg" parameterType="com.ipav.system.entity.IpavorgEntity">
+		update IPAV_ORG set orgno =#{orgno},seqno =#{seqno},orgname=#{orgname},orgfullname=#{orgfullname},parentno=#{parentno},
+			remark=#{remark} ,orgchef=#{orgchef} where orgid = #{orgid}
+	</update>
+	
+	<update id="delOrg" parameterType="String">
+		update IPAV_ORG set valflg = "0" where orgid = #{orgid}
+	</update>
+	
+	<select id="checkOrgValflg" parameterType="String" resultType="INTEGER">
+		select count(1) from ipav_org where parentno = (select  o.orgno from  ipav_org o where orgid =#{orgid})
+		 and valflg = "1"
+	</select>
+	
+	<update id="changeSeqno" parameterType="map">
+		update  ipav_org set seqno =#{seqno} where  orgno=#{orgno} and companyid=#{companyid} and  valflg=1
+	</update>
+	
+	<select id="queryOrgLevels" parameterType="long" resultType="java.util.Map">
+		select ipav_org.orgid as id,ipav_org.orgno as no,ipav_org.orgname as name,
+		ipav_org.orgfullname as fullname,ipav_org.parentno as pno,1 as type 
+		from ipav_org 
+		where ipav_org.companyid=#{companyId} 
+		and ipav_org.valflg=1 
+		order by ipav_org.parentno
+	</select>
+	
+ 	<select id="queryOrgByOrgno" parameterType="map" resultMap="orgResultMap">
+ 	select * from ipav_org where companyid=#{companyid}  and orgno=#{orgno} and valflg=1
+ 	</select>
+ 	
+ 	<select id="queryOrgByLikeSeqno"  parameterType="map" resultMap="orgResultMap">
+ 	SELECT * from ipav_org where seqno  like #{seqno}"%"   and  companyid=#{companyid}  and valflg=1   and seqno!=#{seqno}
+ 	</select>
+ 	
+ 	<select id="checkIsexistOrgName" parameterType="map" resultType="int">
+ 		select count(1) from ipav_org where  companyid=#{companyid}  and parentno=#{orgno} and valflg=1    and  orgname = #{orgname}
+ 		<if test="oldorgno !=null and oldorgno !=''">
+ 			and orgno <![CDATA[<>]]> #{oldorgno}
+ 		</if>
+ 	</select>
+
+    <!-- TD 龚严华得到一个公司的组织机构（orgno=0） -->
+    <select  id="queryOrgnoTo0Bycompanyid"  parameterType="string" resultMap="orgResultMap">
+    SELECT * from ipav_org WHERE companyid=#{companyid} AND orgno =0  and valflg=1 
+    </select>
+    
+    <select id="queryMaxSeqno"  parameterType="map" resultType="string">
+    	select max(seqno) from ipav_org
+			where companyid = #{companyid}
+			and  parentno =#{parentno}
+    </select>
+    
+</mapper>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+	"-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipav.system.dao.RoleMapper" >
+	
+	<resultMap id="roleResultMap" type="com.ipav.system.entity.IpavroleEntity">
+		 <result column="roleno" property="roleno" jdbcType="VARCHAR" />
+		 <result column="rolename" property="rolename" jdbcType="VARCHAR" />
+		 <result column="companyid" property="companyid" jdbcType="VARCHAR" />
+		 <result column="valflg" property="valflg" jdbcType="VARCHAR" />
+		 <result column="createdate" property="createdate" jdbcType="VARCHAR" />
+		 <result column="creater" property="creater" jdbcType="VARCHAR" />  
+		 <result column="mark" property="mark" jdbcType="VARCHAR" />  
+		 <result column="sysroleflg" property="sysroleflg" jdbcType="VARCHAR" /> 
+		 <result column="delflg" property="delflg" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!-- Type_alias别名获取其Type_ID -->
+	<select id="getRoleList" parameterType="map" resultType="map">
+		select *,"" AS havflg from ipav_role  where (delflg != "Y" or delflg is null)
+			<if test="companyid != null and companyid !=''">
+				and  companyid = #{companyid}
+			</if>
+	</select>
+	
+	<select id="getRoleListByUserid" parameterType="map" resultType="map">
+		select r.*,case when ur.userid is not null then "Y" else "F" end AS havflg from ipav_role r 
+		left join ipav_userrole ur on r.roleno = ur.roleno and ur.userid = #{userid}
+			<where>
+				(r.delflg != "Y" or r.delflg is null) 
+			<if test="companyid != null and companyid !=''">
+				and  r.companyid = #{companyid}
+			</if>
+			</where>
+	</select>
+	
+	<select id="queryRole" parameterType="map" resultType="com.ipav.system.entity.IpavroleEntity">
+		select * from ipav_role  where companyid = #{companyid}  and roleno = #{roleno}
+	</select>
+	
+	<insert id="addRole" parameterType="com.ipav.system.entity.IpavroleEntity">
+		insert into ipav_role (rolename,companyid,valflg,createdate,creater,mark,sysroleflg)
+		values (#{rolename},#{companyid},#{valflg},#{createdate},#{creater},#{mark},#{sysroleflg})
+		<selectKey  resultType="Integer"  order="AFTER" keyProperty="roleno">
+			SELECT LAST_INSERT_ID() AS　ID
+		</selectKey>
+	</insert>
+	
+	<update id="updateRole" parameterType="com.ipav.system.entity.IpavroleEntity">
+		update ipav_role set rolename =#{rolename} ,mark = #{mark}
+		 	where roleno = #{roleno}
+	</update>
+	
+	<update id="delRole" parameterType="String">
+		update ipav_role set delflg = "Y"
+		 	where roleno = #{roleno}
+	</update>
+	
+	<insert id="addRoleMenu" parameterType="map" >
+		insert into IPAV_ROLEMENU (roleno,menuid) value(#{roleno},#{menuid})
+	</insert>
+	
+	<delete id="delRoleMenu" parameterType="Integer">
+		delete from IPAV_ROLEMENU where roleno =#{roleno}
+	</delete>
+	
+	<select id="getOptRole" parameterType="java.util.Map" resultType="java.util.Map">
+		<!-- select ipav_user.userid,ipav_user.username,ipav_user.valflg,ipav_role.valflg,ipav_menu.pathstr from ipav_user 
+		straight_join ipav_userrole on ipav_user.userid=ipav_userrole.userid 
+		straight_join ipav_role on ipav_userrole.roleno=ipav_role.roleno 
+		straight_join ipav_rolemenu on ipav_userrole.roleno=ipav_rolemenu.roleno 
+		straight_join ipav_menu on ipav_rolemenu.menuid=ipav_menu.menuid
+		where ipav_user.userid=#{userId}
+		and ipav_user.valflg=1 
+		and ipav_role.valflg=1 
+		and ipav_menu.pathstr=#{path} -->
+		
+		select 1 as author
+		from ipav_userrole 
+		left join ipav_user on ipav_user.userid=ipav_userrole.userid 
+		left join ipav_role on ipav_userrole.roleno=ipav_role.roleno 
+		left join ipav_rolemenu on ipav_userrole.roleno=ipav_rolemenu.roleno  
+		where ipav_user.userid=#{userId} 
+		and ipav_rolemenu.menuid=#{menuId}
+		and ipav_user.valflg=1 
+		and ipav_role.valflg=1 
+	</select>
+	
+	<select id="queryMenuInfoByPath" parameterType="java.util.Map" resultType="java.util.Map">
+		select menuid,menuname,pathstr from ipav_menu 
+		<where>
+			<if test="pathStr!=null and pathStr!='' ">
+				pathstr=#{pathStr} 
+			</if>
+			and valflg=1 and (delflg is null or delflg != 'Y')
+		</where>
+	</select>
+</mapper>

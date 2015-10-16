@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+	"-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipav.system.dao.WageRecordMapper" >
+	<insert id="insertBatch" parameterType="java.util.List">
+		insert into ipav_wage_record (company_id,user_code,should_pay,net_income,wage_month,wage_time,ext_wage,update_user) values 
+		<foreach collection="list" item="item" index="index" separator="," >
+			(#{item.companyId},#{item.userCode},#{item.shouldPay},#{item.netIncome},#{item.wageMonth},#{item.wageTime},#{item.extWage},#{item.userId})
+		</foreach>
+	</insert>
+	
+	<update id="updateWageRecord" parameterType="java.util.Map">
+		update ipav_wage_record set status=0,update_user=#{updateUser},update_time=now(),
+		<trim suffixOverrides=",">
+			<if test="shouldPay!=null">
+				should_pay=#{shouldPay},
+			</if>
+			<if test="netIncome!=null">
+				net_income=#{netIncome},
+			</if>
+			<if test="extWage!=null">
+				ext_wage=#{extWage},
+			</if> 
+		</trim>
+		where id=#{id}
+	</update> 
+	
+	<update id="updateWageRecordStatus" parameterType="java.util.Map">
+		update ipav_wage_record set status=1 where status!=1 
+		<if test="companyId!=null">
+			and company_id=#{companyId}
+		</if>
+		<if test="userName!=null">
+			and exists(
+				select 1 from ipav_user 
+				where ipav_user.companyid=ipav_wage_record.company_id 
+				and ipav_user.userno=ipav_wage_record.user_code
+				and username=#{userName} 
+			)
+		</if>
+		<if test="orgno!=null and orgno>0">
+			and exists(
+				select 1 from ipav_user 
+				straight_join ipav_user_duty on ipav_user.userid=ipav_user_duty.user_id 
+				straight_join ipav_org on ipav_user_duty.org_id=ipav_org.orgid
+				where ipav_user.companyid=ipav_wage_record.company_id 
+				and ipav_user.userno=ipav_wage_record.user_code
+				and find_in_set(ipav_org.orgno,getOrgChildLst(#{orgno})) 
+			)
+		</if>
+		<if test="wageMonthCon!=null">
+			and ipav_wage_record.wage_month=#{wageMonthCon} 
+		</if> 
+	</update>
+	
+	<update id="updateWageRecordDel" parameterType="java.util.Map">
+		update ipav_wage_record set is_del=1,update_user=#{updateUser},update_time=now() where id in 
+		<foreach item="idItem" collection="ids" open="(" separator="," close=")">
+			#{idItem}
+		</foreach>
+	</update> 
+	
+	<delete id="deleteWageRecord" parameterType="java.util.Map">
+		delete from ipav_wage_record 
+		<trim prefix="where" prefixOverrides="and">
+			<if test="id!=null">
+				and id=#{id}
+			</if>
+			<if test="wageMonth!=null">
+				and wage_month=#{wageMonth}
+			</if>
+		</trim>
+	</delete> 
+	
+	<select id="getWageRecords" parameterType="java.util.Map" resultType="java.util.Map">
+		select ipav_user.userid,ipav_user.userno,ipav_user.username,
+		(case when ipav_org.orgname is null then '' else ipav_org.orgname end) as orgname,
+		ipav_wage_record.id,ipav_wage_record.should_pay,ipav_wage_record.net_income,ipav_wage_record.ext_wage,ipav_wage_record.wage_time,ipav_wage_record.wage_month 
+		from ipav_user 
+		left join ipav_org on ipav_user.orgid=ipav_org.orgid
+		straight_join ipav_wage_record on ipav_wage_record.company_id=ipav_user.companyid 
+		where ipav_wage_record.is_del=0 
+		and ipav_user.valflg=1 
+		and ipav_wage_record.user_code=ipav_user.userno 
+		<if test="id!=null">
+			and ipav_wage_record.id=#{id}
+		</if>
+		<if test="status!=null">
+				<choose>
+					<when test="status>=0">
+						and ipav_wage_record.status=#{status}
+					</when>
+					<otherwise>
+						and ipav_wage_record.status>0
+					</otherwise>
+				</choose>
+			</if>
+		<if test="userId!=null">
+			and ipav_user.userid=#{userId} 
+		</if>
+		<if test="companyId!=null">
+			and ipav_user.companyid=#{companyId}  
+		</if>
+		<if test="userCode!=null">
+			and ipav_user.userno=#{userCode} 
+		</if>
+		<if test="userName!=null">
+			and ipav_user.username=#{userName} 
+		</if>
+		<!-- <if test="orgId!=null">
+			and ipav_user.orgid=#{orgId} 
+		</if> -->
+		<if test="orgno!=null">
+			and find_in_set(ipav_org.orgno,getOrgChildLst(#{orgno})) 
+		</if>
+		<if test="wageMonthCon!=null">
+			and ipav_wage_record.wage_month=#{wageMonthCon} 
+		</if> 
+		<if test="minMonth!=null">
+			<![CDATA[and ipav_wage_record.wage_month>=]]>#{minMonth}
+		</if>
+		<if test="maxMonth!=null">
+			<![CDATA[and ipav_wage_record.wage_month<=]]>#{maxMonth}
+		</if>
+		order by ipav_wage_record.wage_month desc 
+		<if test="page!=null">
+			limit ${page},${pageSize}
+		</if>
+	</select>
+	
+	<select id="getWageRecordsCount" parameterType="java.util.Map" resultType="java.util.Map">
+		select count(1) as counts 
+		from ipav_user 
+		left join ipav_org on ipav_user.orgid=ipav_org.orgid
+		straight_join ipav_wage_record on ipav_wage_record.company_id=ipav_user.companyid 
+		where ipav_wage_record.is_del=0 
+		and ipav_user.valflg=1 
+		and ipav_wage_record.user_code=ipav_user.userno 
+		<trim> 
+			<if test="id!=null">
+				and ipav_wage_record.id=#{id}
+			</if>
+			<if test="status!=null">
+				<choose>
+					<when test="status>=0">
+						and ipav_wage_record.status=#{status}
+					</when>
+					<otherwise>
+						and ipav_wage_record.status>0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="userId!=null">
+				and ipav_user.userid=#{userId} 
+			</if>
+			<if test="companyId!=null">
+				and ipav_user.companyid=#{companyId}  
+			</if>
+			<if test="userCode!=null">
+				and ipav_user.userno=#{userCode} 
+			</if>
+			<if test="userName!=null">
+				and ipav_user.username=#{userName} 
+			</if>
+			<!-- <if test="orgId!=null">
+				and ipav_user.orgid=#{orgId} 
+			</if> -->
+			<if test="orgno!=null">
+				and find_in_set(ipav_org.orgno,getOrgChildLst(#{orgno})) 
+			</if>
+			<if test="wageMonthCon!=null">
+				and ipav_wage_record.wage_month=#{wageMonthCon}
+			</if>
+			<if test="minMonth!=null">
+				<![CDATA[and ipav_wage_record.wage_month>=]]>#{minMonth}
+			</if>
+			<if test="maxMonth!=null">
+				<![CDATA[and ipav_wage_record.wage_month<=]]>#{maxMonth}
+			</if>
+		</trim>
+		<!-- group by ipav_user.userid -->
+	</select>
+	
+	<select id="getWageRecordsSum" parameterType="java.util.Map" resultType="java.util.Map">
+		select sum(ipav_wage_record.should_pay) as should_pay_sum,sum(ipav_wage_record.net_income) as net_income_sum 
+		<!-- ,
+		ipav_wage_record.should_pay,ipav_wage_record.net_income,ipav_wage_record.ext_wage,ipav_wage_record.wage_time,ipav_wage_record.wage_month  -->
+		from ipav_user 
+		left join ipav_org on ipav_user.orgid=ipav_org.orgid
+		straight_join ipav_wage_record on ipav_wage_record.company_id=ipav_user.companyid 
+		where ipav_wage_record.is_del=0 
+		and ipav_user.valflg=1 
+		and ipav_wage_record.user_code=ipav_user.userno 
+		<trim> 
+			<if test="id!=null">
+				and ipav_wage_record.id=#{id}
+			</if>
+			<if test="status!=null">
+				<choose>
+					<when test="status>=0">
+						and ipav_wage_record.status=#{status}
+					</when>
+					<otherwise>
+						and ipav_wage_record.status>0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="userId!=null">
+				and ipav_user.userid=#{userId} 
+			</if>
+			<if test="companyId!=null">
+				and ipav_user.companyid=#{companyId}  
+			</if>
+			<if test="userCode!=null">
+				and ipav_user.userno=#{userCode} 
+			</if>
+			<if test="userName!=null">
+				and ipav_user.username=#{userName} 
+			</if>
+			<!-- <if test="orgId!=null">
+				and ipav_user.orgid=#{orgId} 
+			</if> -->
+			<if test="orgno!=null">
+				and find_in_set(ipav_org.orgno,getOrgChildLst(#{orgno})) 
+			</if>
+			<if test="wageMonthCon!=null">
+				and ipav_wage_record.wage_month=#{wageMonthCon}
+			</if>
+			<if test="minMonth!=null">
+				<![CDATA[and ipav_wage_record.wage_month>=]]>#{minMonth}
+			</if>
+			<if test="maxMonth!=null">
+				<![CDATA[and ipav_wage_record.wage_month<=]]>#{maxMonth}
+			</if>
+		</trim>
+	</select>
+	
+	<select id="getWageRecordsExtItems" parameterType="java.util.Map" resultType="java.util.Map">
+		select ipav_wage_record.ext_wage 
+		<!-- ,
+		ipav_wage_record.should_pay,ipav_wage_record.net_income,ipav_wage_record.ext_wage,ipav_wage_record.wage_time,ipav_wage_record.wage_month  -->
+		from ipav_user 
+		left join ipav_org on ipav_user.orgid=ipav_org.orgid
+		straight_join ipav_wage_record on ipav_wage_record.company_id=ipav_user.companyid 
+		where ipav_wage_record.is_del=0 
+		and ipav_user.valflg=1 
+		and ipav_wage_record.user_code=ipav_user.userno 
+		and ipav_wage_record.ext_wage!='' 
+		<trim> 
+			<if test="id!=null">
+				and ipav_wage_record.id=#{id}
+			</if>
+			<if test="status!=null">
+				<choose>
+					<when test="status>=0">
+						and ipav_wage_record.status=#{status}
+					</when>
+					<otherwise>
+						and ipav_wage_record.status>0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="userId!=null">
+				and ipav_user.userid=#{userId} 
+			</if>
+			<if test="companyId!=null">
+				and ipav_user.companyid=#{companyId}  
+			</if>
+			<if test="userCode!=null">
+				and ipav_user.userno=#{userCode} 
+			</if>
+			<if test="userName!=null">
+				and ipav_user.username=#{userName} 
+			</if>
+			<!-- <if test="orgId!=null">
+				and ipav_user.orgid=#{orgId} 
+			</if> -->
+			<if test="orgno!=null">
+				and find_in_set(ipav_org.orgno,getOrgChildLst(#{orgno})) 
+			</if>
+			<if test="wageMonthCon!=null">
+				and ipav_wage_record.wage_month=#{wageMonthCon}
+			</if>
+			<if test="minMonth!=null">
+				<![CDATA[and ipav_wage_record.wage_month>=]]>#{minMonth}
+			</if>
+			<if test="maxMonth!=null">
+				<![CDATA[and ipav_wage_record.wage_month<=]]>#{maxMonth}
+			</if>
+		</trim>
+	</select>
+	
+	<update id="updateWageRecordReaded" parameterType="java.util.Map">
+		update ipav_wage_record set status=2 where id=#{id} and status=1
+	</update>
+</mapper>

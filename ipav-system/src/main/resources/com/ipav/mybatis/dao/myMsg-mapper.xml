@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+	"-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipav.system.dao.MyMsgMapper" > 
+ 
+   <!-- 查询未读公告数量-->
+   <select id="queryUnreadNoticeCount" parameterType="String" resultType="INTEGER">
+	 SELECT COUNT(*)  FROM
+		ipav_notice AS n
+		INNER JOIN ipav_notice_sended AS s ON s.noticeid = n.id  
+	WHERE s.userid=#{userid} and s.isread=0 and n.isdelete=0 and n.istrue=1
+   </select>
+ 
+   <select id="queryUnreadNotices" parameterType="map" resultType="map">
+	SELECT
+		n.id,n.contentText,n.title,date_format(n.createdate,'%Y-%m-%d %T') as createdate,
+		ipav_user.picpath
+		FROM
+		ipav_notice_sended AS S
+		INNER JOIN ipav_notice AS n ON S.noticeid = n.id  
+		INNER JOIN ipav_user ON s.userid = ipav_user.userid
+		WHERE s.userid=#{userid} and s.isread=0  and n.isdelete=0 and n.istrue=1
+	ORDER BY  createdate DESC
+	 <if test="pageNo != null   and pageSize != null ">
+	  LIMIT #{pageNo},#{pageSize}
+	 </if>
+   </select>
+   
+   
+   
+   <!-- 查询自己未读工资长度 -->
+   <select id="quertUnreadWageCount" parameterType="String" resultType="INTEGER">
+   SELECT 
+	count(*)
+	FROM
+	ipav_wage_record
+	INNER JOIN ipav_user ON ipav_wage_record.company_id =
+	 ipav_user.companyid AND ipav_wage_record.user_code = ipav_user.userno
+	 where ipav_user.userid=#{userid}  AND status=1 and is_del=0
+   </select>
+   <!-- 查询未读工资信息 -->
+   <select id="quertUnreadWages" parameterType="map" resultType="map">
+   SELECT 
+		ipav_wage_record.id,  
+		date_format(ipav_wage_record.wage_time,'%Y-%m-%d %T') as contentText,
+		date_format(ipav_wage_record.update_time,'%Y-%m-%d %T') as createdate
+		
+		FROM
+		ipav_wage_record
+		INNER JOIN ipav_user ON ipav_wage_record.company_id =
+		 ipav_user.companyid AND ipav_wage_record.user_code = ipav_user.userno
+		 where ipav_user.userid=#{userid}  AND status=1 and is_del=0
+		ORDER BY createdate DESC
+	 <if test="pageNo != null   and pageSize != null ">
+	  LIMIT #{pageNo},#{pageSize}
+	 </if>
+   </select>
+</mapper>

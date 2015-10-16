@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+	"-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipav.system.dao.TopicImageMapper" >
+ 
+	<!-- 根据帖子id查询帖子图片 -->		
+	<select id="queryTopicImageList" parameterType="int" resultType="com.ipav.system.dao.TopicImageMapper">
+		select * from ipav_topic_image where topicid=#{topicid}
+	</select>	 
+	<!-- 插入图片信息 -->
+	<insert id="insertTopicImage" parameterType="com.ipav.system.dao.TopicImageMapper">
+		insert into ipav_topic_image(topicid,imagename,imagepath,createdate) values(#{sayid},#{imagename},#{imagepath},#{createdate})
+	</insert>
+	<!-- 删除图片信息 -->
+  <delete id="deleteImageById" parameterType="Long">
+        delete * from ipav_topic_image wherer imageid=#{imageid}
+  </delete>
+	
+</mapper>
