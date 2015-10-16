@@ -29,25 +29,6 @@
             <param name="ConversionPattern" value="%d [%t] %-5p [%c] - %m%n" />  
         </layout>  
     </appender>  
-  <!-- 
-    <appender name="IBatis" class="org.apache.log4j.ConsoleAppender">  
-        <param name="threshold" value="DEBUG" />
-        <layout class="org.apache.log4j.PatternLayout">  
-            <param name="ConversionPattern" value="%-4r [%t] %-5p %c %x - %m%n" />  
-        </layout>  
-        <filter class="org.apache.log4j.varia.LevelRangeFilter">  
-            <param name="LevelMin" value="DEBUG" />  
-            <param name="LevelMax" value="DEBUG" />  
-        </filter>  
-    </appender>  -->
-    
-      <!-- 
-    <appender name="UrlControllerMapping" class="org.apache.log4j.FileAppender">  
-        <param name="file" value="logs/ipav.log" />  
-        <layout class="org.apache.log4j.PatternLayout">  
-            <param name="ConversionPattern" value="%-5p: %c - %m%n" />  
-        </layout>  
-    </appender>   -->  
     
    <!-- [公共Appender] 每天产生一个新的的日志 -->  
   <appender name="DEFAULT-APPENDER" class="org.apache.log4j.DailyRollingFileAppender">  
