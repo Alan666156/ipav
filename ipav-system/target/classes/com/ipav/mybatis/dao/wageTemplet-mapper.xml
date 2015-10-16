@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+	"-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipav.system.dao.WageTempletMapper" >
+	<insert id="insertBasicWageTemplet" parameterType="java.util.Map">
+		<selectKey  resultType="int"  order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into ipav_wage_basic (company_id,real_wage_user,should_pay_user,update_user) values (#{companyId},#{realWageUser},#{shouldPayUser},#{userId})
+	</insert>
+	
+	<update id="updateBasicWageTemplet" parameterType="java.util.Map">
+		update ipav_wage_basic set 
+		<trim>
+			<if test="realWageUser!=null">
+				real_wage_user=#{realWageUser},
+			</if>
+			<if test="shouldPayUser">
+				should_pay_user=#{shouldPayUser},
+			</if>
+			<if test="realWageUser!=null">
+				update_user=#{userId}, 
+			</if>
+		</trim> 
+		update_time=now() 
+		where id=#{id}
+	</update>
+	
+	<select id="getBasicWageTemplet" parameterType="java.util.Map" resultType="java.util.Map">
+		<!-- select tmp.* from (
+			select ipav_wage_basic.id,ipav_wage_basic.real_wage_user,ipav_wage_basic.should_pay_user,ipav_wage_basic.update_user,
+			(case when ipav_wage_basic.should_pay_user=ipav_user.userid then ipav_user.username else '' end) as should_pay_username,
+			(case when ipav_wage_basic.real_wage_user=ipav_user.userid then ipav_user.username else '' end) as real_wage_username 
+			from ipav_wage_basic,ipav_user 
+			where (ipav_wage_basic.should_pay_user=ipav_user.userid or ipav_wage_basic.real_wage_user=ipav_user.userid) 
+			<if test="id!=null">
+				and id=#{id}
+			</if>
+			<if test="companyId!=null">
+				and company_id=#{companyId}
+			</if>
+		) tmp group by tmp.id -->
+		
+		select ipav_wage_basic.id,
+		(case when ipav_wage_basic.should_pay_user=ipav_user.userid then '应发工资' else '实发工资' end) as item_name,
+		ipav_user.userid as resolve_user,ipav_user.username,ipav_wage_basic.update_user 
+		from ipav_wage_basic,ipav_user,ipav_org 
+		where (ipav_wage_basic.real_wage_user=ipav_user.userid or ipav_wage_basic.should_pay_user=ipav_user.userid)
+		and ipav_user.orgid=ipav_org.orgid 
+		<if test="id!=null">
+			and id=#{id}
+		</if>
+		<if test="companyId!=null">
+			and company_id=#{companyId}
+		</if>
+	</select>
+	
+	<insert id="insertExtWageItem" parameterType="java.util.Map">
+		<selectKey  resultType="int"  order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into ipav_wage_ext (company_id,item_name,item_type,resolve_user,remark,update_user,is_send,sequence) 
+		select #{companyId},#{itemName},#{itemType},#{resolveUser},#{remark},#{userId},#{isSend},(select count(1) from ipav_wage_ext where company_id=#{companyId}) from dual
+	</insert>
+	
+	<update id="updateExtWageItem" parameterType="java.util.Map">
+		update ipav_wage_ext set 
+		<if test="itemName!=null">
+			item_name=#{itemName},
+		</if>
+		<if test="itemType!=null">
+			item_type=#{itemType},
+		</if>
+		<if test="resolveUser!=null">
+			resolve_user=#{resolveUser},
+		</if>
+		<if test="remark!=null">
+			remark=#{remark},
+		</if>
+		<if test="updateUser!=null">
+			update_user=#{updateUser},
+		</if>
+		<if test="status!=null">
+			status=#{status},
+		</if>
+		<if test="isSend!=null">
+			is_send=#{isSend},
+		</if>
+		update_time=now() where id=#{id}
+	</update>
+	
+	<update id="updateExtWageItemDel" parameterType="java.util.Map">
+		update ipav_wage_ext set is_del=1,update_user=#{updateUser},update_time=now() where id in 
+		<foreach item="idItem" collection="ids" open="(" separator="," close=")">
+			#{idItem}
+		</foreach>
+	</update>
+	
+	<update id="updateExtWageItemValid" parameterType="java.util.Map">
+		update ipav_wage_ext set status=1,update_user=#{updateUser},update_time=now() where id in 
+		<foreach item="idItem" collection="ids" open="(" separator="," close=")">
+			#{idItem}
+		</foreach>
+	</update>
+	
+	<update id="updateExtWageItemInvalid" parameterType="java.util.Map">
+		update ipav_wage_ext set status=0,update_user=#{updateUser},update_time=now() where id in 
+		<foreach item="idItem" collection="ids" open="(" separator="," close=")">
+			#{idItem}
+		</foreach>
+	</update>
+	
+	<update id="updateExtWageSequence" parameterType="java.util.Map">
+		update ipav_wage_ext set sequence=(
+			select sequence from (
+				select * from (select id,sequence from ipav_wage_ext where id in (#{id},#{otherId})) tmp
+			) tmp where ipav_wage_ext.id!=tmp.id
+		) 
+		where id in (#{id},#{otherId})
+	</update>
+	
+	<delete id="deleteExtWageItemById" parameterType="int">
+		delete from ipav_wage_ext where id=#{id}
+	</delete>
+	
+	<select id="getExtWageItems" parameterType="java.util.Map" resultType="java.util.Map">
+		select ipav_wage_ext.id,ipav_wage_ext.item_name,ipav_wage_ext.item_type,ipav_wage_ext.resolve_user,
+		ipav_user.username,ipav_wage_ext.remark,ipav_wage_ext.update_user,ipav_wage_ext.is_send,
+		ipav_wage_ext.status,ipav_wage_ext.sequence,
+		ipav_user.picpath,ipav_org.orgname,ipav_user.mobile,ipav_user.duty 
+		<!-- from ipav_wage_ext,ipav_user,ipav_org  
+		where ipav_wage_ext.resolve_user=ipav_user.userid 
+		and ipav_user.orgid=ipav_org.orgid  -->
+		from ipav_wage_ext 
+		left join ipav_user on ipav_wage_ext.resolve_user=ipav_user.userid 
+		left join ipav_org on ipav_user.orgid=ipav_org.orgid 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="id!=null">
+					and ipav_wage_ext.id=#{id} 
+				</if>
+				<if test="companyId!=null">
+					and ipav_wage_ext.company_id=#{companyId} 
+				</if>
+				<if test="status!=null and status>=0">
+					and ipav_wage_ext.status=#{status} 
+				</if>
+				<if test="isSend!=null">
+					and ipav_wage_ext.is_send=#{isSend}
+				</if>
+				<if test="isDel!=null">
+					and ipav_wage_ext.is_del=#{isDel}
+				</if>
+			</trim> 
+		</where>
+		order by ipav_wage_ext.sequence asc 
+		<if test="page!=null">
+			limit ${page},${pageSize}
+		</if>
+	</select>
+	
+</mapper>

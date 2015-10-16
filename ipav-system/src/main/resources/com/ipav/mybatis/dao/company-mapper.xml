@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+	"-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipav.system.dao.CompanyMapper" >
+	
+	<resultMap id="companyResultMap" type="com.ipav.system.entity.IpavcompanyEntity">
+		 <result column="companyid" property="companyid" jdbcType="BIGINT" />
+		 <result column="companyname" property="companyname" jdbcType="VARCHAR" />
+		 <result column="abbreviation" property="abbreviation" jdbcType="VARCHAR" />
+		 <result column="contacts" property="contacts" jdbcType="VARCHAR" />
+		 <result column="sex" property="sex" jdbcType="VARCHAR" />
+		 <result column="telephone" property="telephone" jdbcType="VARCHAR" />
+		 <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+		 <result column="email" property="email" jdbcType="VARCHAR" />
+		 <result column="fax" property="fax" jdbcType="VARCHAR" />
+		 <result column="companytype" property="companytype" jdbcType="VARCHAR" />
+		 <result column="bullerdate" property="bullerdate" jdbcType="VARCHAR" />
+		 <result column="province" property="province" jdbcType="VARCHAR" />
+		 <result column="city" property="city" jdbcType="VARCHAR" />
+		 <result column="address" property="address" jdbcType="VARCHAR" />
+		 <result column="postcode" property="postcode" jdbcType="VARCHAR" />
+		 <result column="webaddress" property="webaddress" jdbcType="VARCHAR" />
+		 <result column="createdate" property="createdate" jdbcType="VARCHAR" />
+		 <result column="creater" property="creater" jdbcType="VARCHAR" />  
+		 <result column="duty" property="duty" jdbcType="VARCHAR" />
+		 <result column="attetime" property="attetime" jdbcType="VARCHAR" />  
+		 <result column="attstuts" property="attstuts" jdbcType="VARCHAR" />  
+	</resultMap>
+	
+	<!-- -->
+	<select id="queryCompanyList" resultMap="companyResultMap" parameterType="map">
+		select * from  IPAV_COMPANY 
+		<where>
+			<choose>
+				<when test="attstuts !=null and attstuts !=''">attstuts=#{attstuts}</when>
+				<otherwise>attstuts!='0'</otherwise>
+			</choose>
+		</where>
+<!-- 		<if test="startrows!=null and startrows!='' and endrows!=null and endrows!=''"> -->
+<!-- 			limit #{startrows},#{endrows} -->
+<!-- 		</if>		 -->
+	<if test="beginRow!=null and pageSize!=null">limit ${beginRow},${pageSize}</if>
+	</select>
+	
+ 	<select id="queryCompanyByid" parameterType="String" resultMap="companyResultMap">
+		select * from  IPAV_COMPANY where companyid =#{companyid}
+	</select>
+	
+	<update id="updateCompany" parameterType="com.ipav.system.entity.IpavcompanyEntity">
+		update IPAV_COMPANY set companyname =#{companyname},abbreviation = #{abbreviation},contacts=#{contacts},
+			sex=#{sex},telephone=#{telephone},mobile=#{mobile},email=#{email},fax=#{fax},companytype=#{companytype},
+			bullerdate=#{bullerdate},province=#{province},city=#{city},address=#{address},postcode=#{postcode},
+			webaddress=#{webaddress},duty=#{duty}
+		where companyid = #{companyid}
+	</update>
+	
+	<update id="updateCompanyAtte" parameterType="map">
+		update IPAV_COMPANY set attstuts =#{attstuts}		
+		<if test="attetime!=null">, attetime =#{attetime}</if>			
+		where companyid = #{companyid}
+	</update>
+	
+	<insert id="insertCompany" parameterType="com.ipav.system.entity.IpavcompanyEntity">
+		insert into IPAV_COMPANY(mobile,email,companyname,createdate,creater,attstuts) 
+		values(#{mobile},#{email},#{companyname},#{createdate},#{creater},"0")
+		<selectKey  resultType="lONG"  order="AFTER" keyProperty="companyid">
+			SELECT LAST_INSERT_ID() AS　ID
+		</selectKey>
+	</insert>
+	
+	<insert id="insertCompanyAtte" parameterType="com.ipav.system.entity.IpavcomatteEntity">
+		insert into IPAV_COMPANYATTE(reason,companyid,attedate,atteuser) 
+		values(#{reason},#{companyid},#{attedate},#{atteuser})
+	</insert>
+	
+	<select id="queryCompanyAtte" parameterType="java.util.Map" resultType="java.util.Map">
+		select reason from ipav_companyatte where companyid=#{companyid} order by id desc limit 0 ,1
+	</select>
+	
+	<select id="queryProvince" resultType="java.util.Map">
+		select * from ipav_province
+	</select>
+	
+	<select id="queryCitys" parameterType="java.lang.String" resultType="java.util.Map">
+		select * from ipav_city where province_id = #{pid}
+	</select>
+	<!-- 获取公司列表总长度 -->
+	<select id="getCompanySize" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select count(*) from  ipav_company 
+		<where>
+			<if test="attstuts !=null and attstuts !=''">attstuts=#{attstuts}</if>
+		</where>
+	</select>
+	<!-- 查询选项 TD: gongyh -->
+	<select  id="queryPparameterByType" parameterType="java.lang.String" resultType="map">
+	  select  ipavname  ,ipavcode  from ipav_parameter    where  ipav_parameter.IPAVTYPE= #{type}
+	</select>
+</mapper>

@@ -1,0 +1,94 @@
+@charset "utf-8";
+/* CSS Document */
+html,body,div,ul,li,ol,p,form,input,span,a,img,h1,h2,h3,h4,del,dl,dd,dt,textarea,label,fieldset{margin:0px;	padding:0px;}
+body{font-family:"微软雅黑","宋体";  font-size:13px; overflow-x:hidden;position:relative; height:100%;  color:#3e4d4d; }
+*:focus {outline: none} 
+.abc:focus{ outline:none } 
+input{ font-family:"微软雅黑";  color:#3e4d4d; }
+select{ font-family:"微软雅黑";color:#3e4d4d;}
+textarea{ font-family:"微软雅黑";color:#3e4d4d;}
+ol li{ list-style-type:none;}
+ul{ list-style-type:none;}
+a{ text-decoration:none;}
+img{ border:0px;}
+h2{ display:block; line-height:50px; text-align:center; margin-top:10px;}
+h4{ font-weight:normal; text-align:center; display:block; margin-bottom:20px;}
+.fl{ float:left;}
+.fr{ float:right;}
+.ml5{ margin-left:5px;}
+.ml10{ margin-left:10px;}
+.ml15{ margin-left:15px;}
+.ml20{ margin-left:20px;}
+.ml30{ margin-left:30px;}
+.ml40{ margin-left:40px;}
+.mt5{ margin-top:5px;}
+.mt10{ margin-top:10px;}
+.mt15{ margin-top:15px;}
+.mt20{ margin-top:20px;}
+.mt30{ margin-top:30px;}
+.mt40{ margin-top:40px;}
+.mr5{ margin-right:5px;}
+.mr10{ margin-right:10px;}
+.mr15{ margin-right:15px;}
+.mr20{ margin-right:20px;}
+.mr30{ margin-right:30px;}
+.mb10{ margin-bottom:10px;}
+.mb15{ margin-bottom:15px;}
+.mb20{ margin-bottom:25px;}
+.mb30{ margin-bottom:30px;}
+.mb40{ margin-bottom:40px;}
+.pdt10{ padding-top:10px;}
+.pdt15{ padding-top:15px;}
+.pdt25{ padding-top:25px;}
+.lh27{ line-height:27px;}
+.lh40{ line-height:40px;}
+.dn{ display:none;}
+.qhs{ color:#99a8a8;}
+.b{ font-weight:bold;}
+
+/**弹出框样式 style***/
+.tctitle{ line-height:40px; color:#fff; text-indent:15px; width:100%; height:40px; background:#48a8cf; font-size:15px;}
+.tctitle a{ float:right; width:19px; height:19px; background:url(../images/systems/close1.jpg); display:block; margin-top:10px; margin-right:10px;}
+.tctitle a:hover{ background:url(../images/systems/close2.jpg);} 
+.four{ margin-top:-4px;}
+.foure{ margin-bottom:-4px;}
+.simalpha{display:none;position:absolute;width:100%;height:100%;background:#000;top:0;left:0;filter:alpha(Opacity=50);-moz-opacity:0;opacity:0.4;}
+.simaltBox{position:fixed;_position:absolute;border:5px solid #fff;background:#FFF;text-align:left; width:716px; height:412px; display:none;}
+.simaltBoxs{ width:714px; height:410px; background:#fff; border:1px solid #48a8cf; overflow:hidden;}
+.simaltBox2{position:fixed;_position:absolute;border:5px solid #fff;background:#FFF;text-align:left; width:274px; height:410px; display:none;}
+.simaltBoxs2{ width:272px; height:408px; background:#fff; border:1px solid #48a8cf; overflow:hidden;}
+.simaltBox3{position:fixed;_position:absolute;border:5px solid #fff;background:#FFF;text-align:left; width:404px; height:171px; display:none;}
+.simaltBoxs3{ width:402px; height:169px; background:#fff; border:1px solid #48a8cf; overflow:hidden;}
+.simaltBox4{position:fixed;_position:absolute;border:5px solid #fff;background:#FFF;text-align:left; width:848px; min-height:270px;display:none;}
+.simaltBoxs4{ width:846px; min-height:268px; background:#fff; border:1px solid #48a8cf; overflow:hidden;}
+
+.jglistBox{ width:207px; height:296px; border:1px solid #d9d9d9; margin-left:9px; float:left;}
+.ten{ width:100%; height:10px;}
+.jgserachBox{ background:url(../images/platform/altserach.png); width:188px; height:30px; margin:0px auto; margin-top:10px;}
+.jgserachtext{ width:155px; height:28px; border:0px; float:left; margin-top:1px; margin-left:5px;}
+.jgserachbut{ width:28px; float:right; height:30px; display:block;}
+.treeBox{ width:187px; height:237px;  overflow:scroll; overflow-X:auto;overflow-Y:auto; margin-top:9px; margin-left:9px;} 
+.jguserlistBox{ width:476px; height:296px; border:1px solid #d9d9d9; margin-right:9px; float:right; overflow:hidden;}
+.jguserlist{width:476px; height:296px; overflow:scroll; overflow-X:hidden;overflow-Y:auto;}
+.jguserulinfo{ margin-top:10px;}
+.jguserulinfo li { width:80px; height:27px; background:url(../images/platform/altts.png); float:left; margin-left:10px; margin-bottom:10px;}
+.jguserulinfo li div{ width:63px; height:27px; text-indent:6px; line-height:27px; color:#08384a; overflow:hidden; float:left;white-space:nowrap; text-overflow:ellipsis; -o-text-overflow:ellipsis; }
+.jguserulinfo li a{ width:15px; height:27px; display:block; float:left;}
+.jgtcbutBox{ width:100%; height:45px; margin:0px auto;}
+ 
+.jglistxzBox{ width:252px; height:295px; border:1px solid #d9d9d9; margin:0px auto; overflow:hidden;}
+.jglistxz{ width:232px; height:275px; overflow:scroll; overflow-X:auto;overflow-Y:auto; margin-left:10px; margin-top:10px; float:left;}
+.yes{ width:65px; height:30px; color:#fff; border:0px; background:url(/pages/images/platform/yes.png); cursor:pointer;}
+.no{ width:65px; height:30px; color:#3e4d4d; border:0px; background:url(/pages/images/platform/no.png); cursor:pointer; }
+.alertBox{ height:65px;}
+.alertmsg{ margin-left:20px; margin-right:20px; line-height:22px; text-indent:2em;}
+.ptx{ width:100%; height:15px;}
+
+
+
+
+
+
+
+
+

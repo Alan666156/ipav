@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+	"-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipav.system.dao.SayMapper">
+ 
+	<!-- says resultmap -->
+	<resultMap id="sayResultMap" type="com.ipav.system.entity.IpavsayEntity">
+		<id column="sayid" property="sayid" />
+		<result column="sayuserid" property="sayuserid" />
+		<result column="sayusername" property="sayusername" />
+		<result column="saycontent" property="saycontent" />
+		<result column="saydate" property="saydate" />
+		<result column="permission" property="permission" />
+		<collection   property="comments"  resultMap="commentResultMap"/> 
+	</resultMap>
+
+	 	<!-- comments resultmap -->
+	<resultMap id="commentResultMap" type="com.ipav.system.entity.IpavcommentEntity">
+		<id column="commentid" property="commentid" />
+		<result column="actionid" property="actionid" />
+		<result column="commuserid" property="commuserid" />
+		<result column="commusername" property="commusername" />
+		<result column="commtype" property="commtype" />
+		<result column="commcontent" property="commcontent" />
+		<result column="commdate" property="commdate" />
+		<result column="isdelete" property="isdelete" />
+		<collection property="replys" resultMap="replyResultMap" />
+	</resultMap>
+
+	<!-- replys resultmap -->
+	<resultMap id="replyResultMap" type="com.ipav.system.entity.IpavreplyEntity">
+		<id column="replyid" property="replyid" />
+		<result column="commentid" property="commentid" />
+		<result column="replyuserid" property="replyuserid" /> 
+		<result column="bereplyid" property="bereplyid" /> 
+		<result column="replycontent" property="replycontent" />
+		<result column="replydate" property="replydate" />
+	</resultMap>
+ 
+ 
+
+	<!-- 查询用户同事说说 参数:companyid orgid userid-->
+	<select id="querymyReleaseSays" parameterType="map" resultMap="sayResultMap">
+  SELECT
+		  i.username as sayusername,
+		  s.sayid,s.sayuserid, s.saycontent,date_format(s.saydate,'%Y-%m-%d %T')   AS saydate
+			FROM	ipav_say AS s   
+			INNER JOIN ipav_user AS i ON s.sayuserid = i.userid and s.isdelete=0	and s.sayuserid= #{userid}
+  ORDER BY saydate DESC     LIMIT #{pageNo},#{pageSize}
+			</select>
+
+	<!-- 查询用户同事说说 参数:companyid orgid userid-->
+	<select id="querySayList" parameterType="map" resultMap="sayResultMap">
+   SELECT
+		  i.username as sayusername,
+		  s.sayid,s.sayuserid, s.saycontent,date_format(s.saydate,'%Y-%m-%d %T')   AS saydate
+			FROM	ipav_say AS s   
+			INNER JOIN ipav_user AS i ON s.sayuserid = i.userid and s.isdelete=0
+			and  (s.sayuserid in(select u.userid from ipav_user as u where u.companyid=#{companyid} and permission=1) 
+		    	or (#{userid} in(select ipav_say_user.userid from ipav_say_user where  ipav_say_user.sayid = s.sayid)  	 and permission=2) 
+		    	or (permission = 2 and s.sayuserid=#{userid})
+		    	or s.permission = 3 and s.sayuserid=#{userid}) 
+	  ORDER BY saydate DESC     LIMIT #{pageNo},#{pageSize}
+			</select>
+	<!-- app查询用户同事说说 参数:companyid orgid userid-->
+	<select id="appQuerySayList" parameterType="map" resultMap="sayResultMap">
+   SELECT
+		  i.username as sayusername,
+		  s.sayid,s.sayuserid, s.saycontent,date_format(s.saydate,'%Y-%m-%d %T')   AS saydate
+			FROM	ipav_say AS s   
+			INNER JOIN ipav_user AS i ON s.sayuserid = i.userid and s.isdelete=0
+			and  (s.sayuserid in(select u.userid from ipav_user as u where u.companyid=#{companyid} and permission=1) 
+		    	or (#{userid} in(select ipav_say_user.userid from ipav_say_user where  ipav_say_user.sayid = s.sayid)  	 and permission=2) 
+		    	or (permission = 2 and s.sayuserid=#{userid})
+		    	or s.permission = 3 and s.sayuserid=#{userid})
+		    	<if test="sid!=0">
+		    	 <![CDATA[ and  s.sayid < #{sid}]]>
+		    	</if>
+	  ORDER BY saydate DESC     LIMIT 0,#{pageSize}
+			</select>
+			
+	<!-- 查询用户帖子列表  参数: sayuserid -->
+	<select id="queryUserSayList" parameterType="map" resultType="map">
+	   	 select tmp.* from (
+	  	(SELECT
+			ipav_user.username as sayusername,	ipav_say.sayid, 
+			ipav_say.sayuserid,ipav_say.saycontent,
+			c.commentid, date_format(c.commdate,'%Y-%m-%d %T')   AS saydate,ipav_user.picpath as sayuserimg
+			FROM
+			ipav_say
+			INNER JOIN ipav_user ON ipav_say.sayuserid = ipav_user.userid and ipav_say.isdelete=0
+			INNER JOIN ipav_comment as c ON c.actionid=ipav_say.sayid  and c.actiontype=1
+			and ipav_say.sayuserid=#{userid} and c.commuserid!=#{userid}  and c.isdelete=0)  ORDER BY saydate  desc 
+			UNION
+		(SELECT
+			ipav_user.username as sayusername ,s.sayid, s.sayuserid,
+			s.saycontent,c.commentid, date_format(r.replydate,'%Y-%m-%d %T')  as saydate,ipav_user.picpath as sayuserimg
+			FROM
+			ipav_say as s
+			INNER JOIN ipav_user   ON s.sayuserid = ipav_user.userid and s.isdelete=0
+			INNER JOIN (ipav_comment as c  INNER JOIN ipav_reply as r 
+			on c.commentid =r.commentid ) 
+			ON c.actionid=s.sayid  and c.actiontype=1  and c.isdelete=0 
+			and r.bereplyid =#{userid} and r.replyuserid !=#{userid})  ORDER BY saydate  desc 
+         
+    ) tmp group by tmp.commentid  ORDER BY saydate  desc
+          LIMIT #{pageNo},#{pageSize}
+	</select>
+	
+ 
+			
+	<!--根据ID查说说 参数: sayid-->
+	<select id="querySayById" parameterType="Long" resultMap="sayResultMap">
+		 SELECT
+				i.username AS sayusername,s.sayid,
+				s.sayuserid,s.saycontent,s.saydate
+				FROM	ipav_say AS s
+				INNER JOIN ipav_user AS i ON s.sayuserid = i.userid 
+				where     s.sayid=#{sayid}
+				ORDER BY s.saydate DESC	
+	</select>
+	
+	<!-- 查询所有说说可见性,即权限列表 参数:sayid,userid-->
+	<select id="queryPermissionCount" parameterType="map"	resultType="INTEGER">
+		select count(1) from IPAV_SAY_USER where sayid=#{sayid} and	userid =#{userid}
+	</select>
+
+	<!-- 插入说说 -->
+	<insert id="insertSay" parameterType="com.ipav.system.entity.IpavsayEntity">
+		<selectKey resultType="lONG" keyProperty="sayid">	select	last_insert_id() as id</selectKey>
+		insert into
+		ipav_say(sayuserid,sayusername,saycontent,saydate,permission,isdelete)
+		values(#{sayuserid},#{sayusername},#{saycontent},#{saydate},#{permission},0)
+	</insert>
+
+	<!-- 插入说说指定查看人 参数:sayid,userid-->
+	<insert id="insertSayUsers" parameterType="map">
+		insert into ipav_say_user(sayid,userid) values(#{sayid},#{userid})
+	</insert>
+
+	<!-- 删除说说 参数:sayid-->
+	<update id="deleteSay" parameterType="Long" >
+	    update ipav_say set  ipav_say.isdelete=1 where ipav_say.sayid=#{sayid}
+	</update>
+</mapper>

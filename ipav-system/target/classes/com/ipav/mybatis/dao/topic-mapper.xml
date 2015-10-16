@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+	"-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipav.system.dao.TopicMapper">
+ 	<!-- topic  map -->
+	<resultMap id="topicMap" type="com.ipav.system.entity.IpavTopicEntity">		 
+		<result column="tid" property="tid" /> 
+		<result column="userid" property="userid" />
+		<result column="username" property="username" />
+		<result column="uimageUrl" property="uimageUrl" />
+		<result column="topictype" property="topictype" />
+		<result column="topictitle" property="topictitle" />
+		<result column="topiccontent" property="topiccontent" />
+		<result column="contacttype" property="contacttype" />
+		<result column="createtime" property="createtime" />
+		<result column="lastposttime" property="lastposttime" /> 
+	    <collection property="images" resultMap="topicImagetMap" />
+	</resultMap>
+	<!-- TopicImage Map -->
+	<resultMap id="topicImagetMap" type="com.ipav.system.entity.IpavTopicImageEntity"> 
+ 		 <result column="imageid" property="imageid" /> 
+		 <result column="topicid" property="topicid"  /> 
+ 		 <result column="imagename" property="imagename" /> 
+ 		 <result column="imagepath" property="imagepath"   /> 
+ 		 <result column="createdate" property="createdate"  />
+ 	</resultMap> 
+ 	
+ 	<!-- comments resultmap -->
+	<resultMap id="commentResultMap" type="com.ipav.system.entity.IpavcommentEntity">
+		<id column="cid" property="commentid" />
+		<result column="actionid" property="actionid" />
+		<result column="commuserid" property="commuserid" />
+		<result column="commusername" property="commusername" />
+		<result column="commtype" property="commtype" />
+		<result column="commcontent" property="commcontent" />
+		<result column="commdate" property="commdate" />
+		<result column="isdelete" property="isdelete" />
+		<collection property="replys" resultMap="replyResultMap" />
+	</resultMap>
+
+	<!-- replys resultmap -->
+	<resultMap id="replyResultMap" type="com.ipav.system.entity.IpavreplyEntity">
+		<id column="rid" property="replyid" />
+		<result column="commentid" property="commentid" />
+		<result column="replyuserid" property="replyuserid" />
+		<result column="replyusername" property="replyusername" />
+		<result column="bereplyid" property="bereplyid" />
+		<result column="bereplyusername" property="bereplyname" />
+		<result column="replycontent" property="replycontent" />
+		<result column="replydate" property="replydate" />
+	</resultMap>
+
+  <!-- 查询帖子(全部公开的) -->
+	<select id="queryTopics"   resultMap="topicMap">
+	SELECT i.imageid,i.imagename,i.imagepath,i.topicid,
+			i.createdate,t.tid,t.userid, t.topictype,
+			t.topictitle,t.topiccontent,t.contacttype,
+			t.createtime,t.lastposttime,u.username,u.picpath as uimageUrl
+    FROM   ipav_topic AS t
+    LEFT JOIN ipav_topic_image AS i ON t.tid = i.topicid
+    INNER JOIN ipav_user AS u ON t.userid = u.userid 
+    where t.isdelete=0  AND t.isshare=0
+	</select> 
+	
+ <!-- 查询用户贴 -->
+ <select id="queryTopicsByUserId"  parameterType="String"   resultMap="topicMap">
+	SELECT i.imageid,i.imagename,i.imagepath,i.topicid,
+			i.createdate,t.tid,t.userid, t.topictype,
+			t.topictitle,t.topiccontent,t.contacttype,
+			t.createtime,t.lastposttime,u.username,u.picpath as uimageUrl
+    FROM   ipav_topic AS t
+    LEFT JOIN ipav_topic_image AS i ON t.tid = i.topicid
+    INNER JOIN ipav_user AS u ON t.userid = u.userid  
+    where t.isdelete=0   AND t.userid =#{userid}
+	</select> 
+
+<!-- 根据帖子id查询贴 -->
+	<select id="queryTopicById" parameterType="int"  resultMap="topicMap">
+		SELECT  t.tid,t.userid,t.topictype,t.topictitle,t.topiccontent,
+            t.contacttype,t.createtime,t.lastposttime,t.isshare,
+            i.imageid,i.topicid,i.imagename,i.imagepath,i.createdate,
+            t.isdelete,u.username ,u.picpath as uimageUrl
+        FROM
+            ipav_topic AS t
+			LEFT  JOIN  ipav_topic_image AS i ON t.tid = i.topicid
+			INNER JOIN ipav_user AS u ON t.userid = u.userid
+    WHERE t.tid = #{topicid}
+	</select>
+  <!-- 插入帖子 -->	
+	<insert id="insertTopic" parameterType="com.ipav.system.entity.IpavTopicEntity"  >
+	insert into ipav_topic(
+    ipav_topic.userid,
+    ipav_topic.topictype,
+    ipav_topic.topictitle,
+    ipav_topic.topiccontent,
+    ipav_topic.contacttype,
+    ipav_topic.createtime,
+    ipav_topic.lastposttime,
+    ipav_topic.isshare,
+    ipav_topic.isdelete)
+    values(#{userid},#{topictype},#{topictitle},#{topiccontent},
+    #{contacttype},#{createtime},#{lastposttime},#{isshare},#{isdelete})
+	</insert>
+
+   <!--更新帖子信息  -->	
+   <update id="updateTopic" parameterType="com.ipav.system.entity.IpavTopicEntity"  >
+	   UPDATE ipav_topic set 
+	    ipav_topic.userid =#{ipav_topic.userid},
+		ipav_topic.topictype = #{topictype},
+		ipav_topic.topictitle =#{topictitle},
+		ipav_topic.topiccontent =#{topiccontent},
+		ipav_topic.contacttype =#{contacttype},
+		ipav_topic.createtime =#{createtime},
+		ipav_topic.lastposttime =#{lastposttime},
+		ipav_topic.isshare =#{isshare},
+		ipav_topic.isdelete =#{isdelete} 
+		where ipav_topic.topicid =#{ipav_topic.topicid}
+   </update>
+   
+   <!-- 删除帖子 -->
+   <update id="delTopic" parameterType="int" >
+   UPDATE ipav_topic set isdelete=1 where tid=#{tid}
+   </update>
+   
+   <!-- 根据帖子id查询评论 -->
+   <select id="queryCommentByAid" parameterType="java.util.Map" resultMap="commentResultMap">
+   SELECT  c.commentid AS cid,c.actiontype,c.actionid,
+		   c.commuserid,c.commtype,c.commcontent,
+		   c.commdate,u.username as commusername,r.replyid AS rid,
+		   r.commentid,r.replyuserid,r.replyusername,r.bereplyid,
+		   r.bereplyname,r.replycontent,r.isdelete,r.replydate
+  FROM     ipav_comment AS c
+	 LEFT JOIN ipav_reply AS r ON r.commentid = c.commentid AND r.isdelete=0 
+    INNER JOIN ipav_user AS u ON u.userid = c.commuserid  
+	WHERE c.actionid=#{tid} and actiontype=#{actiontype} and c.isdelete=0 and commtype=#{commtype}
+   </select>
+</mapper>

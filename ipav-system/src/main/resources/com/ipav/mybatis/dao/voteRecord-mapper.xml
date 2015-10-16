@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+	"-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipav.system.dao.VoteRecordMapper" >
+	<insert id="insertVoteRecord" parameterType="java.util.Map">
+		insert into ipav_vote_record (item_id,user_id,score) 
+		select tmp.* from (
+		<foreach collection="list" item="item" index="index" separator=" union all " >
+			select #{item.id},#{userId},#{item.score} from dual 
+		</foreach> 
+		) tmp where exists(
+			select 1 from ipav_vote where ipav_vote.status=2 and ipav_vote.min_num>=#{counts} and ipav_vote.id=#{voteId}
+		)
+	</insert>
+	
+	<select id="voteHasCasted" parameterType="int" resultType="java.util.Map">
+		select 1 as casted from ipav_vote_item 
+		straight_join ipav_vote_record on ipav_vote_item.id=ipav_vote_record.item_id 
+		where ipav_vote_item.vote_id=#{voteId}
+	</select>
+	
+	<update id="updateVoteRecordDel" parameterType="java.util.Map">
+		update ipav_vote_record,ipav_vote_item set ipav_vote_record.status=0 
+		where ipav_vote_record.user_id=#{userId} 
+		and ipav_vote_record.item_id=ipav_vote_item.id 
+		and ipav_vote_item.vote_id=#{voteId}
+	</update> 
+	
+	<delete id="deleteVoteRecord" parameterType="java.util.Map">
+		delete from ipav_vote_record where ipav_vote_record.user_id=#{userId} 
+		and exists(
+			select 1 from ipav_vote_item where ipav_vote_item.vote_id=#{voteId} 
+			and ipav_vote_record.item_id=ipav_vote_item.id 
+		)
+	</delete>
+	
+	<select id="getCastedDetail" parameterType="java.util.Map" resultType="java.util.Map">
+		select ipav_vote_record.item_id,ipav_vote_item.item_name,ipav_vote_record.score 
+		from ipav_vote_record,ipav_vote_item
+		where ipav_vote_record.item_id=ipav_vote_item.id 
+		and ipav_vote_record.status=1
+		and ipav_vote_record.user_id=#{userId} 
+		and ipav_vote_item.vote_id=#{voteId}
+	</select>
+</mapper>

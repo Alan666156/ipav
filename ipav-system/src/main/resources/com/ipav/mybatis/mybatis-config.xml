@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE configuration PUBLIC  
+        "-//mybatis.org//DTD Config 3.0//EN"  
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">  
+<configuration>  
+	<!--<settings>
+		  <setting name="logImpl" value="LOG4J" />
+	</settings>-->
+	<mappers>  
+		<mapper resource="com/ipav/mybatis/dao/company-mapper.xml"/>
+		<mapper resource="com/ipav/mybatis/dao/image-mapper.xml"/>
+		<mapper resource="com/ipav/mybatis/dao/menu-mapper.xml"/>
+		<mapper resource="com/ipav/mybatis/dao/msg-mapper.xml"/>
+		<mapper resource="com/ipav/mybatis/dao/user-mapper.xml"/>
+		<mapper resource="com/ipav/mybatis/dao/wageRecord-mapper.xml"/>
+		<mapper resource="com/ipav/mybatis/dao/wageTemplet-mapper.xml"/>
+		<mapper resource="com/ipav/mybatis/dao/role-mapper.xml"/>
+		<mapper resource="com/ipav/mybatis/dao/say-mapper.xml"/>
+		<mapper resource="com/ipav/mybatis/dao/commentReply-mapper.xml"/>
+		<mapper resource="com/ipav/mybatis/dao/org-mapper.xml"/>
+		<mapper resource="com/ipav/mybatis/dao/actionFile-mapper.xml"/>
+		<mapper resource="com/ipav/mybatis/dao/notice-mapper.xml"/>
+		<mapper resource="com/ipav/mybatis/dao/duty-mapper.xml"/>
+		<mapper resource="com/ipav/mybatis/dao/vote-mapper.xml"/>
+		<mapper resource="com/ipav/mybatis/dao/voteItem-mapper.xml"/>
+		<mapper resource="com/ipav/mybatis/dao/voteAuthor-mapper.xml"/>
+		<mapper resource="com/ipav/mybatis/dao/voteRecord-mapper.xml"/>
+		<mapper resource="com/ipav/mybatis/dao/workPlatform-mapper.xml"/>
+		<mapper resource="com/ipav/mybatis/dao/labourCompany-mapper.xml"/>
+		<mapper resource="com/ipav/mybatis/dao/topic-mapper.xml"/>
+		<mapper resource="com/ipav/mybatis/dao/topicImage-mapper.xml"/>
+		<mapper resource="com/ipav/mybatis/dao/myMsg-mapper.xml"/>
+		<mapper resource="com/ipav/mybatis/dao/unreadyMsg-mapper.xml"/>
+	</mappers>  
+</configuration>  

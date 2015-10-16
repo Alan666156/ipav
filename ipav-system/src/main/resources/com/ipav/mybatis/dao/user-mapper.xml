@@ -1,0 +1,588 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+	"-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipav.system.dao.UserMapper" >
+	<resultMap id="userResultMap" type="com.ipav.system.entity.IpavuserEntity">
+		 <result column="userid" property="userid" jdbcType="VARCHAR" />
+		 <result column="companyid" property="companyid" jdbcType="VARCHAR" />
+		 <result column="userno" property="userno" jdbcType="VARCHAR" />
+		 <result column="username" property="username" jdbcType="INTEGER" />
+		 <result column="sex" property="sex" jdbcType="VARCHAR" />
+		 <result column="orgid" property="orgid" jdbcType="VARCHAR" />
+		 <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+		 <result column="email" property="email" jdbcType="VARCHAR" />
+		 <result column="valflg" property="valflg" jdbcType="VARCHAR" />
+		 <result column="password" property="password" jdbcType="VARCHAR" />
+		 <result column="regtype" property="regtype" jdbcType="VARCHAR" />
+		 <result column="createdate" property="createdate" jdbcType="VARCHAR" />
+		 <result column="creater" property="creater" jdbcType="VARCHAR" />  
+		 <result column="duty" property="duty" jdbcType="INTEGER" /> 
+		 <result column="exorgno" property="exorgno" jdbcType="VARCHAR" /> 
+		 <result column="exduty" property="exduty" jdbcType="VARCHAR" /> 
+		 <result column="picpath" property="picpath" jdbcType="VARCHAR" /> 
+		 <result column="sysid" property="sysid" jdbcType="VARCHAR" /> 
+		 <result column="address" property="address" jdbcType="VARCHAR" /> 
+		 <result column="phone" property="phone" jdbcType="VARCHAR" /> 
+		 <result column="chefflg" property="chefflg" jdbcType="VARCHAR" /> 
+		 <result column="delflg" property="delflg" jdbcType="VARCHAR" />
+		 <result column="labour_belong" property="labourBelong" jdbcType="INTEGER" /> 
+		 <result column="platform_id" property="platform" jdbcType="INTEGER" /> 
+		 <result column="director" property="director" jdbcType="VARCHAR" /> 
+		 <result column="directorName" property="directorName" jdbcType="VARCHAR" /> 
+		 <result column="state" property="state" jdbcType="INTEGER" /> 
+	</resultMap>
+	
+	
+	<!-- 查询用户列表 -->
+	<select id="getUserList" parameterType="map" resultType="map">
+		select u.*,org.orgname,org.orgfullname from  IPAV_USER u left join ipav_org org on u.orgid = org.orgid
+		where (u.delflg is null or u.delflg !="Y")
+			<if test="userid != null and userid != ''"> and u.userid = #{userid}</if>
+			<if test="companyid != null and companyid != ''"> and u.companyid = #{companyid}</if>
+			<if test="userno != null and userno != ''"> and u.userno = #{userno}</if>
+			<if test="username != null and username != ''"> and u.username = #{username}</if>
+			<if test="orgid != null and orgid != ''"> 
+				and find_in_set(org.orgno,getOrgChildLst(#{orgid}))   
+			</if>
+			<if test="valflg != null and valflg != ''"> and u.valflg = #{valflg}</if>
+			<if test="mobile != null and mobile != ''"> and u.mobile = #{mobile}</if>
+			<if test="email != null and email!= ''"> and u.email = #{email}</if>
+			<if test="regtype != null and regtype != ''"> and  u.regtype= #{regtype}</if>
+			 order by u.userno 
+	</select>
+	<!-- 查询用户列表数量 -->
+	<select id="getUserListCount" parameterType="map" resultType="INTEGER">
+		select count(1) from  IPAV_USER u left join ipav_org org on u.orgid = org.orgid
+			where (u.delflg is null or u.delflg !="Y")
+			<if test="userid != null and userid != ''"> and u.userid = #{userid}</if>
+			<if test="companyid != null and companyid != ''"> and u.companyid = #{companyid}</if>
+			<if test="userno != null and userno != ''"> and u.userno = #{userno}</if>
+			<if test="username != null and username != ''"> and u.username = #{username}</if>
+			<if test="orgid != null and orgid != ''"> 
+				and find_in_set(org.orgno,getOrgChildLst(#{orgid}))   
+			</if>
+			<if test="valflg != null and valflg != ''"> and u.valflg = #{valflg}</if>
+			<if test="mobile != null and mobile != ''"> and u.mobile = #{mobile}</if>
+			<if test="email != null and email!= ''"> and u.email = #{email}</if>
+			<if test="regtype != null and regtype != ''"> and  u.regtype= #{regtype}</if>
+	</select>
+	
+	<select id="queryUserList" parameterType="java.util.Map" resultType="java.util.Map">
+		select ipav_user.userno,ipav_user.userid,ipav_user.username,ipav_user.sex,
+		(case when ipav_user_duty.type=0 and ipav_org.orgno>0 then ipav_org.orgname else '' end) as orgname,
+		ipav_user.regtype,ipav_user.email,ipav_user.mobile,ipav_user.valflg ,directorUser.username as directorName
+		from ipav_user 
+		left join ipav_user_duty on ipav_user.userid=ipav_user_duty.user_id 
+		left join ipav_org on ipav_user_duty.org_id=ipav_org.orgid 
+		left join ipav_user as directorUser on directorUser.userid =ipav_user.director
+		where (ipav_user.delflg is null or ipav_user.delflg !="Y")
+		<if test="companyid != null and companyid != ''"> and ipav_user.companyid = #{companyid}</if>
+		<if test="username != null and username != ''"> and ipav_user.username = #{username}</if>
+		<if test="orgid != null and orgid != ''"> 
+			and find_in_set(ipav_org.orgno,getOrgChildLst(#{orgid}))   
+		</if>
+		<if test="valflg != null and valflg != ''"> and ipav_user.valflg = #{valflg}</if>
+		group by ipav_user.userid 
+		order by ipav_user.userno 
+		<if test="page!=null">
+			limit ${page},${pageSize}
+		</if>
+	</select>
+	
+	<select id="queryUserCount" parameterType="java.util.Map" resultType="int">
+		select count(distinct ipav_user.userid ) from ipav_user 
+		left join ipav_user_duty on ipav_user.userid=ipav_user_duty.user_id 
+		left join ipav_org on ipav_user_duty.org_id=ipav_org.orgid 
+		where (ipav_user.delflg is null or ipav_user.delflg !="Y")
+		<if test="companyid != null and companyid != ''"> and ipav_user.companyid = #{companyid}</if>
+		<if test="username != null and username != ''"> and ipav_user.username = #{username}</if>
+		<if test="orgid != null and orgid != ''"> 
+			and find_in_set(ipav_org.orgno,getOrgChildLst(#{orgid}))   
+		</if>
+		<if test="valflg != null and valflg != ''"> and ipav_user.valflg = #{valflg}</if>
+		group by ipav_user.companyid 
+	</select>
+	
+	<select id="getMaxUserNo" parameterType="map" resultType="String">
+		select max(userno) from ipav_user  where companyid = #{companyid}
+	</select>
+	
+	<select id="getUserByUniKey" parameterType="map" resultMap="userResultMap">
+		select * from  IPAV_USER
+		where (1=1)
+			<choose>
+				<when test="userid != null and userid != ''">
+					 and userid = #{userid} 
+				</when>
+				<when test="mobile != null and mobile != ''">
+					 and mobile = #{mobile} and regtype= #{regtype}
+				</when>
+				<when test="email != null and email!= ''">
+					 and email = #{email} and regtype= #{regtype}
+				</when>
+				<otherwise>
+					and <![CDATA[ 1<>1 ]]>
+				</otherwise>
+			</choose>
+			<if test="password != null and password != ''"> and password = #{password}</if>
+			<if test="valflg != null and valflg != ''"> and valflg = #{valflg}</if>
+			<if test="delflg ==null"> and  (delflg is null or delflg !="Y")</if>
+	</select>
+	
+	<select id="queryRoleUser" parameterType="map" resultType="map">
+		select r.*,o.orgname from (select u.userid,u.userno,u.username,group_concat(r.rolename separator '、') AS rolename,u.orgid from 
+				ipav_user u left join ipav_userrole ur
+				on u.userid = ur.userid left join ipav_role r on
+				ur.roleno  = r.roleno  
+				<where>
+					u.valflg !=0  and (u.delflg is null or u.delflg !="Y")
+					<if test="userid != null and userid != ''">
+						and u.userid != #{userid}
+					</if>
+					<if test="roleno != null and roleno != ''">
+						and r.roleno = #{roleno} 
+					</if>
+					<if test="companyid != null and companyid != ''">
+						and u.companyid = #{companyid}
+					</if>
+					group by u.userid,u.username,u.orgid 
+					order by u.userno 
+				</where>
+				) AS r  left join ipav_org o on r.orgid = o.orgid 
+				<where>
+					<choose>
+						<when test="isatte !=null and isatte!='' and isatte == 1"> and r.rolename is not null</when>	
+						<when test="isatte !=null and isatte!='' and isatte == 0"> and r.rolename is null</when>
+						<otherwise>and 1=1</otherwise>
+					</choose>
+				</where>
+				<if test="page!=null">
+					limit ${page},${pageSize}
+				</if>
+	</select>
+	
+	<select id="queryRoleUserCount" parameterType="map" resultType="int">
+		select count(1) from (select u.userid,u.username,group_concat(r.rolename separator '、') AS rolename,u.orgid from 
+				ipav_user u left join ipav_userrole ur
+				on u.userid = ur.userid left join ipav_role r on
+				ur.roleno  = r.roleno  
+				<where>
+					u.valflg !=0  and (u.delflg is null or u.delflg !="Y") 
+					<if test="userid != null and userid != ''">
+						and u.userid != #{userid}
+					</if>
+					<if test="roleno != null and roleno != ''">
+						and r.roleno = #{roleno} 
+					</if>
+					<if test="companyid != null and companyid != ''">
+						and u.companyid = #{companyid}
+					</if>
+					group by u.userid,u.username,u.orgid 
+				</where>
+				) AS r 
+				<where>
+					<choose>
+						<when test="isatte !=null and isatte!='' and isatte == 1"> and r.rolename is not null</when>	
+						<when test="isatte !=null and isatte!='' and isatte == 0"> and r.rolename is null</when>
+						<otherwise>and 1=1</otherwise>
+					</choose>
+				</where>
+	</select>
+	
+	<insert id="insertUser" parameterType="com.ipav.system.entity.IpavuserEntity">
+		<!-- <selectKey resultType="String"  order="AFTER" keyProperty="userid">
+			SELECT LAST_INSERT_ID()
+		</selectKey> -->
+		insert into IPAV_USER(userid,companyid,userno,username,sex,orgid,duty,mobile,email,valflg,password,regtype,createdate,
+		creater,exorgno,exduty,picpath,sysid,address,phone,chefflg,director,platform_id,labour_belong) 
+		values(#{userid},#{companyid},#{userno},#{username},#{sex},#{orgid},#{duty},#{mobile},#{email},
+		#{valflg},#{password},#{regtype},#{createdate},#{creater},#{exorgno},#{exduty},#{picpath},#{sysid},#{address},
+		#{phone},#{chefflg},#{director},#{platform},#{labourBelong})
+	</insert>
+	
+	<update id="updateUserPwd" parameterType="com.ipav.system.entity.IpavuserEntity">
+		update IPAV_USER set password = #{password} where userid = #{userid}
+	</update>
+	
+	<update id="updatePwd" parameterType="java.util.Map">
+		update IPAV_USER set password = #{newPwd} where 
+		<choose>
+			<when test="userId==null">
+				mobile = #{phone}
+			</when>
+			<otherwise>
+				userid = #{userId} and password=#{oldPwd}
+			</otherwise>
+		</choose>
+	</update>
+	
+	<update id="updateUser" parameterType="com.ipav.system.entity.IpavuserEntity">
+		update IPAV_USER set username =#{username},sex=#{sex},orgid=#{orgid},regtype=#{regtype},
+			mobile =#{mobile},email=#{email},duty=#{duty},exorgno=#{exorgno},exduty=#{exduty},picpath=#{picpath},
+			sysid=#{sysid},address=#{address},phone=#{phone},chefflg=#{chefflg},director=#{director},platform_id=#{platform},labour_belong=#{labourBelong}
+		 	where userid = #{userid}
+	</update>
+ 
+	<update id="setuserVal" parameterType="map">
+		update IPAV_USER set valflg =#{valflg}
+		 	where userid = #{userid}
+	</update>
+	
+	<update id="delUser" parameterType="String">
+		update IPAV_USER set delflg ="Y"
+		 	where userid = #{userid}
+	</update>
+	
+	
+<!-- 	<select id="queryOrgUserTree"  parameterType="String" resultType="map"> -->
+<!-- 		select * from(select o.orgid as tid, o.orgno AS id,o.parentno AS Pid,o.orgname AS name,"true"  AS open,"true" AS isParent,'' as picpath -->
+<!-- 			from ipav_org o where  o.companyid =#{companyid} and o.valflg ="1" -->
+<!-- 			union all -->
+		<!-- select u.userid AS id , case when org.orgno is null then "0" else org.orgno end  AS Pid ,
+			u.username AS name,"false" AS open,"false" AS isParent
+			from ipav_user u left join ipav_org org on u.orgid = org.orgid and u.companyid=org.companyid where 
+			u.companyid = #{companyid}  and u.valflg = "1" and (u.delflg is null or u.delflg !="Y") -->
+<!-- 			select userno AS tid,u.userid AS id,case when org.orgno is null then "0" else org.orgno end  AS Pid , -->
+<!-- 			u.username AS name,"false" AS open,"false" AS isParent,u.picpath  -->
+<!-- 			from ipav_user_duty left join ipav_user u on ipav_user_duty.user_id=u.userid  -->
+<!-- 			left join ipav_org org on ipav_user_duty.org_id=org.orgid -->
+<!-- 			where u.companyid = #{companyid}  and u.valflg = "1" and (u.delflg is null or u.delflg !="Y") -->
+<!-- 		)as a order by a.Pid,a.tid -->
+<!-- 	</select> -->
+
+	<select id="queryOrgUserTree"  parameterType="String" resultType="map">
+		select * from(select o.orgid as tid, o.orgno AS id,o.parentno AS Pid,o.orgname AS name,"true"  AS open,"true" AS isParent,'' as picpath,seqno
+			from ipav_org o where  o.companyid =#{companyid} and o.valflg ="1"
+			union all
+			select userno AS tid,u.userid AS id,case when org.orgno is null then "0" else org.orgno end  AS Pid ,
+			u.username AS name,"false" AS open,"false" AS isParent,u.picpath ,"" as seqno
+			from ipav_user_duty left join ipav_user u on ipav_user_duty.user_id=u.userid 
+			left join ipav_org org on ipav_user_duty.org_id=org.orgid
+			where u.companyid = #{companyid}  and u.valflg = "1" and (u.delflg is null or u.delflg !="Y")
+		)as a order by a.Pid,a.seqno,a.tid
+	</select>
+	
+	<insert id="addUserRole" parameterType="map">
+		insert into ipav_userrole(userid,roleno) values (#{userid},#{roleno})
+	</insert>
+	
+	<delete id="delUserRole" parameterType="String">
+		delete from ipav_userrole where userid =#{userid}
+	</delete>
+	
+	
+	<select id="autoCompleteUser" parameterType="java.util.Map" resultType="java.lang.String">
+		select username from  IPAV_USER 
+		<trim prefix="where" prefixOverrides="and">
+			<if test="companyId!=null">
+				and companyid=#{companyId}
+			</if>
+			<if test="userName!=null">
+				and username like #{userName}"%" 
+			</if> 
+		</trim>
+		order by username asc 
+		<if test="counts!=null">
+				limit 0,#{counts}
+			</if>
+	</select>
+	
+	<select id="getAllLevelInfos" parameterType="long" resultType="java.util.Map">
+		select ipav_org.orgid as id,ipav_org.orgno as no,ipav_org.orgname as name,
+		ipav_org.orgfullname as fullname,ipav_org.parentno as pno,1 as type 
+		from ipav_org 
+		where ipav_org.companyid=#{companyId} 
+		and ipav_org.valflg=1
+		union 
+		select ipav_user.userid as id,ipav_user.userno as no,ipav_user.username as name,
+		'' as fullname,ipav_org.orgid as pno,0 as type 
+		from ipav_user_duty 
+		left join ipav_user on ipav_user_duty.user_id=ipav_user.userid 
+		left join ipav_org on ipav_user_duty.org_id=ipav_org.orgid 
+		where ipav_user.companyid=#{companyId} 
+		and ipav_user.valflg=1
+		group by id,pno
+		order by pno 
+		
+		<!-- select ipav_user.userid as id,ipav_user.userno as no,ipav_user.username as name,
+		'' as fullname,ipav_user.orgid as pno,0 as type 
+		from ipav_user where exists(
+			select 1 from ipav_org where ipav_user.orgid=ipav_org.orgid and ipav_org.companyid=#{companyId} 
+			select 1 from ipav_user_duty,ipav_org where ipav_user_duty.org_id=ipav_org.orgid and ipav_user_duty.user_id=ipav_user.userid and ipav_org.companyid=#{companyId} 
+		)
+		and ipav_user.valflg=1
+		order by pno -->
+	</select>
+	
+	<select id="getUserListForExport" parameterType="map" resultType="map">
+		select u.userno,u.username,(select ipavname  from ipav_parameter  where ipavcode = u.sex and ipavtype="sex") AS sex,
+			org.orgname,u.mobile,u.email,
+			(select ipavname  from ipav_parameter  where ipavcode =  u.valflg and ipavtype="valflg") AS valflg,
+			u.sysid,u.phone,u.address,u.chefflg from  IPAV_USER u left join ipav_org org on u.orgid = org.orgid
+			where (u.delflg is null or u.delflg !="Y")
+			<if test="companyid != null and companyid != ''"> and u.companyid = #{companyid}</if>
+			<if test="orgid != null and orgid != ''"> 
+				and find_in_set(org.orgno,getOrgChildLst(#{orgid}))   
+			</if>
+			 order by u.userno 
+	</select>
+	<select id="getUserListForOrgid" parameterType="map" resultType="map">
+			SELECT distinct
+				ipav_user.userid,ipav_user.username,ipav_user.mobile,
+				ipav_user.email,ipav_user.phone,ipav_user.address,
+				ipav_user.picpath,ipav_duty.duty_name,
+    (case when ipav_org.orgno>0 then ipav_org.orgname else '' end) as orgname,
+            ipav_user_duty.type
+				FROM
+				ipav_user
+				LEFT  JOIN   ipav_user_duty 
+        LEFT JOIN ipav_duty ON  ipav_duty.id=ipav_user_duty.duty_id
+        LEFT JOIN  ipav_org on ipav_org.orgid=ipav_user_duty.org_id
+       ON ipav_user.userid = ipav_user_duty.user_id
+		where ipav_user.userid in(SELECT  distinct
+				ipav_user.userid
+				FROM
+				ipav_user
+				LEFT  JOIN   ipav_user_duty         
+        ON ipav_user.userid = ipav_user_duty.user_id
+	    	where  ipav_user_duty.org_id = #{orgid}   	
+		<if test="orgnoids != null and orgnoids !=''">
+		    or ipav_user_duty.org_id in
+		 <foreach item="item" index="index" collection="orgnoids" 
+                         open="(" separator="," close=")">
+                        #{item}
+         </foreach> 
+		</if>
+		) and (delflg is null or delflg !="Y") 
+		and ipav_user.companyid=#{companyid}
+	ORDER BY  ipav_user.userid ,ipav_user_duty.type
+		
+	</select>
+	
+	<select id="getUserForName" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT distinct
+			ipav_user.userid,ipav_user.username,ipav_user.mobile,
+			ipav_user.email,ipav_user.phone,ipav_user.address,
+			ipav_user.picpath,ipav_duty.duty_name,
+  (case when ipav_org.orgno>0 then ipav_org.orgname else '' end) as orgname
+              ,ipav_user_duty.type
+			FROM
+			ipav_user
+			LEFT  JOIN   ipav_user_duty 
+        LEFT JOIN ipav_duty ON  ipav_duty.id=ipav_user_duty.duty_id
+        LEFT JOIN  ipav_org on ipav_org.orgid=ipav_user_duty.org_id
+       ON ipav_user.userid = ipav_user_duty.user_id 
+     where ipav_user.username LIKE '%${username}%'  and ipav_user.companyid=#{companyid}
+     and (delflg is null or delflg !="Y")
+	</select>
+	<!-- GaoYang 根据条查询获取用户列表(查询属于同一机构(公司)的全体员工) -->
+	<select id="queryUsers" parameterType="java.util.Map" resultType="java.util.Map">
+		select userid ,username from ipav_user 
+		<where>
+			valflg !=0  and (delflg is null or delflg !="Y")
+			<if test="companyid!=null">and companyid=#{companyid}</if>
+		</where>
+		 order by userno 
+	</select>
+	
+	<insert id="addUserDutyInfos" parameterType="java.util.Map">
+		insert into ipav_user_duty (user_id,org_id,duty_id,is_leader,type,update_user) values 
+		<foreach collection="list" item="item" index="index" separator="," >
+			(#{userId},#{item.orgId},#{item.dutyId},#{item.isLeader},#{item.type},#{updateUser})
+		</foreach>
+	</insert>
+	
+	<delete id="deleteUserDutyInfos" parameterType="java.util.Map">
+		delete from ipav_user_duty where user_id=#{userId}
+	</delete>
+	
+	<select id="queryExportUserList" parameterType="java.util.Map" resultType="java.util.Map">
+		select tmp.userno,tmp.username,tmp.reginfo,
+		(case when tmp.type=0 then tmp.orgname else '' end) as orgname,
+		(case when tmp.type=0 then tmp.duty_name else '' end) as duty_name,
+		(case when tmp.type=0 then tmp.is_leader else '' end) as is_leader,
+		<![CDATA[(case when tmp.type=1 then group_concat(tmp.orgname,'-',tmp.duty_name,'-',tmp.is_leader separator '\n\r') else '' end) as part_time_info,]]>
+		tmp.mobile,tmp.email,tmp.platname,tmp.phone,tmp.address,tmp.belong_name
+		from (
+		select ipav_user.userno,ipav_user.username,
+				(case when ipav_user.regtype='M' then ipav_user.mobile else ipav_user.email end) reginfo,
+				(case when ipav_org.orgname is null then '' else ipav_org.orgname end ) as orgname,
+				(case when ipav_duty.duty_name is null then '' else ipav_duty.duty_name end)  as duty_name,
+				(case when ipav_user_duty.is_leader is null then '' when ipav_user_duty.is_leader=0 then '否' else '是' end) as is_leader,
+				(case when ipav_user_duty.type is null then '' else ipav_user_duty.type end)  as type,
+				ipav_user.mobile,ipav_user.email,
+				(case when ipav_workplatform.platname is null then '' else ipav_workplatform.platname end) as platname,
+				ipav_user.phone,ipav_user.address,
+				(case when ipav_labour_belong.belong_name is null then '' else ipav_labour_belong.belong_name end) as belong_name
+				from ipav_user 
+				left join ipav_user_duty on ipav_user.userid=ipav_user_duty.user_id 
+				left join ipav_org on ipav_user_duty.org_id=ipav_org.orgid 
+				left join ipav_duty on ipav_user_duty.duty_id=ipav_duty.id 
+				left join ipav_workplatform on ipav_user.platform_id=ipav_workplatform.id 
+				left join ipav_labour_belong on ipav_user.labour_belong=ipav_labour_belong.id 
+		where ipav_user.companyid=#{companyId} 
+		<![CDATA[and (delflg is null or delflg<>'Y') ]]>
+		and ipav_user_duty.status=1
+		<if test="orgId!=null">
+			and ipav_user.orgid=#{orgId} 
+		</if>
+		<if test="userName!=null">
+			and ipav_user.username=#{userName} 
+		</if>
+		<if test="valflg!=null">
+			and ipav_user.valflg=#{valflg} 
+		</if>
+		order by ipav_user.userno,type
+		) tmp 
+		group by tmp.userno,tmp.type
+	</select>
+	
+	<select id="queryUserPostInfo" parameterType="java.util.Map" resultType="java.util.Map">
+		select ipav_user_duty.org_id,ipav_user_duty.duty_id,
+		(case when ipav_org.orgname is null then '' else ipav_org.orgname end ) as orgname,
+		(case when ipav_duty.duty_name is null then '' else ipav_duty.duty_name end) as duty_name,
+		(case when ipav_user_duty.is_leader is null then '' else ipav_user_duty.is_leader end) as is_leader,
+		(case when ipav_user_duty.type is null then '' else ipav_user_duty.type end) as type
+		from ipav_user 
+		left join ipav_user_duty on ipav_user.userid=ipav_user_duty.user_id 
+		left join ipav_org on ipav_user_duty.org_id=ipav_org.orgid 
+		left join ipav_duty on ipav_user_duty.duty_id=ipav_duty.id 
+		left join ipav_workplatform on ipav_user.platform_id=ipav_workplatform.id 
+		left join ipav_labour_belong on ipav_user.labour_belong=ipav_labour_belong.id 
+		where ipav_user.userid=#{userId}
+	</select>
+	
+	<select id="queryExistRegistedUser" parameterType="java.util.Map" resultType="java.util.Map">
+		select mobile,email from ipav_user 
+		<where>
+			<trim prefixOverrides="or">
+				<if test="phoneList!=null">
+					mobile in (
+					<foreach collection="phoneList" item="item" index="index" separator="," >
+						#{item}
+					</foreach>
+					)
+				</if>
+				<if test="emailList">
+					email in (
+					<foreach collection="emailList" item="item" index="index" separator="," >
+						#{item}
+					</foreach>
+					)
+				</if>
+			</trim>
+		</where>
+	</select>
+	
+	<select id="queryUserInfoOfCenter" parameterType="java.util.Map" resultType="java.util.Map">
+		select ipav_user.userid,ipav_user.username,ipav_user.sex,ipav_user.mobile,
+		ipav_user.email,ipav_user.regtype,ipav_user.phone,ipav_user.address,
+		ipav_user.picpath,ipav_workplatform.platname,
+		ipav_org.orgname,ipav_duty.duty_name,ipav_user_duty.is_leader,ipav_user_duty.type 
+		from ipav_user 
+		left join ipav_user_duty on ipav_user.userid=ipav_user_duty.user_id 
+		left join ipav_org on ipav_user_duty.org_id=ipav_org.orgid 
+		left join ipav_duty on ipav_user_duty.duty_id=ipav_duty.id 
+		left join ipav_workplatform on ipav_user.platform_id=ipav_workplatform.id 
+		where ipav_user.userid=#{userId} 
+		order by ipav_user_duty.type asc
+	</select>
+	
+	<update id="updateUserInfos" parameterType="java.util.Map">
+		update ipav_user set 
+		<trim suffixOverrides=",">
+			<if test="sex!=null">
+				sex=#{sex},
+			</if>
+			<if test="mobile!=null">
+				mobile=#{mobile},
+			</if>
+			<if test="email!=null">
+				email=#{email},
+			</if>
+			<if test="phone!=null">
+				phone=#{phone},
+			</if>
+			<if test="address!=null">
+				address=#{address},
+			</if>
+			<if test="picpath!=null">
+				picpath=#{picpath},
+			</if>
+			<if test="regType!=null">
+				regtype=#{regType}, 
+			</if>
+		</trim>
+		where userid=#{userId}
+	</update>
+	
+	<select id="queryAllMenuList" parameterType="java.util.Map" resultType="java.lang.String">
+		select menuid from ipav_menu where menuid != 0 and  (delflg is null or delflg !="Y")
+			and not   find_in_set(menuid,getMenuChildLst('123'))
+			and not   find_in_set(menuid,getMenuChildLst('124'))
+			and not   find_in_set(menuid,getMenuChildLst('125'))
+	</select>
+	
+	<select id="getRoomsInfosOfOF" parameterType="java.util.Map" resultType="java.util.Map">
+		select ofmucroom.roomID,ofmucroom.name,ofmucroom.membersOnly,ofmucmember.jid,ofmucmember.nickname,ofmucroom.naturalName,ofmucroom.description
+		from ofmucroom 
+		straight_join ofmucmember on ofmucroom.roomID=ofmucmember.roomID 
+		where exists(
+			select 1 from (
+				select ofmucmember.roomID from ofmucmember where ofmucmember.jid=#{jid}
+				union 
+				select ofmucaffiliation.roomID from ofmucaffiliation where ofmucaffiliation.jid=#{jid}
+			) tmp
+			where tmp.roomID=ofmucroom.roomID
+		)
+		union 
+		select ofmucroom.roomID,ofmucroom.name,ofmucroom.membersOnly,ofmucaffiliation.jid,replace(ofmucaffiliation.jid,'@192.168.3.75','') as nickname,ofmucroom.naturalName,ofmucroom.description
+		from ofmucroom 
+		straight_join ofmucaffiliation on ofmucroom.roomID=ofmucaffiliation.roomID 
+		where ofmucaffiliation.jid=#{jid}
+	</select>
+	
+	<update id="updateUserCenterInfo" parameterType="java.util.Map">
+		update ipav_user set 
+		<trim suffixOverrides=",">
+			<if test="regType!=null">
+				regtype=#{regType},
+			</if>
+			<if test="picpath!=null">
+				picpath=#{picpath},
+			</if>
+			<if test="sex!=null">
+				sex=#{sex},
+			</if>
+			<if test="phone!=null">
+				phone=#{phone},
+			</if>
+			<if test="email!=null">
+				email=#{email},
+			</if>
+			<if test="mobile!=null">
+				mobile=#{mobile},
+			</if>
+		</trim>
+		where userid=#{userId}
+	</update>
+	
+	<select id="hasRegisted" parameterType="java.util.Map" resultType="java.util.Map">
+		select 1 from ipav_user 
+		<where>
+			<trim prefixOverrides="or">
+				<if test="mobile!=null">
+					or mobile=#{mobile} 
+				</if>
+				<if test="email!=null">
+					or email=#{email} 
+				</if>
+			</trim>
+		</where>
+	</select>
+	<!-- TODO gongyh更改用户是否是第一次登陆的状态 -->
+	<update id="updateUserState" parameterType="map">
+	   update  ipav_user set  state=#{state}  where userid=#{userid}
+	</update>
+</mapper>
