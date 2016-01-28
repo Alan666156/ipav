@@ -16,5 +16,6 @@ public class WebApplication {
 		tomcat.start();
 		logger.info("ipav Started tomcat");
 		tomcat.getServer().await();
+		
 	}
 }
